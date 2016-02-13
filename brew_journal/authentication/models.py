@@ -39,7 +39,6 @@ class Account(AbstractBaseUser):
 
   first_name = models.CharField(max_length=40,  blank=True)
   last_name  = models.CharField(max_length=40,  blank=True)
-  tagline    = models.CharField(max_length=140, blank=True)
 
   is_admin = models.BooleanField(default=False)
 
