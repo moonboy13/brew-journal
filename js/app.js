@@ -1,0 +1,1 @@
+var brewJournal = angular.module("brewJournal", ["ui.router"]);
