@@ -1,3 +1,4 @@
 # Avoid adding secret settings files
 settings.py
 settings.pyc
+*.pyc
