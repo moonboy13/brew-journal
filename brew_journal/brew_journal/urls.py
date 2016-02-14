@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
 
     # Default index view. Must be last to avoid accidentially catching other URLs
-    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^.*$', IndexView.as_view(), name='index'),
 )
