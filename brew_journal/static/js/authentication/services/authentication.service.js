@@ -39,15 +39,21 @@
     * @desc Try to register a new user
     * @param {string} username The username entered by the user
     * @param {string} password The password entered by the user
+    * @param {string} confirm_password Password confirmation. There is backend validation so needed
     * @param {string} email The email entered by the user
+    * @param {string} first_name Registering user's first name
+    * @param {string} last_name Registering user's last name
     * @returns {Promise}
     * @memberOf brew_journal.authentication.services.Authentication
     */
-    function register(email, password, username) {
-      return $http.post('/api/v1/accounts', {
-        username: username,
-        password: password,
-        email:    email
+    function register(username, password, confirm_password, email, first_name, last_name) {
+      return $http.post('/api/v1/account/', {
+        username:         username,
+        password:         password,
+        confirm_password: confirm_password,
+        email:            email,
+        first_name:       first_name,
+        last_name:        last_name
       });
     }
 

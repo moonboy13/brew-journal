@@ -8,9 +8,6 @@ class AccountManager(BaseUserManager):
     if not username:
       raise ValueError('Users must have a valid username.')
 
-    if not kwargs.get('email'):
-      raise ValueError('Users must have a valid email address.')
-
     # TODO: Add graceful validation for the username, since its unique should offer unique names
     # upon failure
     account = self.model(
@@ -35,7 +32,7 @@ class Account(AbstractBaseUser):
   """Customized User model"""
   username = models.CharField(max_length=40, unique=True)
 
-  email    = models.EmailField()
+  email    = models.EmailField(blank=True)
 
   first_name = models.CharField(max_length=40,  blank=True)
   last_name  = models.CharField(max_length=40,  blank=True)

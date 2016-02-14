@@ -21,7 +21,15 @@
     * @memberOf brew_journal.authentication.controlleres.RegisterController
     */
     function register() {
-
+      // Required inputs, never should be null
+      var username         = vm.username;
+      var password         = vm.password;
+      var confirm_password = vm.confirm_password;
+      // Optional inputs. Set to null if they don't exist or are null
+      var email            = (!vm.email || vm.email.length === 0) ? '' : vm.email;
+      var first_name       = (!vm.first_name || vm.first_name === 0) ? '' : vm.first_name;
+      var last_name        = (!vm.last_name || vm.last_name === 0) ? '' : vm.last_name;
+      Authentication.register(username, password, confirm_password, email, first_name, last_name);
     }
   }
 })();
