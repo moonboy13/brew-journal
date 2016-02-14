@@ -30,6 +30,8 @@
       unauthenticate:          unauthenticate
     };
 
+    return Authentication;
+
     //////////////////////
 
     /**
