@@ -56,6 +56,15 @@
           <span class="glyphicon glyphicon-asterisk required-indicator"></span> indicates a required field.
         </p>
 
+        <p class="text-danger" ng-show="vm.error">{{vm.message}}
+          <br />
+          <ul>
+            <li ng-repeat="(parameter, error) in vm.errors">
+              {{parameter}} was invalid because {{error[0]}}
+            </li>
+          </ul>
+        </p>
+
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>

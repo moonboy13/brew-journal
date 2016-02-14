@@ -27,10 +27,19 @@
       getAuthenticatedAccount: getAuthenticatedAccount,
       isAuthenticated:         isAuthenticated,
       setAuthenticatedAccount: setAuthenticatedAccount,
-      unauthenticate:          unauthenticate
+      unauthenticate:          unauthenticate,
+      getRegistrationResult:   getRegistrationResult
     };
 
     return Authentication;
+
+    ///////////////////////
+
+    /**
+    * @name registrationResult
+    * @desc Variable to hold the results of a registration attempt to report to a user
+    */
+    var registrationResult = {};
 
     //////////////////////
 
@@ -54,7 +63,42 @@
         email:            email,
         first_name:       first_name,
         last_name:        last_name
-      });
+      }).then(registerSuccessFn,registerFailureFn);
+    }
+
+    /**
+    * @name registerSuccessFn
+    * @desc Upon a successful registration, login a user.
+    */
+    function registerSuccessFn(data, status, headers, config) {
+       setRegistrationResult(data);
+      Authentication.login(data.data.username, data.data.password);
+    }
+
+    /**
+    * @name registerFailureFn
+    * @desc Warn a user as to why a registration failed
+    */
+    function registerFailureFn(data, status, headers, config) {
+      setRegistrationResult(data);
+    }
+
+    /**
+    * @name setRegistarationResult
+    * @desc set the value of the Registration result
+    */
+    function setRegistrationResult(data) {
+      registrationResult = data;
+    }
+
+    /**
+     * @name getRegistrationResult
+     * @desc Return the results of a registration action
+     * @returns {Object}
+     * @memberOf brew_journal.authentication.services.Authentication
+    */
+    function getRegistrationResult() {
+      return registrationResult;
     }
 
     /**

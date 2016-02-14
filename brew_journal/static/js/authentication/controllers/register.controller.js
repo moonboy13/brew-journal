@@ -29,7 +29,18 @@
       var email            = (!vm.email || vm.email.length === 0) ? '' : vm.email;
       var first_name       = (!vm.first_name || vm.first_name === 0) ? '' : vm.first_name;
       var last_name        = (!vm.last_name || vm.last_name === 0) ? '' : vm.last_name;
-      Authentication.register(username, password, confirm_password, email, first_name, last_name);
+      Authentication.register(username, password, confirm_password, email, first_name, last_name).then(postRegister);
+    }
+
+    /**
+    * @name postRegister
+    * @desc Display an informative message to a suer if their registration fails
+    */
+    function postRegister() {
+      var data = Authentication.getRegistrationResult();
+      vm.error = (data.status !== 200);
+      vm.message = data.data.message;
+      vm.errors = data.data.errors;
     }
   }
 })();

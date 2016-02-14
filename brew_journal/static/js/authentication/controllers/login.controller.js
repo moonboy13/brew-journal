@@ -34,7 +34,7 @@
     * @memberOf brew_journal.authentication.controllers.LoginController
     */
     function login() {
-      Authentication.login(vm.email, vm.password).then(showLoginResult);
+      Authentication.login(vm.username, vm.password).then(showLoginResult);
     }
 
     /**
