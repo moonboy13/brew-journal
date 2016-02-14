@@ -34,7 +34,19 @@
     * @memberOf brew_journal.authentication.controllers.LoginController
     */
     function login() {
-      Authentication.login(vm.email, vm.password);
+      Authentication.login(vm.email, vm.password).then(showLoginResult);
+    }
+
+    /**
+    * @name showLoginResult
+    * @desc Report to the user the results of their login action
+    * @memberOf brew_journal.authentication.controllers.LoginController
+    */
+    function showLoginResult() {
+      vm.error = !Authentication.isAuthenticated();
+      // Using a variable so that if I decide to make a dynamic error message
+      // later it'll be easier.
+      vm.loginErrorMessage = "Username/password not recognized. Please veryify credentials and try again.";
     }
   }
 })();
