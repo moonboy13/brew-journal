@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 
 from rest_framework import status, views, permissions, viewsets
 from rest_framework.response import Response
