@@ -7,7 +7,7 @@ from rest_framework_nested import routers
 from authentication.views import AccountViewSet, LoginView
 
 router = routers.SimpleRouter()
-router.register(r'register', AccountViewSet)
+router.register(r'account', AccountViewSet)
 
 urlpatterns = patterns('',
     # Examples:
@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
 
     # Default index view. Must be last to avoid accidentially catching other URLs
-    url('^.*$', IndexView.as_view(), name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
 )

@@ -16,4 +16,11 @@
 <script src="{% static lib/js/angular-google-maps.min.js %}"></script>
 
 <!--Main Entry Point-->
-<script src="js/brew_journal.js"></script>
+<script type="text/javascript" src="{% static 'js/brew_journal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/brew_journal.config.js %}"></script>
+<script type="text/javascript" src="{% static 'js/brew_journal.routes.js %}"></script>
+
+<!-- Authentication services -->
+<script type="text/javascript" src="{% static 'js/authentication/authentication.module.js %}"></script>
+<script type="text/javascript" src="{% static 'js/authentication/services/authentication.service.js%}"></script>
+<script type="text/javascript" src="{% static 'js/authentication/controllers/login.controller.js%}"></script>

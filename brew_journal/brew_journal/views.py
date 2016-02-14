@@ -8,4 +8,4 @@ class IndexView(TemplateView):
 
     @method_decorator(ensure_csrf_cookie)
     def dispatch(self, *args, **kwargs):
-        return super(IndexView, self).dispatch(*args, **kwargs)
+      return super(IndexView, self).dispatch(*args, **kwargs)

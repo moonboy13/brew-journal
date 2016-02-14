@@ -4,6 +4,9 @@
 	angular
 		.module('brewJournal',[
 			// Future modules go here
+			'brew_jounal.config',
+			'brew_jounal.routes',
+			'brew_jounal.authentication'
 		]);
 
 	angular
