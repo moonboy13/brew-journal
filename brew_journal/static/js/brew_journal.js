@@ -2,19 +2,19 @@
 	'use strict';
 
 	angular
-		.module('brewJournal',[
+		.module('brew_journal',[
 			// Future modules go here
-			'brew_jounal.config',
-			'brew_jounal.routes',
-			'brew_jounal.authentication'
+			'brew_journal.config',
+			'brew_journal.routes',
+			'brew_journal.authentication'
 		]);
 
 	angular
-		.module('brewJournal.routes', ['ngRoute']);
+		.module('brew_journal.routes', ['ngRoute']);
 
 	// Protect against CSFR attacks
 	angular
-		.module('brewJournal')
+		.module('brew_journal')
 		.run(run);
 
 	run.$inject = ['$http'];
