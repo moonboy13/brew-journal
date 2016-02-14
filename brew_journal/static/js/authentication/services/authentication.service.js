@@ -78,9 +78,10 @@
     /**
     * @name loginErrorFn
     * @desc Log "Epic failure!" to the console
+    * @todo Evaluate the necessity of this function
     */
     function loginErrorFn(data, status, headers, config) {
-
+      console.log(data);
     }
 
     /**

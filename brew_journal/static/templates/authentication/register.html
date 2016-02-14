@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <h1>Register</h1>
+
+  <div class="well register-panel">
+    <form role="form" ng-submit="vm.register()">
+
+      <div class="form-group">
+          <label for="register__username">Username</label>
+          <input type="text" class="form-control" id="register__username" ng-model="vm.username" placeholder="ex. John124" aria-required="true"/>
+        </div>
+
+        <div class="form-group">
+          <label for="register__password">Password</label>
+          <input type="password" class="form-control" id="register__password" ng-model="vm.password" placeholder="ex. soopersekret" aria-required="true"/>
+        </div>
+
+        <div class="form-group">
+          <label for="register__confirm_password">Confirm Password</label>
+          <input type="password" class="form-control" id="register__confirm_password" ng-model="vm.confirm_password" placeholder="ex. soopersekret" aria-required="true"/>
+        </div>
+
+        <div class="form-group">
+          <label for="register__email">Email</label>
+          <input type="email" class="form-control" id="register__email" ng-model="vm.email" placeholder="ex Doe.John@example.com"></input>
+        </div>
+
+        <div class="form-group">
+          <label for="register__first_name">First Name</label>
+          <input type="text" class="form-control" id="register__first_name" ng-mode="vm.first_name" placeholder="ex. John">
+        </div>
+
+        <div class="form-group">
+          <label for="register__last_name">Last Name</label>
+          <input type="text" class="form-control" id="register__last_name" ng-mode="vm.last_name" placeholder="ex. Doe">
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+  </div>
+</div>
