@@ -164,7 +164,13 @@
     function logoutSuccessFn(data, status, headers, config) {
       Authentication.unauthenticate();
 
-      window.location = '/';
+      // Adding a check that all spoofed HTTP requests will return. This is to avoid accidentially
+      // redirecting during a unit test, which throws everything off and could end up in a nasty
+      // redirect loop.
+      if(!data.data.isUnitTest)
+      {
+        window.location = '/';
+      }
     }
 
     /**

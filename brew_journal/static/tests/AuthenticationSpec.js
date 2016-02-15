@@ -55,6 +55,9 @@ describe('Authentication', function() {
     myFactory.login(fakeUsername, fakePassword);
     $httpBackend.flush();
 
+    // Make sure there is an
+    expect(myFactory.isAuthenticated()).toBe(true);
+
     // Test that the login set data appropriately
     var data = myFactory.getAuthenticatedAccount();
     expect(data).toBeDefined();
@@ -64,5 +67,14 @@ describe('Authentication', function() {
     expect(fakeLastName).toEqual(data.last_name);
     expect(fakeEmail).toEqual(data.email);
   });
+
+  it('should not log users in if username is missing', function() {
+    var fakePassword = 'lightning';
+    myFactory.login(null, fakePassword);
+    $httpBackend.flush();
+
+    // Make sure there is no authenticated user
+    expect(myFactory.isAuthenticated()).toBe(false);
+  })
 
 });
