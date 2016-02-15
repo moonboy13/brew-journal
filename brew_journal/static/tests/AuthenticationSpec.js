@@ -1,6 +1,6 @@
 describe('Authentication', function() {
   // Variable for the factory
-  var $httpBackend, myFactory, loginRequestHandler;
+  var $httpBackend, myFactory, loginRequestHandler, registrationRequestHandler;
 
   // Setting up some test values to make them overall accessable
   var fakeEmail     = 'unit_tests@moonboy.com';
@@ -36,6 +36,29 @@ describe('Authentication', function() {
           }];
         }
       });
+
+    // Given how the SimpleProvider handles things on the backend, this may have to eventually deal
+    // with multiple request types since the provider can distinguish differnent requests from the
+    // same URI (unknown if that is actually true yet).
+    registrationRequestHandler = $httpBackend
+      .when('POST', '/api/v1/account/')
+      .respond(function(method, url, data, headers, params){
+        var requestData = JSON.parse(data);
+        // :) I know this boolean is ugly.
+        if(requestData.username && requestData.password && requestData.confirm_password && requestData.password === requestData.confirm_password) {
+          fakeEmail     = requestData.email;
+          fakeFirstName = requestData.first_name;
+          fakeLastName  = requestData.last_name;
+          return [201, {
+            username   : requestData.username,
+            password   : requestData.password,
+            email      : fakeEmail,
+            first_name : fakeFirstName,
+            last_name  : fakeLastName,
+            isUnitTest : true
+          }];
+        }
+      })
   }));
 
   afterEach(function() {
@@ -43,29 +66,21 @@ describe('Authentication', function() {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  // Running this one first to ensure its defined. If its not defined there
+  // Running this one first to ensure its defined. If its not defined here
   // is no point in running any of the other tests.
+  // (Could be considered useless b/c syntax error would blow up in browser but lets be complete)
   it('should be defined', function() {
     expect(myFactory).toBeDefined();
   });
 
+  ///////// LOGIN TESTS //////////////////
   it('should log users in', function() {
     var fakeUsername = 'grease';
     var fakePassword = 'lightning';
     myFactory.login(fakeUsername, fakePassword);
     $httpBackend.flush();
 
-    // Make sure there is an
-    expect(myFactory.isAuthenticated()).toBe(true);
-
-    // Test that the login set data appropriately
-    var data = myFactory.getAuthenticatedAccount();
-    expect(data).toBeDefined();
-    expect(fakeUsername).toEqual(data.username);
-    expect(fakePassword).toEqual(data.password);
-    expect(fakeFirstName).toEqual(data.first_name);
-    expect(fakeLastName).toEqual(data.last_name);
-    expect(fakeEmail).toEqual(data.email);
+    validLogin(fakeUsername, fakePassword, myFactory);
   });
 
   it('should not log users in if a username is missing', function() {
@@ -86,4 +101,33 @@ describe('Authentication', function() {
     expect(myFactory.isAuthenticated()).toBe(false);
   });
 
+  /////////////////////////////////////////////
+
+  //////// Registration Tests ///////////////////
+  it('should register a user and log them in', function() {
+    var fakeUsername = 'foo';
+    var fakePassword = 'bar';
+    myFactory.register(fakeUsername, fakePassword, fakePassword, 'fake@email.com', 'not', 'me');
+    $httpBackend.flush();
+
+    validLogin(fakeUsername, fakePassword, myFactory);
+  });
+
+
+  //////////// HELPER FUNCTION ///////////////////
+  // Validate the login. Username and password will change between tests.
+  function validLogin(username, password, factory) {
+    // At this point, as long as registration occurs successfully, and no-one is logged in, the newest user will be
+    // logged in.
+    expect(myFactory.isAuthenticated()).toBe(true);
+
+    // Test that the login set data appropriately
+    var data = myFactory.getAuthenticatedAccount();
+    expect(data).toBeDefined();
+    expect(username).toEqual(data.username);
+    expect(password).toEqual(data.password);
+    expect(fakeFirstName).toEqual(data.first_name);
+    expect(fakeLastName).toEqual(data.last_name);
+    expect(fakeEmail).toEqual(data.email);
+  }
 });
