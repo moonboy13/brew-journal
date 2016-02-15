@@ -23,6 +23,7 @@
     */
     var Authentication = {
       login:                   login,
+      logout:                  logout,
       register:                register,
       getAuthenticatedAccount: getAuthenticatedAccount,
       isAuthenticated:         isAuthenticated,
@@ -71,8 +72,12 @@
     * @desc Upon a successful registration, login a user.
     */
     function registerSuccessFn(data, status, headers, config) {
-       setRegistrationResult(data);
-      Authentication.login(data.data.username, data.data.password);
+      setRegistrationResult(data);
+      // Check to see if a user is already loggedin. If so, then an admin is adding users so don't try to log the
+      // new user in.
+      if(!isAuthenticated()) {
+        Authentication.login(data.data.username, data.data.password);
+      }
     }
 
     /**
@@ -132,6 +137,35 @@
     */
     function loginErrorFn(data, status, headers, config) {
       console.log(data);
+    }
+
+    /**
+    * @name logout
+    * @desc Log the user out
+    * @returns {Promise}
+    * @memberOf brew_journal.authentication.services.Authentication
+    */
+    function logout() {
+      return $http.post('/api/v1/auth/logout/')
+        .then(logoutSuccessFn, logoutErrorFn);
+    }
+
+    /**
+    * @name logoutSuccessFn
+    * @desc Unathentication the user and redirect to login
+    */
+    function logoutSuccessFn(data, status, headers, config) {
+      Authentication.unauthenticate();
+
+      window.location = '/';
+    }
+
+    /**
+    * @name logoutErrorFn
+    * @desc Log why the user could not logout
+    */
+    function logoutErrorFn(data, status, headers, config) {
+      console.error(data);
     }
 
     /**

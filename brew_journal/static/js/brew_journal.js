@@ -6,7 +6,8 @@
 			// Future modules go here
 			'brew_journal.config',
 			'brew_journal.routes',
-			'brew_journal.authentication'
+			'brew_journal.authentication',
+			'brew_journal.layout'
 		]);
 
 	angular
