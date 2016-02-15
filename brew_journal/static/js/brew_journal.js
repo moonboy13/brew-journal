@@ -3,7 +3,6 @@
 
 	angular
 		.module('brew_journal',[
-			'ngMock',
 			// Future modules go here
 			'brew_journal.config',
 			'brew_journal.routes',
