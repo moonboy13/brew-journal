@@ -68,13 +68,22 @@ describe('Authentication', function() {
     expect(fakeEmail).toEqual(data.email);
   });
 
-  it('should not log users in if username is missing', function() {
+  it('should not log users in if a username is missing', function() {
     var fakePassword = 'lightning';
     myFactory.login(null, fakePassword);
     $httpBackend.flush();
 
     // Make sure there is no authenticated user
     expect(myFactory.isAuthenticated()).toBe(false);
-  })
+  });
+
+  it('should not log users in if a password is missing', function() {
+    var fakeUsername = 'lightning';
+    myFactory.login(fakeUsername, null);
+    $httpBackend.flush();
+
+    // Make sure there is no authenticated user
+    expect(myFactory.isAuthenticated()).toBe(false);
+  });
 
 });
