@@ -1,6 +1,6 @@
 describe('Authentication', function() {
   // Variable for the factory
-  var $httpBackend, myFactory, loginRequestHandler, registrationRequestHandler;
+  var $httpBackend, myFactory, loginRequestHandler, registrationRequestHandler, logoutRequestHandler;
 
   // Setting up some test values to make them overall accessable
   var fakeEmail     = 'unit_tests@moonboy.com';
@@ -79,9 +79,18 @@ describe('Authentication', function() {
             status:  'Bad Request',
             message: 'Account could not be created with the received data.',
             errors:  errors
-          }]
+          }];
         }
-      })
+      });
+
+    logoutRequestHandler = $httpBackend
+      .when('POST', '/api/v1/auth/logout/')
+      .respond(function(method, url, data, headers, params){
+        // Logout pretty much works (until I find an error...)
+        return [204, {
+          isUnitTest:true
+        }];
+    });
   }));
 
   afterEach(function() {
@@ -123,8 +132,7 @@ describe('Authentication', function() {
     // Make sure there is no authenticated user
     expect(myFactory.isAuthenticated()).toBe(false);
   });
-
-  /////////////////////////////////////////////
+  ///////////////////////////////////////////////
 
   //////// Registration Tests ///////////////////
   it('should register a user and log them in', function() {
@@ -206,8 +214,24 @@ describe('Authentication', function() {
     expect(results.data.errors.username).toEqual('username is a required field');
     expect(results.data.errors.password).toEqual('password is a required field');
   });
+  ///////////////////////////////////////////////
 
-  //////////// HELPER FUNCTION ///////////////////
+  ////////////////// Logout Tests ///////////////
+  it('should log users out', function() {
+    var fakeUsername = 'grease';
+    var fakePassword = 'lightning';
+    myFactory.login(fakeUsername, fakePassword);
+    $httpBackend.flush();
+
+    validLogin(fakeUsername, fakePassword, myFactory);
+
+    myFactory.logout();
+    $httpBackend.flush();
+
+    expect(myFactory.isAuthenticated()).toBe(false);
+  });
+
+  //////////// HELPER FUNCTION //////////////////
   // Validate the login. Username and password will change between tests.
   function validLogin(username, password, factory) {
     // At this point, as long as registration occurs successfully, and no-one is logged in, the newest user will be
