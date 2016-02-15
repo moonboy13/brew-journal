@@ -45,7 +45,7 @@ describe('Authentication', function() {
       .respond(function(method, url, data, headers, params){
         var requestData = JSON.parse(data);
         // Ensures that required inputs are present
-        if(requestData.username && requestData.password && requestData.confirm_password) {
+        if(requestData.username && requestData.password) {
           // Verifies password
           if(requestData.password === requestData.confirm_password) {
             fakeEmail     = requestData.email;
@@ -59,7 +59,27 @@ describe('Authentication', function() {
               last_name  : fakeLastName,
               isUnitTest : true
             }];
+          } else {
+            return [406, {
+              status:  'Invalid',
+              message: 'Passwords must match'
+            }]
           }
+        } else {
+          // The validate function can catch many things, so dynamically build its errors object
+          errors = {};
+          if(!requestData.username) {
+            errors.username = "username is a required field";
+          }
+          if(!requestData.password) {
+            errors.password = "password is a required field";
+          }
+
+          return [400, {
+            status:  'Bad Request',
+            message: 'Account could not be created with the received data.',
+            errors:  errors
+          }]
         }
       })
   }));
@@ -113,6 +133,9 @@ describe('Authentication', function() {
     myFactory.register(fakeUsername, fakePassword, fakePassword, 'fake@email.com', 'not', 'me');
     $httpBackend.flush();
 
+    var results = myFactory.getRegistrationResult();
+    expect(results).toBeDefined();
+
     validLogin(fakeUsername, fakePassword, myFactory);
   });
 
@@ -122,8 +145,67 @@ describe('Authentication', function() {
     myFactory.register(fakeUsername, fakePassword, fakePassword, '', '', '');
     $httpBackend.flush();
 
+    var results = myFactory.getRegistrationResult();
+    expect(results).toBeDefined();
+
     validLogin(fakeUsername, fakePassword, myFactory);
-  })
+  });
+
+  it('should ensure both passwords are the same', function() {
+    var fakeUsername = 'foo';
+    var fakePasswordOne = 'bar';
+    var fakePasswordTwo = 'zinc';
+    myFactory.register(fakeUsername, fakePasswordOne, fakePasswordTwo);
+    $httpBackend.flush();
+
+    var results = myFactory.getRegistrationResult();
+
+    expect(results).toBeDefined();
+    expect(results.status).toEqual(406);
+    expect(results.data.status).toEqual('Invalid');
+    expect(results.data.message).toEqual('Passwords must match');
+  });
+
+  it('should verify all required fields are present', function() {
+    var fakeUsername = 'foo';
+    var fakePassword = 'bar';
+    // First, forget the username
+    myFactory.register(null,fakePassword);
+    $httpBackend.flush();
+
+    // Check the results
+    var results = myFactory.getRegistrationResult();
+    expect(results).toBeDefined();
+    expect(results.status).toEqual(400);
+    expect(results.data.status).toEqual('Bad Request');
+    expect(results.data.message).toEqual('Account could not be created with the received data.');
+    expect(results.data.errors.username).toEqual('username is a required field');
+
+    // Now, forget the password
+    myFactory.register(fakeUsername,null);
+    $httpBackend.flush();
+
+    // Check the results
+    var results = myFactory.getRegistrationResult();
+    expect(results).toBeDefined();
+    expect(results.status).toEqual(400);
+    expect(results.data.status).toEqual('Bad Request');
+    expect(results.data.message).toEqual('Account could not be created with the received data.');
+    expect(results.data.errors.password).toEqual('password is a required field');
+
+    // Forget everything
+    myFactory.register(null,null);
+    $httpBackend.flush();
+
+    // Check the results
+    var results = myFactory.getRegistrationResult();
+    expect(results).toBeDefined();
+    expect(results.status).toEqual(400);
+    expect(results.data.status).toEqual('Bad Request');
+    expect(results.data.message).toEqual('Account could not be created with the received data.');
+    expect(results.data.errors.username).toEqual('username is a required field');
+    expect(results.data.errors.password).toEqual('password is a required field');
+  });
 
   //////////// HELPER FUNCTION ///////////////////
   // Validate the login. Username and password will change between tests.
