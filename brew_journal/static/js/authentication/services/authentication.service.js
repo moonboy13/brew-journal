@@ -73,6 +73,7 @@
     */
     function registerSuccessFn(data, status, headers, config) {
       setRegistrationResult(data);
+
       // Check to see if a user is already loggedin. If so, then an admin is adding users so don't try to log the
       // new user in.
       if(!isAuthenticated()) {
@@ -127,7 +128,13 @@
     function loginSuccessFn(data, status, headers, config) {
       Authentication.setAuthenticatedAccount(data.data);
 
-      window.location = '/';
+      // Adding a check that all spoofed HTTP requests will return. This is to avoid accidentially
+      // redirecting during a unit test, which throws everything off and could end up in a nasty
+      // redirect loop.
+      if(!data.data.isUnitTest)
+      {
+        window.location = '/';
+      }
     }
 
     /**
