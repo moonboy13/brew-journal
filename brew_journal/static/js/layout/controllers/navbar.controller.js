@@ -15,9 +15,9 @@
   * @namespace NavbarController
   */
   function NavbarController($scope, Authentication) {
-    var vm = this;
+    var ctrl = this;
 
-    vm.logout = logout;
+    ctrl.logout = logout;
 
     /**
     * @name logout

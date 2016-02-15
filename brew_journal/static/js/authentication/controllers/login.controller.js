@@ -11,9 +11,9 @@
   * @namespace LoginController
   */
   function LoginController($location, $scope, Authentication) {
-    var vm = this;
+    var ctrl = this;
 
-    vm.login = login;
+    ctrl.login = login;
 
     activate();
 
@@ -34,7 +34,7 @@
     * @memberOf brew_journal.authentication.controllers.LoginController
     */
     function login() {
-      Authentication.login(vm.username, vm.password).then(showLoginResult);
+      Authentication.login(ctrl.username, ctrl.password).then(showLoginResult);
     }
 
     /**
@@ -43,10 +43,10 @@
     * @memberOf brew_journal.authentication.controllers.LoginController
     */
     function showLoginResult() {
-      vm.error = !Authentication.isAuthenticated();
+      ctrl.error = !Authentication.isAuthenticated();
       // Using a variable so that if I decide to make a dynamic error message
       // later it'll be easier.
-      vm.loginErrorMessage = "Username/password not recognized. Please veryify credentials and try again.";
+      ctrl.loginErrorMessage = "Username/password not recognized. Please veryify credentials and try again.";
     }
   }
 })();
