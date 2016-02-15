@@ -1,7 +1,14 @@
 describe('Authentication', function() {
+  // Variable for the factory
+  var myFactory;
+
   beforeEach(module('brew_journal.authentication.services'));
 
-  it('should be defined', inject(function(Authentication) {
-    expect(Authentication).toBeDefined();
-  }));
+  beforeEach(inject(function(Authentication) {
+    myFactory = Authentication;
+  }))
+
+  it('should be defined', function() {
+    expect(myFactory).toBeDefined();
+  });
 });
