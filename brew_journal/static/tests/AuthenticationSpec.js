@@ -44,19 +44,22 @@ describe('Authentication', function() {
       .when('POST', '/api/v1/account/')
       .respond(function(method, url, data, headers, params){
         var requestData = JSON.parse(data);
-        // :) I know this boolean is ugly.
-        if(requestData.username && requestData.password && requestData.confirm_password && requestData.password === requestData.confirm_password) {
-          fakeEmail     = requestData.email;
-          fakeFirstName = requestData.first_name;
-          fakeLastName  = requestData.last_name;
-          return [201, {
-            username   : requestData.username,
-            password   : requestData.password,
-            email      : fakeEmail,
-            first_name : fakeFirstName,
-            last_name  : fakeLastName,
-            isUnitTest : true
-          }];
+        // Ensures that required inputs are present
+        if(requestData.username && requestData.password && requestData.confirm_password) {
+          // Verifies password
+          if(requestData.password === requestData.confirm_password) {
+            fakeEmail     = requestData.email;
+            fakeFirstName = requestData.first_name;
+            fakeLastName  = requestData.last_name;
+            return [201, {
+              username   : requestData.username,
+              password   : requestData.password,
+              email      : fakeEmail,
+              first_name : fakeFirstName,
+              last_name  : fakeLastName,
+              isUnitTest : true
+            }];
+          }
         }
       })
   }));
@@ -113,6 +116,14 @@ describe('Authentication', function() {
     validLogin(fakeUsername, fakePassword, myFactory);
   });
 
+  it('should only require username and password', function() {
+    var fakeUsername = 'foo';
+    var fakePassword = 'bar';
+    myFactory.register(fakeUsername, fakePassword, fakePassword, '', '', '');
+    $httpBackend.flush();
+
+    validLogin(fakeUsername, fakePassword, myFactory);
+  })
 
   //////////// HELPER FUNCTION ///////////////////
   // Validate the login. Username and password will change between tests.
