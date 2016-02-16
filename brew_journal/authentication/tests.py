@@ -15,6 +15,8 @@ class TestAccountModel(TestCase):
     self.assertTrue(user.__unicode__(), user.username)
     self.assertTrue(user.get_short_name(), user.first_name)
     self.assertTrue(user.get_full_name(), user.first_name + ' ' + user.last_name)
+    self.assertTrue(user.email, 'fake@test.com')
+    self.assertTrue(user.password, 'bar')
 
   def test_create_user_failure(self):
     with self.assertRaises(ValueError) as err:
@@ -26,3 +28,5 @@ class TestAccountModel(TestCase):
   def test_create_user(self):
     user = Account.objects.create_user('test',password='bar')
     self.assertTrue(isinstance(user, Account))
+    self.assertTrue(user.username, 'test')
+    self.assertTrue(user.password, 'bar')
