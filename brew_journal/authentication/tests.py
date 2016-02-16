@@ -11,7 +11,7 @@ class TestAccountModel(TestCase):
 
   def test_user_model(self):
     user = self.create_user()
-    self.assertTrue(isinstance(user, Account))
+    self.assertIsInstance(user, Account)
     self.assertTrue(user.__unicode__(), user.username)
     self.assertTrue(user.get_short_name(), user.first_name)
     self.assertTrue(user.get_full_name(), user.first_name + ' ' + user.last_name)
@@ -27,6 +27,14 @@ class TestAccountModel(TestCase):
 
   def test_create_user(self):
     user = Account.objects.create_user('test',password='bar')
-    self.assertTrue(isinstance(user, Account))
+    self.assertIsInstance(user, Account)
     self.assertTrue(user.username, 'test')
     self.assertTrue(user.password, 'bar')
+    self.assertFalse(user.is_admin)
+
+  def test_create_superuser(self):
+    super_user = Account.objects.create_superuser('admin',password='secure')
+    self.assertIsInstance(super_user, Account)
+    self.assertTrue(super_user.username, 'test')
+    self.assertTrue(super_user.password, 'bar')
+    self.assertTrue(super_user.is_admin)
