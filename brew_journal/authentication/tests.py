@@ -1,12 +1,17 @@
+import json
+
 from django.test import TestCase
 
 from authentication.models import Account
 
+from authentication.views import LoginView
+
 # Test Authentication models
 class TestAccountModel(TestCase):
-  """Basic tests"""
+  """Testing of the Account model"""
 
-  def create_user(self):
+  @staticmethod
+  def create_user():
     return Account.objects.create(username='foo',password='bar',email='fake@test.com',first_name='john',last_name='doe')
 
   def test_user_model(self):
@@ -38,3 +43,12 @@ class TestAccountModel(TestCase):
     self.assertTrue(super_user.username, 'test')
     self.assertTrue(super_user.password, 'bar')
     self.assertTrue(super_user.is_admin)
+
+
+class TestLoginView(TestCase):
+  """Testing the login view"""
+
+  user = TestAccountModel.create_user()
+
+  def test_user_login(self):
+    self.assertTrue(True)
