@@ -1,4 +1,4 @@
-import json
+import json, logging
 
 from django.test import TestCase
 
@@ -11,11 +11,13 @@ class TestAccountModel(TestCase):
   """Testing of the Account model"""
 
   @staticmethod
-  def create_user():
-    return Account.objects.create(username='foo',password='bar',email='fake@test.com',first_name='john',last_name='doe')
+  def get_user():
+    """Either retrieve the fake user or create it"""
+    user_obj, created = Account.objects.get_or_create(username='foo',password='bar',defaults={'email':'fake@test.com','first_name':'john','last_name':'doe'})
+    return user_obj
 
   def test_user_model(self):
-    user = self.create_user()
+    user = self.get_user()
     self.assertIsInstance(user, Account)
     self.assertTrue(user.__unicode__(), user.username)
     self.assertTrue(user.get_short_name(), user.first_name)
@@ -48,7 +50,12 @@ class TestAccountModel(TestCase):
 class TestLoginView(TestCase):
   """Testing the login view"""
 
-  user = TestAccountModel.create_user()
+  logger = logging.getLogger(__name__)
+
+  user = TestAccountModel.get_user()
+  logger.info(user)
 
   def test_user_login(self):
+    # urls = reverse('authentication.views.LoginView')
+    # logger.info(urls)
     self.assertTrue(True)
