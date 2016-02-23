@@ -1,6 +1,6 @@
-import json, logging
+import json
 
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from authentication.models import Account
 
@@ -13,7 +13,7 @@ class TestAccountModel(TestCase):
   @staticmethod
   def get_user():
     """Either retrieve the fake user or create it"""
-    user_obj, created = Account.objects.get_or_create(username='foo',password='bar',defaults={'email':'fake@test.com','first_name':'john','last_name':'doe'})
+    user_obj, created = Account.objects.get_or_create(username='foot',password='bar2',defaults={'email':'fake@test.com','first_name':'john','last_name':'doe'})
     return user_obj
 
   def test_user_model(self):
@@ -49,13 +49,26 @@ class TestAccountModel(TestCase):
 
 class TestLoginView(TestCase):
   """Testing the login view"""
+  #Using this method to set the username and password b/c Django will return the password in a hashed
+  #state making it impossible to re-authenticate w/ the user object.
+  username = 'faux'
+  password = 'bar'
 
-  logger = logging.getLogger(__name__)
+  def make_user(self):
+      return Account.objects.create_user(username=self.username, password=self.password)
 
-  user = TestAccountModel.get_user()
-  logger.info(user)
+  def setUp(self):
+    self.client = Client()
+    self.user = self.make_user();
 
-  def test_user_login(self):
-    # urls = reverse('authentication.views.LoginView')
-    # logger.info(urls)
-    self.assertTrue(True)
+  def tearDown(self):
+    self.client = None
+    self.user.delete()
+
+  def test_LoginView_validUserLogin(self):
+    request_url  = '/api/v1/auth/login/'
+    request_body = json.dumps({'username':self.username,'password':self.password})
+    response = self.client.post(request_url, data=request_body, content_type='application/json')
+    returned_user = response.data
+
+    self.assertTrue(returned_user['username'], self.username)
