@@ -83,3 +83,13 @@ class TestLoginView(TestCase):
     self.assertEqual(response.reason_phrase.lower(), 'unauthorized')
     self.assertEqual(response.data['status'].lower(), 'unauthorized')
     self.assertEqual(response.data['message'], 'Username/password combination invalid.')
+
+  def test_LoginView_deactivatedAccount(self):
+    self.user.is_active = False
+    self.user.save()
+    response = self.login()
+
+    self.assertEqual(response.status_code, 401)
+    self.assertEqual(response.reason_phrase.lower(), 'unauthorized')
+    self.assertEqual(response.data['status'].lower(), 'unauthorized')
+    self.assertEqual(response.data['message'], 'This account has been disabled.')
