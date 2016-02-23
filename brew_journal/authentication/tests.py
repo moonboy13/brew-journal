@@ -10,20 +10,20 @@ from authentication.views import LoginView
 class TestAccountModel(TestCase):
   """Testing of the Account model"""
 
-  @staticmethod
-  def get_user():
-    """Either retrieve the fake user or create it"""
-    user_obj, created = Account.objects.get_or_create(username='foot',password='bar2',defaults={'email':'fake@test.com','first_name':'john','last_name':'doe'})
-    return user_obj
+  def setUp(self):
+    self.user = Account.objects.create(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
+
+  def tearDown(self):
+    self.user.delete()
 
   def test_user_model(self):
-    user = self.get_user()
-    self.assertIsInstance(user, Account)
-    self.assertTrue(user.__unicode__(), user.username)
-    self.assertTrue(user.get_short_name(), user.first_name)
-    self.assertTrue(user.get_full_name(), user.first_name + ' ' + user.last_name)
-    self.assertTrue(user.email, 'fake@test.com')
-    self.assertTrue(user.password, 'bar')
+    # user = self.get_user()
+    self.assertIsInstance(self.user, Account)
+    self.assertTrue(self.user.__unicode__(), self.user.username)
+    self.assertTrue(self.user.get_short_name(), self.user.first_name)
+    self.assertTrue(self.user.get_full_name(), self.user.first_name + ' ' + self.user.last_name)
+    self.assertTrue(self.user.email, 'fake@test.com')
+    self.assertTrue(self.user.password, 'bar')
 
   def test_create_user_failure(self):
     with self.assertRaises(ValueError) as err:
