@@ -57,6 +57,11 @@ class TestLoginView(TestCase):
   def make_user(self):
       return Account.objects.create_user(username=self.username, password=self.password)
 
+  def login(self, username=username, password=password):
+    request_url  = '/api/v1/auth/login/'
+    request_body = json.dumps({'username':username,'password':password})
+    return self.client.post(request_url, data=request_body, content_type='application/json')
+
   def setUp(self):
     self.client = Client()
     self.user = self.make_user();
@@ -66,9 +71,7 @@ class TestLoginView(TestCase):
     self.user.delete()
 
   def test_LoginView_validUserLogin(self):
-    request_url  = '/api/v1/auth/login/'
-    request_body = json.dumps({'username':self.username,'password':self.password})
-    response = self.client.post(request_url, data=request_body, content_type='application/json')
+    response = self.login()
     returned_user = response.data
 
     self.assertTrue(returned_user['username'], self.username)
