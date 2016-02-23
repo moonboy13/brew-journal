@@ -46,7 +46,6 @@ class TestAccountModel(TestCase):
     self.assertTrue(super_user.password, 'bar')
     self.assertTrue(super_user.is_admin)
 
-
 class TestLoginLogoutView(TestCase):
   """Testing the login view and the logout"""
   #Using this method to set the username and password b/c Django will return the password in a hashed
@@ -102,3 +101,44 @@ class TestLoginLogoutView(TestCase):
 
     self.assertEqual(response.status_code, 204)
     self.assertEqual(response.reason_phrase.lower() ,'no content')
+
+class TestAccountViewSet(TestCase):
+  """Test the account view set models. Probably will need to use the login again"""
+  username = 'Foo'
+  password = 'Sekret'
+  first_name = 'John'
+  last_name = 'Doe'
+  email = 'DoeJohn@foo.com'
+
+  def setUp(self):
+    self.client = Client()
+
+  def tearDown(self):
+    self.client = None
+
+  def createUser(self, body):
+    request_url = '/api/v1/account/'
+    return self.client.post(request_url, data=body, content_type='application/json')
+
+  def test_AccountViewSet_CreateValidUser(self):
+    request_body = json.dumps({'username':self.username,'password':self.password,'confirm_password':self.password,'email':self.email,'first_name':self.first_name,'last_name':self.last_name})
+    response = self.createUser(request_body)
+
+    self.assertEqual(response.status_code, 201)
+    self.assertEqual(response.reason_phrase.lower(), 'created')
+    self.assertEqual(response.data['email'], self.email)
+    self.assertEqual(response.data['username'], self.username)
+    self.assertEqual(response.data['first_name'], self.first_name)
+    self.assertEqual(response.data['last_name'], self.last_name)
+
+    Account.objects.get(username=self.username).delete()
+
+  def test_AccountViewSet_FailUsernameMissing(self):
+    request_body = json.dumps({'email':self.email,'first_name':self.first_name,'last_name':self.last_name})
+    response = self.createUser(request_body)
+
+    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.reason_phrase.lower(), 'bad request')
+    self.assertEqual(response.data['status'].lower(), 'bad request')
+    self.assertEqual(response.data['message'], 'Account could not be created with the received data.')
+    self.assertEqual(response.data['errors']['username'][0], "This field is required.")
