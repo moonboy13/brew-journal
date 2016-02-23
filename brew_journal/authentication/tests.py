@@ -47,8 +47,8 @@ class TestAccountModel(TestCase):
     self.assertTrue(super_user.is_admin)
 
 
-class TestLoginView(TestCase):
-  """Testing the login view"""
+class TestLoginLogoutView(TestCase):
+  """Testing the login view and the logout"""
   #Using this method to set the username and password b/c Django will return the password in a hashed
   #state making it impossible to re-authenticate w/ the user object.
   username = 'faux'
@@ -93,3 +93,12 @@ class TestLoginView(TestCase):
     self.assertEqual(response.reason_phrase.lower(), 'unauthorized')
     self.assertEqual(response.data['status'].lower(), 'unauthorized')
     self.assertEqual(response.data['message'], 'This account has been disabled.')
+
+  def test_LogoutView_validLogoutEvent(self):
+    # First, login and validate that login
+    self.test_LoginView_validUserLogin()
+
+    response = self.client.post('/api/v1/auth/logout/')
+
+    self.assertEqual(response.status_code, 204)
+    self.assertEqual(response.reason_phrase.lower() ,'no content')
