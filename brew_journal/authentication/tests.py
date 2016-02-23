@@ -75,3 +75,11 @@ class TestLoginView(TestCase):
     returned_user = response.data
 
     self.assertTrue(returned_user['username'], self.username)
+
+  def test_LoginView_invalidPassword(self):
+    response = self.login(password="wrong")
+
+    self.assertEqual(response.status_code, 401)
+    self.assertEqual(response.reason_phrase.lower(), 'unauthorized')
+    self.assertEqual(response.data['status'].lower(), 'unauthorized')
+    self.assertEqual(response.data['message'], 'Username/password combination invalid.')
