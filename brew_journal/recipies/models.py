@@ -1,6 +1,26 @@
 from django.conf import settings
 from django.db import models
 
+class RecipeManager(models.Manager):
+  """Adding some custom functionality so that saving a recipe and all the related fields can be done at one time"""
+  def create_recipe(self, user, recipe_data, malts_data=None, hops_data=None, **kwargs):
+    if not user:
+      raise ValueError('Need to be logged in to create a recipe.')
+    if not user.is_active:
+      raise ValueError('Account must be active to create a recipe.')
+    if recipe_data is None:
+      raise ValueError('Recipe information is required to create a recipe.')
+
+    # Base format:
+    # recipe = recipe.create()
+    # malts = recipe.recipe_malts.create()
+    recipe = self.create(
+      recipe_name=recipe_data.name,
+      recipe_style=recipe_data.style,
+      recipe_notes=recipe_data.notes,
+      last_brew_date=recipe_data.last_brewed
+    )
+
 # Recipe model to gather all of the ingredients details together
 class Recipe(models.Model):
   """Contain all of a user's recipies"""
@@ -12,7 +32,7 @@ class Recipe(models.Model):
   date_updated   = models.DateTimeField(auto_now=True)
   last_brew_date = models.DateTimeField(null=True, blank=True)
 
-  account = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="account", null=True)
+  account = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="recipe", null=True)
 
   status   = models.BooleanField(default=True)
 
