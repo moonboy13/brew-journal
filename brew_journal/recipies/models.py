@@ -18,8 +18,8 @@ class RecipeMalts(models.Model):
   malt_brand = models.CharField(max_length=120)
   malt_type  = models.CharField(max_length=120)
 
-  malt_extract = models.CharField(default=True)
-  dry_malt     = models.CharField(default=False)
+  malt_extract = models.BooleanField(default=True)
+  dry_malt     = models.BooleanField(default=False)
 
   amount_by_weight = models.FloatField()
 
@@ -30,7 +30,7 @@ class RecipeHops(models.Model):
   hop_name = models.CharField(max_length=80)
 
   alpha_acid_content = models.FloatField()
-  beta_acid_content  = models.FloatField(allow_blank=True)
+  beta_acid_content  = models.FloatField(blank=True)
   add_time           = models.FloatField()
   # Either Days, Weeks, Minutes
   add_time_unit      = models.CharField(max_length=7)
