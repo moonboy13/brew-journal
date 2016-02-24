@@ -11,12 +11,29 @@ class Recipe(model.Models):
   date_updated   = models.DateTimeField(auto_now=True)
   last_brew_date = models.DateTimeField(blank=True)
 
+  status   = models.BooleanField(default=True)
+
 class RecipeMalts(model.Models):
   """Hold descriptors for all the malts used in a recipe"""
-  malt_name = models.CharField(max_length=120)
+  malt_brand = models.CharField(max_length=120)
+  malt_type  = models.CharField(max_length=120)
 
-  amount_by_weight = models.DecimalField(max_digits=10, decimal_places=3)
+  malt_extract = models.CharField(default=True)
+  dry_malt     = models.CharField(default=False)
+
+  amount_by_weight = models.FloatField()
+
+  status   = models.BooleanField(default=True)
 
 class RecipeHops(model.Models):
   """Table for each of the hops in a recipe"""
+  hop_name = models.CharField(max_length=80)
 
+  alpha_acid_content = models.FloatField()
+  beta_acid_content  = models.FloatField(allow_blank=True)
+  add_time           = models.FloatField()
+  # Either Days, Weeks, Minutes
+  add_time_unit      = models.CharField(max_length=7)
+
+  dry_hops = models.BooleanField(default=False)
+  status   = models.BooleanField(default=True)
