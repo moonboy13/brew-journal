@@ -1,7 +1,7 @@
 from django.db import models
 
 # Recipe model to gather all of the ingredients details together
-class Recipe(model.Models):
+class Recipe(models.Model):
   """Contain all of a user's recipies"""
   recipe_name  = models.CharField(max_length=60)
   recipe_style = models.CharField(max_length=140)
@@ -13,7 +13,7 @@ class Recipe(model.Models):
 
   status   = models.BooleanField(default=True)
 
-class RecipeMalts(model.Models):
+class RecipeMalts(models.Model):
   """Hold descriptors for all the malts used in a recipe"""
   malt_brand = models.CharField(max_length=120)
   malt_type  = models.CharField(max_length=120)
@@ -25,7 +25,7 @@ class RecipeMalts(model.Models):
 
   status   = models.BooleanField(default=True)
 
-class RecipeHops(model.Models):
+class RecipeHops(models.Model):
   """Table for each of the hops in a recipe"""
   hop_name = models.CharField(max_length=80)
 
