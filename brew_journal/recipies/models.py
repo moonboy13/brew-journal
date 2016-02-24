@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Recipe model to gather all of the ingredients details together
@@ -9,7 +10,9 @@ class Recipe(models.Model):
 
   date_created   = models.DateTimeField(auto_now_add=True)
   date_updated   = models.DateTimeField(auto_now=True)
-  last_brew_date = models.DateTimeField(blank=True)
+  last_brew_date = models.DateTimeField(null=True, blank=True)
+
+  account = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="account", null=True)
 
   status   = models.BooleanField(default=True)
 
@@ -21,6 +24,8 @@ class RecipeMalts(models.Model):
   malt_extract = models.BooleanField(default=True)
   dry_malt     = models.BooleanField(default=False)
 
+  recipe = models.ForeignKey('Recipe', related_name='recipe_malts', null=True)
+
   amount_by_weight = models.FloatField()
 
   status   = models.BooleanField(default=True)
@@ -28,6 +33,8 @@ class RecipeMalts(models.Model):
 class RecipeHops(models.Model):
   """Table for each of the hops in a recipe"""
   hop_name = models.CharField(max_length=80)
+
+  recipe = models.ForeignKey('Recipe', related_name='recipe_hops', null=True)
 
   alpha_acid_content = models.FloatField()
   beta_acid_content  = models.FloatField(blank=True)
