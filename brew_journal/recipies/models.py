@@ -14,38 +14,40 @@ class RecipeManager(models.Manager):
     # Base format:
     # recipe = recipe.create()
     # malts = recipe.recipe_malts.create()
-    recipe = self.model(
-      recipe_name=recipe_data.name,
-      recipe_style=recipe_data.style,
-      recipe_notes=recipe_data.notes,
-      last_brew_date=recipe_data.last_brewed
+    recipe = user.recipe.create(
+      recipe_name=recipe_data['name'],
+      recipe_style=recipe_data['style'],
+      recipe_notes=recipe_data['notes'],
+      last_brew_date=recipe_data['last_brewed']
     )
 
     # Adding of the hops
-    for hop in hops_data:
-      new_hop = recipe.recipe_hops.create(
-        hop_name=hop.name,
-        alpha_acid_content=hop.alpha_acid_content,
-        add_time=hop.add_time,
-        add_time_unit=hop.add_time_unit,
-      )
-      if beta_acid_content in hop:
-        new_hop.beta_acid_content = hop.beta_acid_content
+    if hops_data is not None:
+      for hop in hops_data:
+        new_hop = recipe.recipe_hops.create(
+          hop_name=hop['name'],
+          alpha_acid_content=hop['alpha_acid_content'],
+          add_time=hop['add_time'],
+          add_time_unit=hop['add_time_unit'],
+        )
+        if 'beta_acid_content' in hop:
+          new_hop.beta_acid_content = hop['beta_acid_content']
 
-      if dry_hop in hop and hop.dry_hop:
-        new_hop.dry_hop = hop.dry_hop
+        if 'dry_hop' in hop and hop['dry_hop']:
+          new_hop.dry_hop = hop['dry_hop']
 
-    for malt in malts_data:
-      new_malt = recipe.recipe_malts.create(
-        malt_brand=malt.brand,
-        malt_type=malt.type,
-        amount_by_weight=malt.amount,
-      )
-      if malt_extract in malt:
-        new_malt.malt_extract = malt.is_extract
+    if malts_data is not None:
+      for malt in malts_data:
+        new_malt = recipe.recipe_malts.create(
+          malt_brand=malt['brand'],
+          malt_type=malt['type'],
+          amount_by_weight=malt['amount'],
+        )
+        if 'malt_extract' in malt:
+          new_malt.malt_extract = malt['is_extract']
 
-      if dry_malt in malt and malt.is_dry:
-        malt.dry_malt=malt.is_dry
+        if 'dry_malt' in malt and malt['is_dry']:
+          malt.dry_malt=malt['is_dry']
 
     recipe.save()
     return recipe
@@ -57,13 +59,15 @@ class Recipe(models.Model):
   recipe_style = models.CharField(max_length=140)
   recipe_notes = models.TextField()
 
-  date_created   = models.DateTimeField(auto_now_add=True)
-  date_updated   = models.DateTimeField(auto_now=True)
-  last_brew_date = models.DateTimeField(null=True, blank=True)
+  date_created   = models.DateField(auto_now_add=True)
+  date_updated   = models.DateField(auto_now=True)
+  last_brew_date = models.DateField(null=True, blank=True)
 
   account = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="recipe", null=True)
 
   status   = models.BooleanField(default=True)
+
+  objects = RecipeManager()
 
 class RecipeMalts(models.Model):
   """Hold descriptors for all the malts used in a recipe"""
@@ -86,7 +90,7 @@ class RecipeHops(models.Model):
   recipe = models.ForeignKey('Recipe', related_name='recipe_hops', null=True)
 
   alpha_acid_content = models.FloatField()
-  beta_acid_content  = models.FloatField(blank=True)
+  beta_acid_content  = models.FloatField(null=True, blank=True)
   add_time           = models.FloatField()
   # Either Days, Weeks, Minutes
   add_time_unit      = models.CharField(max_length=7)
