@@ -68,7 +68,14 @@ class TestRecipeModel(TestCase):
     self.hops_data=None
     self.user.delete()
 
+  def checkHops(self, hopsModel, hopsData):
+    """Helper function. Check the returned hops against a model"""
+    self.assertEqual(len(hopsModel), len(hopsData))
+
   def test_RecipeManager_CreateValidRecipe(self):
     recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
     self.assertIsInstance(recipe, Recipe)
+
+    self.checkHops(recipe.recipe_hops.all(), self.hops_data)
+    self.assertEqual(recipe.recipe_malts.count(), len(self.malts_data))
