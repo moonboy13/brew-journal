@@ -72,10 +72,14 @@ class TestRecipeModel(TestCase):
     """Helper function. Check the returned hops against a model"""
     self.assertEqual(len(hopsModel), len(hopsData))
 
+    for i in range(len(hopsModel)):
+      for key in hopsModel[i].getKeys():
+        self.assertEqual(hopsModel[i].get(key), hopsData[i].get(key))
+
   def test_RecipeManager_CreateValidRecipe(self):
     recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
     self.assertIsInstance(recipe, Recipe)
 
-    self.checkHops(recipe.recipe_hops.all(), self.hops_data)
+    self.checkHops(self.hops_data, recipe.recipe_hops.all())
     self.assertEqual(recipe.recipe_malts.count(), len(self.malts_data))
