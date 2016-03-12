@@ -34,7 +34,7 @@ class TestRecipeModel(TestCase):
         malt_brand="CBrand",
         malt_type="Light",
         amount_by_weight=3,
-        dry_malt=False,
+        dry_malt=True,
       ),
     ]
     self.hops_data = [
@@ -99,3 +99,22 @@ class TestRecipeModel(TestCase):
     self.checkElement(self.hops_data, recipe.recipe_hops.order_by("hop_name"))
     self.checkElement(self.malts_data, recipe.recipe_malts.order_by("malt_brand"))
     self.checkElement(self.recipe_data, recipe)
+
+  def test_RecipeManager_FailNoRecipeData(self):
+    with self.assertRaises(ValueError) as err:
+      Recipe.objects.create_recipe(self.user, None, self.malts_data, self.hops_data)
+
+    self.assertEqual(err.exception.message, 'Recipe information is required to create a recipe.')
+
+  def test_RecipeManager_FailInactiveUser(self):
+    self.user.is_active=False
+    with self.assertRaises(ValueError) as err:
+      Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
+
+    self.assertEqual(err.exception.message, 'Account must be active to create a recipe.')
+
+  def test_RecipeManager_FailNotLoggedIn(self):
+    with self.assertRaises(ValueError) as err:
+      Recipe.objects.create_recipe(None, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
+
+    self.assertEqual(err.exception.message, 'Need to be logged in to create a recipe.')
