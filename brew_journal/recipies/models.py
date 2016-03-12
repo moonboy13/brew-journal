@@ -15,17 +15,17 @@ class RecipeManager(models.Manager):
     # recipe = recipe.create()
     # malts = recipe.recipe_malts.create()
     recipe = user.recipe.create(
-      recipe_name=recipe_data['name'],
-      recipe_style=recipe_data['style'],
-      recipe_notes=recipe_data['notes'],
-      last_brew_date=recipe_data['last_brewed']
+      recipe_name=recipe_data['recipe_name'],
+      recipe_style=recipe_data['recipe_style'],
+      recipe_notes=recipe_data['recipe_notes'],
+      last_brew_date=recipe_data['last_brew_date']
     )
 
     # Adding of the hops
     if hops_data is not None:
       for hop in hops_data:
         new_hop = recipe.recipe_hops.create(
-          hop_name=hop['name'],
+          hop_name=hop['hop_name'],
           alpha_acid_content=hop['alpha_acid_content'],
           add_time=hop['add_time'],
           add_time_unit=hop['add_time_unit'],
@@ -33,21 +33,25 @@ class RecipeManager(models.Manager):
         if 'beta_acid_content' in hop:
           new_hop.beta_acid_content = hop['beta_acid_content']
 
-        if 'dry_hop' in hop and hop['dry_hop']:
-          new_hop.dry_hop = hop['dry_hop']
+        if 'dry_hops' in hop and hop['dry_hops']:
+          new_hop.dry_hops = hop['dry_hops']
+
+        new_hop.save()
 
     if malts_data is not None:
       for malt in malts_data:
         new_malt = recipe.recipe_malts.create(
-          malt_brand=malt['brand'],
-          malt_type=malt['type'],
-          amount_by_weight=malt['amount'],
+          malt_brand=malt['malt_brand'],
+          malt_type=malt['malt_type'],
+          amount_by_weight=malt['amount_by_weight'],
         )
         if 'malt_extract' in malt:
-          new_malt.malt_extract = malt['is_extract']
+          new_malt.malt_extract = malt['malt_extract']
 
-        if 'dry_malt' in malt and malt['is_dry']:
-          malt.dry_malt=malt['is_dry']
+        if 'dry_malt' in malt and malt['dry_malt']:
+          new_malt.dry_malt=malt['dry_malt']
+
+        new_malt.save()
 
     recipe.save()
     return recipe
