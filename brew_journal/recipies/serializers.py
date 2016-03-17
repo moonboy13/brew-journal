@@ -17,8 +17,8 @@ class RecipeHopsSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
   """Serialization class for all your yummy recipes."""
 
-  recipe_malts = RecipeMaltsSerializer()
-  recipe_hops = RecipeHopsSerializer()
+  recipe_malts = RecipeMaltsSerializer(many=True)
+  recipe_hops = RecipeHopsSerializer(many=True)
 
   class Meta:
     model = Recipe
@@ -28,9 +28,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     """Create the recipe and all related data"""
     # As hops and malt will be handled separately, remove them from the current data.
     hops  = validated_data.pop("recipe_hops")
-    malts = validated_data.get('recipe_malts')
-    del validated_data['malts']
-    user = validated_data.get('user')
-    del validated_data['user']
+    malts = validated_data.pop('recipe_malts')
+    user = validated_data.pop('user')
 
-    return Account.object.create_recipe(user, validated_data, malts, hops)
+    return Recipe.objects.create_recipe(user, validated_data, malts, hops)

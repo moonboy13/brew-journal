@@ -93,7 +93,6 @@ class TestRecipeModel(TestCase):
     for key in model.keys():
       self.checkElement(model.get(key), data.__dict__.get(key))
 
-
   def test_RecipeManager_CreateValidRecipe(self):
     recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
@@ -132,12 +131,34 @@ class TestRecipeSerializer(TestCase):
 
   def tearDown(self):
     self.json_data = None
+    self.data = None
+    self.account.delete()
+
+  def checkElement(self, model, data):
+    """Helper Function. Either check two values against on another or call correct helper function"""
+    # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
+    # compare the elements
+    if type(model) is list:
+      self.checkArrayModel(model, data)
+    elif type(model) is dict:
+      self.checkDictModel(model, data)
+    else:
+      self.assertEqual(model, data)
+
+  def checkArrayModel(self, model, data):
+    """Helper function. Check an array to see if the model data is present in the data array"""
+
+    for i in range(len(model)):
+      self.checkElement(model[i], data[i])
+
+  def checkDictModel(self, model, data):
+    """Helper function. Check a model dictionary against a data dictionary key by key"""
+    for key in model.keys():
+      self.checkElement(model.get(key), data.__dict__.get(key))
 
   def test_RecipeSerializer_Create_ValidData(self):
-    print self.data
-    print self.data.keys()
     serialized_data = RecipeSerializer(data=self.data)
     self.assertTrue(serialized_data.is_valid())
-    print serialized_data
+
     recipe = serialized_data.save(user=self.account)
     print recipe

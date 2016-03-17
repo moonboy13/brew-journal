@@ -2,7 +2,7 @@
   "recipe_name":"MyRecipe",
   "recipe_style":"Kolsch",
   "recipe_notes":"Full bodied with a hint of lemon zest. Amber color with fair head retention",
-  "last_brewed_date":"2016-05-05",
+  "last_brew_date":"2016-05-05",
   "recipe_hops":[
     {
       "hop_name":"Amarillo",
