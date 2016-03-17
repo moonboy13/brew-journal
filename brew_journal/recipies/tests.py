@@ -127,6 +127,10 @@ class TestRecipeSerializer(TestCase):
   def setUp(self):
     self.json_data = open('recipies/testRecipe.json','r').read()
     self.data = json.loads(self.json_data)
+    # Extract just the date portion from the datetime object
+    my_datetime = datetime.today()
+    self.data['last_brew_date'] = datetime.date(my_datetime)
+
     self.account = Account.objects.create(username='foot',password='bar2')
 
   def tearDown(self):
@@ -158,7 +162,10 @@ class TestRecipeSerializer(TestCase):
 
   def test_RecipeSerializer_Create_ValidData(self):
     serialized_data = RecipeSerializer(data=self.data)
+
     self.assertTrue(serialized_data.is_valid())
 
     recipe = serialized_data.save(user=self.account)
-    print recipe
+    self.checkElement(self.data.pop('recipe_hops'), recipe.recipe_hops.order_by("hop_name"))
+    self.checkElement(self.data.pop('recipe_malts'), recipe.recipe_malts.order_by("malt_brand"))
+    self.checkElement(self.data, recipe)
