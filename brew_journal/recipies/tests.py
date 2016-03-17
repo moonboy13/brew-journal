@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 
 from django.test import TestCase
@@ -5,6 +7,7 @@ from django.test import TestCase
 from authentication.models import Account
 
 from recipies.models import Recipe
+from recipies.serializers import RecipeSerializer
 
 
 # Create your tests here.
@@ -118,3 +121,23 @@ class TestRecipeModel(TestCase):
       Recipe.objects.create_recipe(None, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
     self.assertEqual(err.exception.message, 'Need to be logged in to create a recipe.')
+
+class TestRecipeSerializer(TestCase):
+  """Test the serializers for the recipe class"""
+
+  def setUp(self):
+    self.json_data = open('recipies/testRecipe.json','r').read()
+    self.data = json.loads(self.json_data)
+    self.account = Account.objects.create(username='foot',password='bar2')
+
+  def tearDown(self):
+    self.json_data = None
+
+  def test_RecipeSerializer_Create_ValidData(self):
+    print self.data
+    print self.data.keys()
+    serialized_data = RecipeSerializer(data=self.data)
+    self.assertTrue(serialized_data.is_valid())
+    print serialized_data
+    recipe = serialized_data.save(user=self.account)
+    print recipe
