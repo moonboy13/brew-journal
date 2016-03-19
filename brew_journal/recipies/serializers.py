@@ -29,6 +29,17 @@ class RecipeSerializer(serializers.ModelSerializer):
     # As hops and malt will be handled separately, remove them from the current data.
     hops  = validated_data.pop("recipe_hops")
     malts = validated_data.pop('recipe_malts')
-    user = validated_data.pop('user')
+    user  = validated_data.pop('user')
 
     return Recipe.objects.create_recipe(user, validated_data, malts, hops)
+
+  def update(self, instance, validated_data):
+    """Update a recipe. This will clear all previous malts/hops and replace them with a new list"""
+
+    instance.recipe_name    = validated_data.get('recipe_name',    instace.recipe_name)
+    instance.recipe_style   = validated_data.get('recipe_style',   instance.recipe_style)
+    instance.recipe_notes   = validated_data.get('recipe_notes',   instance.recipe_notes)
+    instance.last_brew_date = validated_data.get('last_brew_date', instance.last_brew_date)
+    instance.save()
+
+    # Delete all of the hops and then resave them
