@@ -126,7 +126,7 @@ class TestRecipeSerializer(TestCase):
 
   def setUp(self):
     self.json_data = open('recipies/testRecipe.json','r').read()
-    self.data = json.loads(self.json_data)
+    self.data = self.retrieveRecipeData()
     # Extract just the date portion from the datetime object
     my_datetime = datetime.today()
     self.data['last_brew_date'] = datetime.date(my_datetime)
@@ -137,6 +137,29 @@ class TestRecipeSerializer(TestCase):
     self.json_data = None
     self.data = None
     self.account.delete()
+
+  def retrieveRecipeData(self):
+    """Retrieve a new decoding of the JSON recipe data"""
+    return json.loads(self.json_data)
+
+  def createRecipe(self, user, data):
+    """Create a recipe for use with the update unit test"""
+    hops  = data.pop("recipe_hops")
+    malts = data.pop("recipe_malts")
+    return Recipe.objects.create_recipe(user, data, malts, hops)
+
+  def addHop(self, hops):
+    """Append a new hop onto the current hops data"""
+    new_hop = dict(
+      hop_name="Tettang",
+      alpha_acid_content=8.8,
+      beta_acid_content=6.4,
+      add_time=3,
+      add_time_unit="Days",
+      dry_hops=True,
+    )
+
+    return hops.append(new_hop)
 
   def checkElement(self, model, data):
     """Helper Function. Either check two values against on another or call correct helper function"""
@@ -169,3 +192,28 @@ class TestRecipeSerializer(TestCase):
     self.checkElement(self.data.pop('recipe_hops'), recipe.recipe_hops.order_by("hop_name"))
     self.checkElement(self.data.pop('recipe_malts'), recipe.recipe_malts.order_by("malt_brand"))
     self.checkElement(self.data, recipe)
+
+  def test_RecipeSerializer_Update_ValidData(self):
+    premade_recipe = self.createRecipe(self.account, self.data)
+    recipe_data    = self.retrieveRecipeData()
+    # Add another hop
+    current_hops = recipe_data.pop('recipe_hops')
+    self.data['recipe_hops']  = self.addHop(current_hops)
+
+    # Change the malt
+    self.data['recipe_malts'] = dict(
+      malt_brand="Fruity_Tooty",
+      malt_type="Crystal",
+      malt_extract=False,
+      amount_by_weight=7.0
+    )
+
+    # Update the notes
+    self.data['recipe_notes'] = "Added this crystal to spice it up."
+
+    serializer = RecipeSerializer(instance=premade_recipe, data=self.data)
+    print serializer.is_valid()
+    if not serializer.is_valid():
+      print serializer.errors
+    updated_recipe = serializer.save()
+    print updated_recipe
