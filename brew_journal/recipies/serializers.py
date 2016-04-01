@@ -52,7 +52,6 @@ class RecipeSerializer(serializers.ModelSerializer):
       hop['recipe'] = instance.id
       serialized_hop = RecipeHopsSerializer(data=hop)
       if not serialized_hop.is_valid():
-        print "ALSHFWIOOHASF"
         return instance
 
       serialized_hop.save()
@@ -62,7 +61,6 @@ class RecipeSerializer(serializers.ModelSerializer):
       malt['recipe'] = instance.id
       serialized_malt = RecipeMaltsSerializer(data=malt)
       if not serialized_malt.is_valid():
-        print "HALJAEFBWIEBWEF"
         return instance
 
       serialized_malt.save()

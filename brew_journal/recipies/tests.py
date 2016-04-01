@@ -148,20 +148,6 @@ class TestRecipeSerializer(TestCase):
     malts = data.pop("recipe_malts")
     return Recipe.objects.create_recipe(user, data, malts, hops)
 
-  def addHop(self, hops):
-    """Append a new hop onto the current hops data"""
-    new_hop = dict(
-      hop_name="Tettang",
-      alpha_acid_content=8.8,
-      beta_acid_content=6.4,
-      add_time=3,
-      add_time_unit="Days",
-      dry_hops=True,
-    )
-
-    hops.append(new_hop)
-    return hops
-
   def checkElement(self, model, data):
     """Helper Function. Either check two values against on another or call correct helper function"""
     # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
@@ -186,9 +172,6 @@ class TestRecipeSerializer(TestCase):
 
   def test_RecipeSerializer_Create_ValidData(self):
     serialized_data = RecipeSerializer(data=self.data)
-
-    if not serialized_data.is_valid():
-      print serialized_data.errors
 
     self.assertTrue(serialized_data.is_valid())
 
@@ -224,9 +207,6 @@ class TestRecipeSerializer(TestCase):
     self.data['recipe_notes'] = "Added this crystal to spice it up."
 
     serializer = RecipeSerializer(instance=premade_recipe, data=self.data)
-
-    if not serializer.is_valid():
-      print serializer.errors
 
     self.assertTrue(serializer.is_valid())
 
