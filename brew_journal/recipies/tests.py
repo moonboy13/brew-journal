@@ -224,7 +224,27 @@ class TestRecipeViews(TestCase):
     self.user = Account.objects.create(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
     # Set the fake user to logged in as this is required for some of the requests.
     self.client.login(username='foot',password='bar2')
+    my_datetime = datetime.today()
+    self.data = self.loadRecipeData()
+    for i in range(len(self.data)):
+      self.data[i]['last_brew_date'] = datetime.date(my_datetime)
+    self.setupRecipes(self.data, self.user)
 
   def tearDown(self):
+    self.user.delete()
+    for recipe in Recipe.objects.all():
+      recipe.delete()
+
     self.client = None
     self.user = None
+
+  def loadRecipeData(self):
+    json_data = open('recipies/testRecipes.json' ,'r').read()
+    return json.loads(json_data)
+
+  def setupRecipes(self, recipes, user):
+    for i in range(len(recipes)):
+      Recipe.objects.create_recipe(user, recipes[i], recipes[i].get("recipe_malts"), recipes[i].get("recipe_hops"))
+
+  def test_RecipeViews_ListRecipes(self):
+    self.assertTrue(True) #Mostly testing the setup and teardown at the moment
