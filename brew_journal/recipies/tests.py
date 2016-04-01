@@ -2,7 +2,7 @@ import json
 
 from datetime import datetime
 
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from authentication.models import Account
 
@@ -215,3 +215,16 @@ class TestRecipeSerializer(TestCase):
     self.checkElement(self.data.pop('recipe_hops'), updated_recipe.recipe_hops.order_by("hop_name"))
     self.checkElement(self.data.pop('recipe_malts'), updated_recipe.recipe_malts.order_by("malt_brand"))
     self.checkElement(self.data, updated_recipe)
+
+class TestRecipeViews(TestCase):
+  """Check all of the http urls for the recipes"""
+
+  def setUp(self):
+    self.client = Client()
+    self.user = Account.objects.create(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
+    # Set the fake user to logged in as this is required for some of the requests.
+    self.client.login(username='foot',password='bar2')
+
+  def tearDown(self):
+    self.client = None
+    self.user = None
