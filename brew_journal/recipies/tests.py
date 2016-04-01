@@ -159,7 +159,8 @@ class TestRecipeSerializer(TestCase):
       dry_hops=True,
     )
 
-    return hops.append(new_hop)
+    hops.append(new_hop)
+    return hops
 
   def checkElement(self, model, data):
     """Helper Function. Either check two values against on another or call correct helper function"""
@@ -186,6 +187,9 @@ class TestRecipeSerializer(TestCase):
   def test_RecipeSerializer_Create_ValidData(self):
     serialized_data = RecipeSerializer(data=self.data)
 
+    if not serialized_data.is_valid():
+      print serialized_data.errors
+
     self.assertTrue(serialized_data.is_valid())
 
     recipe = serialized_data.save(user=self.account)
@@ -197,23 +201,37 @@ class TestRecipeSerializer(TestCase):
     premade_recipe = self.createRecipe(self.account, self.data)
     recipe_data    = self.retrieveRecipeData()
     # Add another hop
-    current_hops = recipe_data.pop('recipe_hops')
-    self.data['recipe_hops']  = self.addHop(current_hops)
+    self.data['recipe_hops'] = list()
+    self.data['recipe_hops'].append(dict(
+      hop_name="Tettang",
+      alpha_acid_content=8.8,
+      beta_acid_content=6.4,
+      add_time=3,
+      add_time_unit="Days",
+      dry_hops=True,
+    ))
 
     # Change the malt
-    self.data['recipe_malts'] = dict(
-      malt_brand="Fruity_Tooty",
-      malt_type="Crystal",
-      malt_extract=False,
-      amount_by_weight=7.0
-    )
+    self.data['recipe_malts'] = list()
+    self.data['recipe_malts'].append(dict(
+        malt_brand="Fruity_Tooty",
+        malt_type="Crystal",
+        malt_extract=False,
+        amount_by_weight=7.0,
+    ))
 
     # Update the notes
     self.data['recipe_notes'] = "Added this crystal to spice it up."
 
     serializer = RecipeSerializer(instance=premade_recipe, data=self.data)
-    print serializer.is_valid()
+
     if not serializer.is_valid():
       print serializer.errors
+
+    self.assertTrue(serializer.is_valid())
+
     updated_recipe = serializer.save()
-    print updated_recipe
+
+    self.checkElement(self.data.pop('recipe_hops'), updated_recipe.recipe_hops.order_by("hop_name"))
+    self.checkElement(self.data.pop('recipe_malts'), updated_recipe.recipe_malts.order_by("malt_brand"))
+    self.checkElement(self.data, updated_recipe)
