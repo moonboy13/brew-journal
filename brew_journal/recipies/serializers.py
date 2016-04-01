@@ -51,18 +51,14 @@ class RecipeSerializer(serializers.ModelSerializer):
     for hop in new_hops:
       hop['recipe'] = instance.id
       serialized_hop = RecipeHopsSerializer(data=hop)
-      if not serialized_hop.is_valid():
-        return instance
-
+      serialized_hop.is_valid(raise_exception=True) # Throw an exception if invalid
       serialized_hop.save()
 
     # Do the same for malts
     for malt in new_malts:
       malt['recipe'] = instance.id
       serialized_malt = RecipeMaltsSerializer(data=malt)
-      if not serialized_malt.is_valid():
-        return instance
-
+      serialized_malt.is_valid(raise_exception=True)
       serialized_malt.save()
 
     instance.save()
