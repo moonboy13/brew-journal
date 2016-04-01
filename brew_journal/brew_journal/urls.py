@@ -4,7 +4,8 @@ from brew_journal.views import IndexView
 
 from rest_framework_nested import routers
 
-from authentication.views import AccountViewSet, RecipeViewSet, LoginView, LogoutView
+from authentication.views import AccountViewSet, LoginView, LogoutView
+from recipies.views import RecipeViewSet
 
 router = routers.SimpleRouter()
 router.register(r'account', AccountViewSet)

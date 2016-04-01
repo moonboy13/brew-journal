@@ -246,5 +246,8 @@ class TestRecipeViews(TestCase):
     for i in range(len(recipes)):
       Recipe.objects.create_recipe(user, recipes[i], recipes[i].get("recipe_malts"), recipes[i].get("recipe_hops"))
 
-  def test_RecipeViews_ListRecipes(self):
-    self.assertTrue(True) #Mostly testing the setup and teardown at the moment
+  def test_RecipeViews_HasRecipes_ListRecipes(self):
+    response = self.client.get('/api/v1/recipe/')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(len(response.data), len(self.data))
