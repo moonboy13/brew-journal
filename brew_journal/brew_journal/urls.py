@@ -4,10 +4,11 @@ from brew_journal.views import IndexView
 
 from rest_framework_nested import routers
 
-from authentication.views import AccountViewSet, LoginView, LogoutView
+from authentication.views import AccountViewSet, RecipeViewSet, LoginView, LogoutView
 
 router = routers.SimpleRouter()
 router.register(r'account', AccountViewSet)
+router.register(r'recipe', RecipeViewSet)
 
 urlpatterns = patterns('',
     # Examples:
