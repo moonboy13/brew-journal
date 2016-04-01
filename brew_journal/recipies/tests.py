@@ -232,8 +232,7 @@ class TestRecipeViews(TestCase):
 
   def tearDown(self):
     self.user.delete()
-    for recipe in Recipe.objects.all():
-      recipe.delete()
+    self.removeRecipes()
 
     self.client = None
     self.user = None
@@ -245,6 +244,11 @@ class TestRecipeViews(TestCase):
   def setupRecipes(self, recipes, user):
     for i in range(len(recipes)):
       Recipe.objects.create_recipe(user, recipes[i], recipes[i].get("recipe_malts"), recipes[i].get("recipe_hops"))
+
+  def removeRecipes(self):
+    self.data = []
+    for recipe in Recipe.objects.all():
+      recipe.delete()
 
   def test_RecipeViews_HasRecipes_ListRecipes(self):
     response = self.client.get('/api/v1/recipe/')
