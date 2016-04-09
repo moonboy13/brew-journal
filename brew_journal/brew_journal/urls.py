@@ -9,7 +9,7 @@ from recipies.views import RecipeViewSet
 
 router = routers.SimpleRouter()
 router.register(r'account', AccountViewSet)
-router.register(r'recipe', RecipeViewSet)
+router.register(r'recipe', RecipeViewSet, base_name='recipe')
 
 urlpatterns = patterns('',
     # Examples:

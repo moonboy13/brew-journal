@@ -221,7 +221,7 @@ class TestRecipeViews(TestCase):
 
   def setUp(self):
     self.client = Client()
-    self.user = Account.objects.create(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
+    self.user = Account.objects.create_user(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
     # Set the fake user to logged in as this is required for some of the requests.
     self.client.login(username='foot',password='bar2')
     my_datetime = datetime.today()
@@ -255,3 +255,11 @@ class TestRecipeViews(TestCase):
 
     self.assertEqual(response.status_code, 200)
     self.assertEqual(len(response.data), len(self.data))
+
+  def test_RecipeViews_NoRecipes_ListRecipes(self):
+    self.removeRecipes()
+
+    response = self.client.get('/api/v1/recipe/')
+
+    self.assertEqual(response.status_code, 204)
+    self.assertEqual(len(response.data), 0)
