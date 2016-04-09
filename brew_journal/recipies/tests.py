@@ -250,16 +250,36 @@ class TestRecipeViews(TestCase):
     for recipe in Recipe.objects.all():
       recipe.delete()
 
-  def test_RecipeViews_HasRecipes_ListRecipes(self):
+  def test_RecipeViews_ListRecipes_HasRecipes(self):
     response = self.client.get('/api/v1/recipe/')
 
     self.assertEqual(response.status_code, 200)
     self.assertEqual(len(response.data), len(self.data))
 
-  def test_RecipeViews_NoRecipes_ListRecipes(self):
+  def test_RecipeViews_ListRecipes_NoRecipes(self):
     self.removeRecipes()
 
     response = self.client.get('/api/v1/recipe/')
 
     self.assertEqual(response.status_code, 204)
     self.assertEqual(len(response.data), 0)
+
+  def test_RecipeViews_ListRecipes_UnauthorizedUser(self):
+    # First, delete the user
+    self.user.is_active = False
+    self.user.save()
+
+    response = self.client.get('/api/v1/recipe/')
+
+    self.assertEqual(response.status_code, 401)
+    self.assertEqual(response.reason_phrase.lower(), 'unauthorized')
+    self.assertEqual(response.data['status'].lower(), 'unauthorized')
+    self.assertEqual(response.data['message'], 'Requesting user is no longer active.')
+
+  def test_RecipeViews_DetailRecipe_InvalidId(self):
+
+    response = self.client.get('/api/v1/recipe/999/')
+
+    self.assertEqual(response.status_code, 404)
+    self.assertEqual(response.reason_phrase.lower(), 'not found')
+    self.assertEqual(response.data['detail'].lower(), 'not found.')

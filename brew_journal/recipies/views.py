@@ -3,6 +3,8 @@ import json
 from rest_framework import status, views, permissions, viewsets
 from rest_framework.response import Response
 
+from django.shortcuts import get_object_or_404
+
 from recipies.models import Recipe
 from recipies.serializers import RecipeSerializer
 
@@ -20,19 +22,30 @@ class RecipeViewSet(viewsets.ViewSet):
 
     if not request.user.is_active:
       return Response({
-        'status'  : 'INVALID',
+        'status'  : 'UNAUTHORIZED',
         'message' : 'Requesting user is no longer active.',
         },status=status.HTTP_401_UNAUTHORIZED);
+
     queryset = Recipe.objects.filter(account=request.user)
+
     serializer = RecipeSerializer(queryset, many=True)
+
     retData = [dict(id=x.get('id'),name=x.get('recipe_name')) for x in serializer.data]
+
     if len(retData) == 0:
       return Response({},status=status.HTTP_204_NO_CONTENT)
     else:
       return Response(retData)
 
-  def detail(self, request, pk=None):
+  def retrieve(self, request, pk):
     """Get all the specifics of a recipe."""
+
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    serialier = RecipeSerializer(recipe)
+
+    return Response(serializer.data)
+
 
   def create(self, request):
     """Create a new recipe"""
