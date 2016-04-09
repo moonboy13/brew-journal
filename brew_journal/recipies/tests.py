@@ -342,7 +342,7 @@ class TestRecipeViews(TestCase):
     self.assertEqual(len(response.data), 0)
     self.assertEqual(after_recipe_length, (before_recipe_length - 1) )
 
-  def test_RecipeViews_CreateRecipe(self):
+  def test_RecipeViews_CreateRecipe_ValidData(self):
     json_new_recipe = open('recipies/testRecipe.json' ,'r').read()
     new_recipe = json.loads(json_new_recipe)
 
@@ -353,3 +353,15 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.data['message'], 'Recipe has been created.')
     # TODO: Deal with the ordered dict that is returned
     # self.checkElement(new_recipe, response.data['recipe'])
+
+  def test_RecipeViews_CreateRecipe_InvalidData(self):
+
+    invalid_json = json.dumps({})
+
+    response = self.client.post('/api/v1/recipe/', data=invalid_json, content_type='application/json')
+
+    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.reason_phrase.lower(), 'bad request')
+    self.assertEqual(response.data['message'], 'Recipe could not be created with the received data.')
+    # Just make sure that there are items in the error array so that the user knows what they need to fix
+    self.assertTrue( ( len(response.data['errors']) > 0 ) )

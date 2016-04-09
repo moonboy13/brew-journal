@@ -67,7 +67,7 @@ class RecipeViewSet(viewsets.ViewSet):
       return Response({
         'status': 'Bad Request',
         'message': 'Recipe could not be created with the received data.',
-        'errors': serialized_data.errors
+        'errors': incoming_serialized_data.errors
       }, status=status.HTTP_400_BAD_REQUEST)
 
   def update(self, request, pk=None):
