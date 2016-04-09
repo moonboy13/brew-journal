@@ -250,6 +250,29 @@ class TestRecipeViews(TestCase):
     for recipe in Recipe.objects.all():
       recipe.delete()
 
+  def checkElement(self, model, data):
+    """Helper Function. Either check two values against on another or call correct helper function"""
+    # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
+    # compare the elements
+    if type(model) is list:
+      self.checkArrayModel(model, data)
+    elif type(model) is dict:
+      self.checkDictModel(model, data)
+    else:
+      self.assertEqual(model, data)
+
+  def checkArrayModel(self, model, data):
+    """Helper function. Check an array to see if the model data is present in the data array"""
+    # print model
+    # print data
+    for i in range(len(model)):
+      self.checkElement(model[i], data[i])
+
+  def checkDictModel(self, model, data):
+    """Helper function. Check a model dictionary against a data dictionary key by key"""
+    for key in model.keys():
+      self.checkElement(model.get(key), data.__dict__.get(key))
+
   def test_RecipeViews_ListRecipes_HasRecipes(self):
     response = self.client.get('/api/v1/recipe/')
 
@@ -283,3 +306,16 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.status_code, 404)
     self.assertEqual(response.reason_phrase.lower(), 'not found')
     self.assertEqual(response.data['detail'].lower(), 'not found.')
+
+  def test_RecipeViews_DetailRecipe_ValidRecipe(self):
+    # Use the first rescipe in the array
+    recipe_data = self.data[0]
+
+    db_entry = Recipe.objects.get(recipe_name=recipe_data['recipe_name'])
+
+    response = self.client.get('/api/v1/recipe/' + str(db_entry.id) + '/')
+
+    self.assertEqual(response.status_code, 200)
+
+    # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
+    # self.checkElement(recipe_data, response.data)

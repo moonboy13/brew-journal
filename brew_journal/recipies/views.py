@@ -42,7 +42,7 @@ class RecipeViewSet(viewsets.ViewSet):
 
     recipe = get_object_or_404(Recipe, pk=pk)
 
-    serialier = RecipeSerializer(recipe)
+    serializer = RecipeSerializer(recipe)
 
     return Response(serializer.data)
 
