@@ -319,3 +319,25 @@ class TestRecipeViews(TestCase):
 
     # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
     # self.checkElement(recipe_data, response.data)
+
+  def test_RecipeViews_DestroyRecipe_InvalidId(self):
+
+    response = self.client.delete('/api/v1/recipe/999/')
+
+    self.assertEqual(response.status_code, 404)
+    self.assertEqual(response.reason_phrase.lower(), 'not found')
+    self.assertEqual(response.data['detail'].lower(), 'not found.')
+
+  def test_RecipeViews_DestroyRecipe_ValidRecipe(self):
+    # Use the first rescipe in the array
+    before_recipe_length = len(Recipe.objects.all())
+    recipe_data = self.data[0]
+    db_entry = Recipe.objects.get(recipe_name=recipe_data['recipe_name'])
+
+    response = self.client.delete('/api/v1/recipe/' + str(db_entry.id) + '/')
+
+    after_recipe_length = len(Recipe.objects.all())
+
+    self.assertEqual(response.status_code, 204)
+    self.assertEqual(len(response.data), 0)
+    self.assertEqual(after_recipe_length, (before_recipe_length - 1) )

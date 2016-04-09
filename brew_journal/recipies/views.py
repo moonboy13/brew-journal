@@ -55,3 +55,9 @@ class RecipeViewSet(viewsets.ViewSet):
 
   def destroy(self, request, pk=None):
     """Get rid of a recipe."""
+
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    recipe.delete()
+
+    return Response({},status=status.HTTP_204_NO_CONTENT)
