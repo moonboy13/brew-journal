@@ -341,3 +341,15 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.status_code, 204)
     self.assertEqual(len(response.data), 0)
     self.assertEqual(after_recipe_length, (before_recipe_length - 1) )
+
+  def test_RecipeViews_CreateRecipe(self):
+    json_new_recipe = open('recipies/testRecipe.json' ,'r').read()
+    new_recipe = json.loads(json_new_recipe)
+
+    response = self.client.post('/api/v1/recipe/', data=json_new_recipe, content_type='application/json')
+
+    self.assertEqual(response.status_code, 201)
+    self.assertEqual(response.reason_phrase.lower(), 'created')
+    self.assertEqual(response.data['message'], 'Recipe has been created.')
+    # TODO: Deal with the ordered dict that is returned
+    # self.checkElement(new_recipe, response.data['recipe'])

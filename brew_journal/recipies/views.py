@@ -49,6 +49,26 @@ class RecipeViewSet(viewsets.ViewSet):
 
   def create(self, request):
     """Create a new recipe"""
+    user = request.user
+    recipe_data = json.loads(request.body)
+
+    incoming_serialized_data = RecipeSerializer(data=recipe_data)
+
+    if incoming_serialized_data.is_valid():
+      new_recipe = incoming_serialized_data.save(user=user)
+      # Serialize the new recipe to return it as part of the return data.
+      # TODO: Evaluate if there is any value to this action
+      serialized_recipe = RecipeSerializer(new_recipe)
+      return Response({
+        'message': 'Recipe has been created.',
+        'recipe': serialized_recipe.data,
+        },status=status.HTTP_201_CREATED)
+    else:
+      return Response({
+        'status': 'Bad Request',
+        'message': 'Recipe could not be created with the received data.',
+        'errors': serialized_data.errors
+      }, status=status.HTTP_400_BAD_REQUEST)
 
   def update(self, request, pk=None):
     """Update a specific recipe."""
