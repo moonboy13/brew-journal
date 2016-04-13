@@ -5,9 +5,11 @@ from brew_journal.views import IndexView
 from rest_framework_nested import routers
 
 from authentication.views import AccountViewSet, LoginView, LogoutView
+from recipies.views import RecipeViewSet
 
 router = routers.SimpleRouter()
 router.register(r'account', AccountViewSet)
+router.register(r'recipe', RecipeViewSet, base_name='recipe')
 
 urlpatterns = patterns('',
     # Examples:

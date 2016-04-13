@@ -10,3 +10,6 @@ will fail w/o these packages but it should not affect site performance. Had to p
 the libffi-dev to work correctly
 
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev libjpeg8-dev
+
+# Iteration 0.1
+Create a page for CRUD on personal recipies.

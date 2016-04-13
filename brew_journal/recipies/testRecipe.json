@@ -1,0 +1,21 @@
+{
+  "recipe_name":"MyRecipe",
+  "recipe_style":"Kolsch",
+  "recipe_notes":"Full bodied with a hint of lemon zest. Amber color with fair head retention",
+  "last_brew_date":"2016-05-05",
+  "recipe_hops":[
+    {
+      "hop_name":"Amarillo",
+      "alpha_acid_content":8.8,
+      "add_time":30,
+      "add_time_unit":"minutes"
+    }
+  ],
+  "recipe_malts":[
+    {
+      "malt_brand":"Moutons",
+      "malt_type":"Extra Light",
+      "amount_by_weight":6.6
+    }
+  ]
+}
