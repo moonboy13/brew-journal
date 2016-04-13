@@ -7,6 +7,7 @@
 			'brew_journal.config',
 			'brew_journal.routes',
 			'brew_journal.authentication',
+			'brew_journal.recipies',
 			'brew_journal.layout'
 		]);
 
