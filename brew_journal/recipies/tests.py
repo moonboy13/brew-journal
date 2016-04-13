@@ -383,3 +383,24 @@ class TestRecipeViews(TestCase):
     # TODO: Deal with those damn ordered dicts
     # self.checkElement(recipe_data, response.data['recipe'])
 
+  def test_RecipeViews_UpdateRecipe_InvalidId(self):
+    recipe_data = self.data[0]
+    recipe_data['last_brew_date'] = recipe_data['last_brew_date'].strftime('%Y-%m-%d')
+
+    response = self.client.put('/api/v1/recipe/99/', data=json.dumps(self.data[0]), content_type='application/json')
+
+    # TODO: Since the get or 404 is a uniform function of Django, having a testing utility function to check the response would
+    # make sense.
+    self.assertEqual(response.status_code, 404)
+    self.assertEqual(response.reason_phrase.lower(), 'not found')
+    self.assertEqual(response.data['detail'].lower(), 'not found.')
+
+  def test_RecipeViews_UpdateRecipe_InvalidData(self):
+    recipe_data = self.data[0]
+    db_entry = Recipe.objects.get(recipe_name=recipe_data['recipe_name'])
+
+    response = self.client.put('/api/v1/recipe/' + str(db_entry.id) + '/', data=json.dumps({}), content_type='application/json')
+
+    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.reason_phrase.lower(), 'bad request')
+    self.assertEqual(response.data['message'], 'Recipe could not be updated with the received data.')
