@@ -24,7 +24,7 @@ class RecipeViewSet(viewsets.ViewSet):
       return Response({
         'status'  : 'UNAUTHORIZED',
         'message' : 'Requesting user is no longer active.',
-        },status=status.HTTP_401_UNAUTHORIZED);
+      }, status=status.HTTP_401_UNAUTHORIZED);
 
     queryset = Recipe.objects.filter(account=request.user)
 
@@ -62,7 +62,7 @@ class RecipeViewSet(viewsets.ViewSet):
       return Response({
         'message': 'Recipe has been created.',
         'recipe': serialized_recipe.data,
-        },status=status.HTTP_201_CREATED)
+      }, status=status.HTTP_201_CREATED)
     else:
       return Response({
         'status': 'Bad Request',
@@ -72,6 +72,26 @@ class RecipeViewSet(viewsets.ViewSet):
 
   def update(self, request, pk=None):
     """Update a specific recipe."""
+
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    # Apparently, the framework is JSON decoding things for me...
+    serializer = RecipeSerializer(instance=recipe, data=request.data)
+
+    if serializer.is_valid():
+      updated_recipe = serializer.save()
+      updated_serializer = RecipeSerializer(updated_recipe)
+      return Response({
+        'message': 'Recipe has been updated.',
+        'recipe': updated_serializer.data,
+      }, status=status.HTTP_201_CREATED)
+    else:
+      return Response({
+        'status': 'Bad Request',
+        'message': 'Recipe could not be updated with the received data.',
+        'errors': serializer.errors
+      }, status=status.HTTP_400_BAD_REQUEST)
+
 
   def destroy(self, request, pk=None):
     """Get rid of a recipe."""

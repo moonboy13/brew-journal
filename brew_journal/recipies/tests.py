@@ -365,3 +365,21 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.data['message'], 'Recipe could not be created with the received data.')
     # Just make sure that there are items in the error array so that the user knows what they need to fix
     self.assertTrue( ( len(response.data['errors']) > 0 ) )
+
+  def test_RecipeViews_UpdateRecipe_ExistingRecipe(self):
+    recipe_data = self.data[0]
+    db_entry = Recipe.objects.get(recipe_name=recipe_data['recipe_name'])
+
+    recipe_data['recipe_name'] = 'Updated Nommen'
+    recipe_data['last_brew_date'] = recipe_data['last_brew_date'].strftime('%Y-%m-%d')
+
+    json_recipe_data = json.dumps(recipe_data)
+
+    response = self.client.put('/api/v1/recipe/' + str(db_entry.id) + '/', data=json_recipe_data, content_type='application/json')
+
+    self.assertEqual(response.status_code, 201)
+    self.assertEqual(response.reason_phrase.lower(), 'created')
+    self.assertEqual(response.data['message'], 'Recipe has been updated.')
+    # TODO: Deal with those damn ordered dicts
+    # self.checkElement(recipe_data, response.data['recipe'])
+
