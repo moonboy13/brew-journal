@@ -4,7 +4,7 @@
 */
 // NOTE: 66% certain the anonymous function call is to setup the 'use strict'
 (function () {
-  'use strick';
+  'use strict';
 
   angular
     .module('brew_journal.authentication.services')
