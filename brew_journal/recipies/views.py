@@ -46,7 +46,6 @@ class RecipeViewSet(viewsets.ViewSet):
 
     return Response(serializer.data)
 
-
   def create(self, request):
     """Create a new recipe"""
     user = request.user
@@ -91,7 +90,6 @@ class RecipeViewSet(viewsets.ViewSet):
         'message': 'Recipe could not be updated with the received data.',
         'errors': serializer.errors
       }, status=status.HTTP_400_BAD_REQUEST)
-
 
   def destroy(self, request, pk=None):
     """Get rid of a recipe."""
