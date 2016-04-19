@@ -74,5 +74,16 @@
     function listRecipesResponse(data, status, headers, config) {
       setListRecipesResponse(data);
     }
+
+    /**
+    * @name retrieveRecipe
+    * @desc Retrieve information about a specific recipe.
+    * @returns {Promise}
+    * @memberOf brew_journal.recipies.services.Recipe
+    */
+    function retrieveRecipe(id) {
+      var url = '/api/v1/recipe/' + id + '/';
+      return $http.get(url).then()
+    }
   }
 })();
