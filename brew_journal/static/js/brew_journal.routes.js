@@ -24,6 +24,6 @@
       controller:   'RecipeController',
       controllerAs: 'ctrl',
       templateUrl:  '/static/templates/recipies/recipe.html'
-    }).otherwise('/');
+    }).otherwise('/login');
   }
 })();
