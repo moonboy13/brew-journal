@@ -13,7 +13,8 @@
     <div class="collapse navbar-collapse" id="my-brew-journal-nav">
       <ul class="nav navbar-nav pull-right">
         {% if user.is_authenticated %}
-          <li><a href="/+{{ user.username }}">+{{ user.username }}</a></li>
+          <li><a href="/recipe">Recipe</a></li>
+          <li><a href="/{{ user.username }}">{{ user.username }}</a></li>
           <!-- <li><a href="/+{{ user.username }}/settings">Settings</a></li> -->
           <li><a href="javascript:void(0)" ng-click="ctrl.logout()">Logout</a></li>
         {% else %}
