@@ -22,6 +22,8 @@
     */
     var Recipe = {
       listRecipes:            listRecipes,
+      getListRecipesResponse: getListRecipesResponse,
+      retrieveRecipe:         retrieveRecipe,
       getListRecipesResponse: getListRecipesResponse
     };
 
@@ -54,6 +56,31 @@
       return listRecipesResponse;
     }
 
+    /**
+    * @name retrieveRecipesResponse
+    * @desc Hold the response from retrieving a specific recipe
+    */
+    var retrieveRecipesResponse = {};
+
+    /**
+    * @name setListRecipesResponse
+    * @desc Set the response data from the list recipes call
+    * @param {object} The response data
+    */
+    function setRetrieveRecipesResponse(data) {
+      retrieveRecipesResponse = data;
+    }
+
+    /**
+    * @name getRetrieveRecipesResponse
+    * @desc Return whatever is stored in the variable
+    * @returns {Object}
+    * @memberOf brew_journal.recipies.services.Recipe
+    */
+    function getRetrieveRecipesResponse() {
+      return retrieveRecipesResponse;
+    }
+
     ////////////////
 
     /**
@@ -83,7 +110,20 @@
     */
     function retrieveRecipe(id) {
       var url = '/api/v1/recipe/' + id + '/';
-      return $http.get(url).then()
+      return $http.get(url).then(retrieveRecipeReponse, retrieveRecipeReponse);
     }
+
+    /**
+    * @name retrieveRecipeResponse
+    * @desc Set the return data for later retrieval by the controller
+    */
+    function retrieveRecipeResponse(data, status, headers, config) {
+      setRetrieveRecipeResponse(data);
+    }
+
+    /**
+    * @name deleteRecipe
+    * @desc Delete a recipe
+    */
   }
 })();
