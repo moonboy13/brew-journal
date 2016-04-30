@@ -3,6 +3,10 @@
     <h1>Recipe</h1>
 
     <div class="well recipe-panel">
+        <label for="recipeSelect">Saved Recipes: </label>
+        <select name="recipeSelect" id="recipeSelect" ng-model="selectedRecipe"
+          ng-options="recipe.id as recipe.name for recipe in ctrl.recipes"
+          ng-change="ctrl.onRecipeSelect(selectedRecipe)">
         <form role="form" ng-submit="ctrl.save()">
         </form>
     <div>
