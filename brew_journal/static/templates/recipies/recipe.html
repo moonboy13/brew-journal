@@ -2,11 +2,12 @@
   <div class="col-md-6 col-md-offset-3">
     <h1>Recipe</h1>
 
-    <div class="well recipe-panel">
+    <div id="recipePanel" class="well recipe-panel">
         <label for="recipeSelect">Saved Recipes: </label>
         <select name="recipeSelect" id="recipeSelect" ng-model="selectedRecipe"
           ng-options="recipe.id as recipe.name for recipe in ctrl.recipes"
-          ng-change="ctrl.onRecipeSelect(selectedRecipe)">
+          ng-change="ctrl.onRecipeSelect(selectedRecipe)"/>
+        <button id="deleteRecipe" type="button" class="btn btn-raised btn-danger pull-right" ng-click="ctrl.deleteRecipe(selectedRecipe)" ng-disabled="!selectedRecipe || selectedRecipe === null">Delete Recipe</button>
         <form role="form" ng-submit="ctrl.save()">
         </form>
     <div>
