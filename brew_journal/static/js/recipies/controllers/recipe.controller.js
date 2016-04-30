@@ -18,6 +18,7 @@
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}]; 
+    ctrl.hops = [{}];
 
     ctrl.datePickerIsOpen = false;
     ctrl.last_brewed_date = new Date();

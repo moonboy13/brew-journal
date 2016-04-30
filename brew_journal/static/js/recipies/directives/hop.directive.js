@@ -3,5 +3,13 @@
 
   angular
     .module('brew_journal.recipies.directives')
-    .directive('HopDirective', HopDirective);
+    .directive('hop', HopDirective);
+
+  function HopDirective() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/templates/recipies/hop.html',
+      replace: true
+    };
+  }
 })();
