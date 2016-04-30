@@ -4,6 +4,7 @@
 	angular
 		.module('brew_journal',[
 			// Future modules go here
+      'ui.bootstrap',
 			'brew_journal.config',
 			'brew_journal.routes',
 			'brew_journal.authentication',

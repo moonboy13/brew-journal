@@ -8,9 +8,33 @@
           ng-options="recipe.id as recipe.name for recipe in ctrl.recipes"
           ng-change="ctrl.onRecipeSelect(selectedRecipe)"/>
         <button id="deleteRecipe" type="button" class="btn btn-raised btn-danger pull-right" ng-click="ctrl.deleteRecipe(selectedRecipe)" ng-disabled="!selectedRecipe || selectedRecipe === null">Delete Recipe</button>
-        <form role="form" ng-submit="ctrl.save()">
+        <form class="form-horizontal" role="form" ng-submit="ctrl.save()">
+          <div class="form-inline form-group row">
+            <label for="recipe__recipe_name" class="col-sm-2">Recipe Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="recipe__recipe_name" ng-model="ctrl.recipe_name" placeholder="ex. Little John's ale" aria-required="true"/>
+            </div>
+          </div>
+          <div class="form-inline form-group row">
+            <label for="recipe__recipe_style" class="col-sm-2">Recipe Style</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="recipe__recipe_style" ng-model="ctrl.recipe_style" placeholder="ex. IPA" aria-required="true"/>
+            </div>
+          </div>
+          <div class="form-inline form-group row">
+            <label for="recipe__last_brewed_date" class="col-sm-2">Last Brewed Date</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="recipe__last_brewed_date" ng-model="ctrl.last_brewed_date" uib-datepicker-popup="yyyy-MM-dd" is-open="ctrl.datePickerIsOpen"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="ctrl.openBrewDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+          </div>
+          <div class="form-inline form-group row">
+          
+          </div>
         </form>
-    <div>
+    </div>
 
   </div>
 </div>

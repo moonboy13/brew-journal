@@ -14,9 +14,13 @@
     var ctrl = this;
 
     ctrl.onRecipeSelect = onRecipeSelect;
+    ctrl.openBrewDatepicker = openBrewDatepicker;
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}]; 
+
+    ctrl.datePickerIsOpen = false;
+    ctrl.last_brewed_date = new Date();
     
     // Activate the page
     activate();
@@ -55,6 +59,11 @@
       if(selectedRecipeId !== null) {
         Recipe.retrieveRecipe(selectedRecipeId).then(loadRecipe);
       }
+    }
+
+    function openBrewDatepicker () {
+      ctrl.datePickerIsOpen = true;
+      console.log(ctrl.datePickerIsOpen);
     }
 
     /**
