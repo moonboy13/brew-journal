@@ -82,12 +82,4 @@ describe('Recipe', function() {
     // It's fake data.. as long as its returning the right amount on the right key its good.
     expect(data.data.length).toBe(3);
   });
-
-  it('should retrieve specific recipe information', function() {
-
-  });
-
-  it('should warn when a request for specifics are made for a non-existant recipe', function() {
-
-  });
 });
