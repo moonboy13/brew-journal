@@ -30,7 +30,10 @@
               </span>
             </div>
           </div>
-          <hop ng-repeat="hop in ctrl.hops"></hop>
+          <div class="row">
+            <button type="button" class="btn btn-success" ng-click="ctrl.addHop()">Add Hop</button>
+          </div>
+          <hop ng-repeat="hop in ctrl.hops track by $index"></hop>
           </div>
         </form>
     </div>
