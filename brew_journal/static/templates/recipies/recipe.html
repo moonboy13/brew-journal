@@ -38,8 +38,11 @@
             <button type="button" class="btn btn-success" ng-click="ctrl.addMalt()">Add Malt</button>
           </div>
           <malt ng-repeat="malt in ctrl.malts track by $index"></malt>
+          <div class="row">
+            <button class="btn btn-success">Save</button>
+            <button class="btn pull-right">Clear Form</button>
+          </div>
         </form>
     </div>
-
   </div>
 </div>
