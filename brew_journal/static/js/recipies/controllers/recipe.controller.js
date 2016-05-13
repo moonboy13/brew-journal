@@ -17,10 +17,13 @@
     ctrl.openBrewDatepicker = openBrewDatepicker;
     ctrl.addHop = addHop;
     ctrl.removeHop = removeHop;
+    ctrl.addMalt = addMalt;
+    ctrl.removeMalt = removeMalt;
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}]; 
     ctrl.hops = [];
+    ctrl.malts = [];
 
     ctrl.datePickerIsOpen = false;
     ctrl.last_brewed_date = new Date();
@@ -101,6 +104,27 @@
      */
     function removeHop(index) {
       ctrl.hops.splice(index, 1);
+    }
+    
+    /**
+     * @name addMalt
+     * @desc Add another set of inputs to add a malt to a recipe.
+     * @memberOf brew_journal.recipies.controllers.RecipeController
+     */
+    function addMalt(maltData) {
+      maltData = (!maltData) ? {} : maltData;
+      ctrl.malts.push(maltData);
+    }
+    
+    /**
+     * @name removeMalt
+     * @desc Remove a malt from the list.
+     * @param {integer} index
+     * The index of the malt to splice out.
+     * @memberOf brew_journal.recipies.controllers.RecipeControllers
+     */
+    function removeMalt(index) {
+      ctrl.malts.splice(index, 1);
     }
   }
 })();
