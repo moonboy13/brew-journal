@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-10 col-md-offset-1">
     <h1>Recipe</h1>
 
     <div id="recipePanel" class="well recipe-panel">
@@ -34,7 +34,10 @@
             <button type="button" class="btn btn-success" ng-click="ctrl.addHop()">Add Hop</button>
           </div>
           <hop ng-repeat="hop in ctrl.hops track by $index"></hop>
+          <div class="row">
+            <button type="button" class="btn btn-success" ng-click="ctrl.addMalt()">Add Malt</button>
           </div>
+          <malt ng-repeat="malt in ctrl.malt track by $index"></malt>
         </form>
     </div>
 
