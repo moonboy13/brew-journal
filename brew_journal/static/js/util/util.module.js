@@ -8,5 +8,5 @@
     ]);
 
   angular
-    .module('brew_journal.recipies.directives', []);
+    .module('brew_journal.util.directives', []);
 })();
