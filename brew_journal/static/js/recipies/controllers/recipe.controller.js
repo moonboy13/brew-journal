@@ -19,6 +19,8 @@
     ctrl.removeHop = removeHop;
     ctrl.addMalt = addMalt;
     ctrl.removeMalt = removeMalt;
+    ctrl.clearForm = clearForm;
+    ctrl.save = save;
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}]; 
@@ -125,6 +127,29 @@
      */
     function removeMalt(index) {
       ctrl.malts.splice(index, 1);
+    }
+    
+    /**
+     * @name clearForm
+     * @desc Clear all form inputds
+     * @memberOf brew_journal.recipies.controllers.RecipeControllers
+     */
+    function clearForm() {
+      ctrl.hops = [];
+      ctrl.malts = [];
+      ctrl.recipe_notes = '';
+      ctrl.last_brewed_date = null;
+      ctrl.recipe_style = null;
+      ctrl.recipe_name = null;
+    } 
+
+    /**
+     * @name save
+     * @desc Save what has been placed into the form
+     * @memberOf brew_journal.recipies.controllers.RecipeControllers
+     */
+    function save() {
+      console.log("hola");
     }
   }
 })();

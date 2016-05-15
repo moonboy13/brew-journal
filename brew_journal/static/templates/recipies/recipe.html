@@ -38,9 +38,15 @@
             <button type="button" class="btn btn-success" ng-click="ctrl.addMalt()">Add Malt</button>
           </div>
           <malt ng-repeat="malt in ctrl.malts track by $index"></malt>
+          <div class="form-inline form-group row">
+            <label for="recipe__notes" class="col-sm-2">Notes</label>
+            <div class="col-sm-10">
+              <textarea id="recipe__notes" ng-model="ctrl.recipe_notes" rows="10" cols="50"></textarea>
+            </div>
+          </div>
           <div class="row">
-            <button class="btn btn-success">Save</button>
-            <button class="btn pull-right">Clear Form</button>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button class="btn pull-right" ng-click="ctrl.clearForm()">Clear Form</button>
           </div>
         </form>
     </div>
