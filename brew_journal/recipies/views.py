@@ -48,8 +48,8 @@ class RecipeViewSet(viewsets.ViewSet):
 
   def create(self, request):
     """Create a new recipe"""
+    recipe_data = request.data
     user = request.user
-    recipe_data = json.loads(request.body)
 
     incoming_serialized_data = RecipeSerializer(data=recipe_data)
 

@@ -57,7 +57,7 @@
     function getListRecipesResponse() {
       return listRecipesResponse;
     }
-    
+
     /**
     * @name saveRecipeResponse
     * @desc Hold the response from retrieving a specific recipe
@@ -136,12 +136,14 @@
      */
     function saveRecipe(id, recipeData){
       var retPromise;
-      if(typeof id !== "undefined"){
-        retPromise = this.updateRecipe(id, recipeData);
+      // recipeData = angular.toJson(recipeData)
+      if(id === null){
+        retPromise = createRecipe(recipeData);
       } else {
-        retPromise = this.createRecipe(recipeData);
+        retPromise = updateRecipe(id, recipeData);
       }
-      retPromise.then(setSaveRecipeResponse, setSaveRecipeResponse);
+      return retPromise;
+      //retPromise.then(setSaveRecipeResponse, setSaveRecipeResponse);
     }
 
     /**
@@ -152,7 +154,7 @@
      */
     function createRecipe(recipeData) {
       var url = '/api/v1/recipe/';
-      return $http.post(url, recipeData);
+      return $http.post(url, recipeData).then(setSaveRecipeResponse, setSaveRecipeResponse);
     }
 
     /**
@@ -163,7 +165,7 @@
      */
     function updateRecipe(id, recipeData) {
       var url = '/api/v1/recipe/' + id + '/';
-      return $http.put(url, recipeData);
+      return $http.put(url, recipeData).then(setSaveRecipeResponse, setSaveRecipeResponse);
     }
 
     /**
