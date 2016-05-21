@@ -24,7 +24,9 @@
       listRecipes:            listRecipes,
       getListRecipesResponse: getListRecipesResponse,
       retrieveRecipe:         retrieveRecipe,
-      getListRecipesResponse: getListRecipesResponse
+      getListRecipesResponse: getListRecipesResponse,
+      saveRecipe:             saveRecipe,
+      getSaveRecipeResponse:  getSaveRecipeResponse
     };
 
     return Recipe;
@@ -55,7 +57,31 @@
     function getListRecipesResponse() {
       return listRecipesResponse;
     }
+    
+    /**
+    * @name saveRecipeResponse
+    * @desc Hold the response from retrieving a specific recipe
+    */
+    var saveRecipeResponse = {};
 
+    /**
+    * @name setSaveRecipeResponse
+    * @desc Set the response data from the save recipe call
+    * @param {object} The response data
+    */
+    function setSaveRecipeResponse(data) {
+      saveRecipeResponse = data;
+    }
+
+    /**
+    * @name getSaveRecipeResponse
+    * @desc Return whatever is stored in the variable
+    * @returns {Object}
+    * @memberOf brew_journal.recipies.services.Recipe
+    */
+    function getSaveRecipeResponse() {
+      return saveRecipeResponse;
+    }
     /**
     * @name retrieveRecipesResponse
     * @desc Hold the response from retrieving a specific recipe
@@ -100,6 +126,44 @@
     */
     function listRecipesResponse(data, status, headers, config) {
       setListRecipesResponse(data);
+    }
+
+    /**
+     * @name saveRecipe
+     * @desc Either create or update recipe
+     * @returns none
+     * @memberOf brew_journal.recipies.services.Recipe
+     */
+    function saveRecipe(id, recipeData){
+      var retPromise;
+      if(typeof id !== "undefined"){
+        retPromise = this.updateRecipe(id, recipeData);
+      } else {
+        retPromise = this.createRecipe(recipeData);
+      }
+      retPromise.then(setSaveRecipeResponse, setSaveRecipeResponse);
+    }
+
+    /**
+     * @name createRecipe
+     * @desc Create a brand new recipe
+     * @returns {Promise}
+     * @memberOf brew_journal.recipies.services.Recipe
+     */
+    function createRecipe(recipeData) {
+      var url = '/api/v1/recipe/';
+      return $http.post(url, recipeData);
+    }
+
+    /**
+     * @name updateRecipe
+     * @desc Update an existing recipe
+     * @returns {Promise}
+     * @memberOf brew_journal.recipies.services.Recipe
+     */
+    function updateRecipe(id, recipeData) {
+      var url = '/api/v1/recipe/' + id + '/';
+      return $http.put(url, recipeData);
     }
 
     /**
