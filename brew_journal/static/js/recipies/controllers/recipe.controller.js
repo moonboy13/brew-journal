@@ -82,12 +82,35 @@
 
     /**
      * @name loadRecipe
-     * @desc Load recipe information.
+     * @desc Handle the response from the retrieve recipe backend call.
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
-    function loadRecipe(recipe) {
-      console.log(recipe);
+     function loadRecipe(response) {
+      if(response.status === 200) {
+        setRecipeData(response.data);
+      } else {
+        console.log("Oh noes, there was an error.");
+      }
     }
+
+    /**
+     * @name setRecipeData
+     * @desc Load recipe data into the UI
+     * @memberOf brew_journal.recipies.controllers.RecipeController
+     */
+     function setRecipeData(recipe_data) {
+      var i;
+      ctrl.recipe_name    = recipe_data.recipe_name;
+      ctrl.recipe_style   = recipe_data.recipe_style;
+      ctrl.last_brew_date = recipe_data.last_brew_date;
+      ctrl.recipe_notes   = recipe_data.recipe_notes;
+      for (i = 0; i < recipe_data.recipe_hops.length; i++) {
+        addHop(recipe_data.recipe_hops[i]);
+      }
+      for (i = 0; i < recipe_data.recipe_malts.length; i++) {
+        addMalt(recipe_data.recipe_malts[i]);
+      }
+     }
 
     /**
      * @name addHop
@@ -144,6 +167,7 @@
       ctrl.recipe_style = null;
       ctrl.recipe_name = null;
       ctrl.recipe_id = null;
+      ctrl.selectedRecipe;
     }
 
     /**
@@ -157,7 +181,7 @@
       var recipe_data = {
         recipe_name:      ctrl.recipe_name,
         recipe_style:     ctrl.recipe_style,
-        last_brew_date: $filter('date')(ctrl.last_brewed_date, 'yyyy-MM-dd'),
+        last_brew_date: $filter('date')(ctrl.last_brew_date, 'yyyy-MM-dd'),
         recipe_notes:     ctrl.recipe_notes,
         recipe_hops:        ctrl.hops,
         recipe_malts:       ctrl.malts
@@ -172,7 +196,6 @@
      */
     function onSaveRecipeResponse() {
       var response = Recipe.getSaveRecipeResponse();
-      console.log(response);
       Recipe.listRecipes().then(loadRecipeDropdown);
     }
   }

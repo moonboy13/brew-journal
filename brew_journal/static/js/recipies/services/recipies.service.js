@@ -176,7 +176,7 @@
     */
     function retrieveRecipe(id) {
       var url = '/api/v1/recipe/' + id + '/';
-      return $http.get(url).then(retrieveRecipeReponse, retrieveRecipeReponse);
+      return $http.get(url);//.then(retrieveRecipeResponse, retrieveRecipeResponse);
     }
 
     /**
