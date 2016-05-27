@@ -136,14 +136,12 @@
      */
     function saveRecipe(id, recipeData){
       var retPromise;
-      // recipeData = angular.toJson(recipeData)
       if(id === null){
         retPromise = createRecipe(recipeData);
       } else {
         retPromise = updateRecipe(id, recipeData);
       }
       return retPromise;
-      //retPromise.then(setSaveRecipeResponse, setSaveRecipeResponse);
     }
 
     /**
@@ -190,6 +188,9 @@
     /**
     * @name deleteRecipe
     * @desc Delete a recipe
+    * @param {int} Id of the recipe to delete
+    * @returns {Promise{
+    * @memberOf brew_journal.recipes.services.Recipe
     */
   }
 })();

@@ -29,7 +29,7 @@
     ctrl.recipe_id = null;
 
     ctrl.datePickerIsOpen = false;
-    ctrl.last_brewed_date = new Date();
+    ctrl.last_brew_date = new Date();
 
     // Activate the page
     activate();
@@ -102,7 +102,7 @@
       var i;
       ctrl.recipe_name    = recipe_data.recipe_name;
       ctrl.recipe_style   = recipe_data.recipe_style;
-      ctrl.last_brew_date = recipe_data.last_brew_date;
+      ctrl.last_brew_date = new Date(recipe_data.last_brew_date);
       ctrl.recipe_notes   = recipe_data.recipe_notes;
       for (i = 0; i < recipe_data.recipe_hops.length; i++) {
         addHop(recipe_data.recipe_hops[i]);
