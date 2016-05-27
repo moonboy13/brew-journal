@@ -20,6 +20,7 @@
     ctrl.addMalt = addMalt;
     ctrl.removeMalt = removeMalt;
     ctrl.clearForm = clearForm;
+    ctrl.deleteRecipe = deleteRecipe;
     ctrl.save = save;
 
     // Setup default loading recipe
@@ -41,6 +42,17 @@
      */
     function activate() {
       Recipe.listRecipes().then(loadRecipeDropdown);
+    }
+
+    function deleteRecipe(recipe_id) {
+      Recipe.deleteRecipe(recipe_id).then(onDeleteRecipeResponse);
+    }
+
+    function onDeleteRecipeResponse(response) {
+      if(response.status = 404) {
+        console.log("recipe already deleted");
+      }
+      clearForm();
     }
 
     /**

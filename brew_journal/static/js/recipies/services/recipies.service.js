@@ -26,7 +26,8 @@
       retrieveRecipe:         retrieveRecipe,
       getListRecipesResponse: getListRecipesResponse,
       saveRecipe:             saveRecipe,
-      getSaveRecipeResponse:  getSaveRecipeResponse
+      getSaveRecipeResponse:  getSaveRecipeResponse,
+      deleteRecipe:           deleteRecipe
     };
 
     return Recipe;
@@ -174,7 +175,7 @@
     */
     function retrieveRecipe(id) {
       var url = '/api/v1/recipe/' + id + '/';
-      return $http.get(url);//.then(retrieveRecipeResponse, retrieveRecipeResponse);
+      return $http.get(url);
     }
 
     /**
@@ -189,8 +190,12 @@
     * @name deleteRecipe
     * @desc Delete a recipe
     * @param {int} Id of the recipe to delete
-    * @returns {Promise{
+    * @returns {Promise}
     * @memberOf brew_journal.recipes.services.Recipe
     */
+    function deleteRecipe(id) {
+      var url = '/api/v1/recipe/' + id + '/';
+      return $http.delete(url);
+    }
   }
 })();
