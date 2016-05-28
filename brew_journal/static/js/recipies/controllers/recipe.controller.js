@@ -38,16 +38,29 @@
     /**
      * @name activate
      * @desc activate the page
+     * @param none
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function activate() {
       Recipe.listRecipes().then(loadRecipeDropdown);
     }
 
+    /**
+     * @name deleteRecipe
+     * @desc Delete the selected recipe from the dropdown
+     * @param {int} The id of the recipe to delete
+     * @memberOf brew_journal.recipies.controllers.RecipeController
+     */ 
     function deleteRecipe(recipe_id) {
       Recipe.deleteRecipe(recipe_id).then(onDeleteRecipeResponse);
     }
 
+    /**
+     * @name onDeleteRecipeResponse
+     * @desc Handle the response message from the delete action
+     * @param {Object} The response object.
+     * @memberOf brew_journal.recipies.controllers.RecipeController
+     */
     function onDeleteRecipeResponse(response) {
       if(response.status = 404) {
         console.log("recipe already deleted");
@@ -58,6 +71,7 @@
     /**
      * @name loadRecipeDropdown
      * @desc Load the recipe results, indicating if there are none.
+     * @param {Array} Recipe identification information
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function loadRecipeDropdown(userRecipes) {
@@ -73,6 +87,7 @@
     /**
      * @name onRecipeSelect
      * @desc As long as the id isn't null, pull recipe data
+     * @param {int} Id of the selected recipe to load
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function onRecipeSelect (selectedRecipeId) {
@@ -94,6 +109,7 @@
     /**
      * @name loadRecipe
      * @desc Handle the response from the retrieve recipe backend call.
+     * @param {Object} Response object from the AJAX call
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
      function loadRecipe(response) {
@@ -107,6 +123,7 @@
     /**
      * @name setRecipeData
      * @desc Load recipe data into the UI
+     * @param {Object} Recipe information to load up
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
      function setRecipeData(recipe_data) {
@@ -126,6 +143,7 @@
     /**
      * @name addHop
      * @desc Add another set of inputs to add a hop to a recipe.
+     * @param {Object} optional object of hop information
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function addHop(hopData) {
@@ -147,6 +165,7 @@
     /**
      * @name addMalt
      * @desc Add another set of inputs to add a malt to a recipe.
+     * @param {Object} Optional object of malt data to load
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function addMalt(maltData) {
@@ -203,6 +222,7 @@
     /**
      * @name onSaveRecipeResponse
      * @desc Display any error messages to the user, or let them know that it saved successfully.
+     * @param {Object} response object from the backend
      * @memberOf brew_journal.recipies.controllers.RecipeControllers
      */
     function onSaveRecipeResponse(response) {

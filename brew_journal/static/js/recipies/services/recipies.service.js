@@ -42,6 +42,8 @@
     /**
      * @name saveRecipe
      * @desc Either create or update recipe
+     * @param {int} Optional recipe id to save. If ommited, a new recipe will be created
+     * @param {Object} Recipe infrormation
      * @returns none
      * @memberOf brew_journal.recipies.services.Recipe
      */
@@ -58,6 +60,7 @@
     /**
      * @name createRecipe
      * @desc Create a brand new recipe
+     * @param {Object} New recipe information
      * @returns {Promise}
      * @memberOf brew_journal.recipies.services.Recipe
      */
@@ -69,6 +72,8 @@
     /**
      * @name updateRecipe
      * @desc Update an existing recipe
+     * @param {int} Id of the recipe to update
+     * @param {Object} Updated recipe information
      * @returns {Promise}
      * @memberOf brew_journal.recipies.services.Recipe
      */
@@ -80,6 +85,7 @@
     /**
     * @name retrieveRecipe
     * @desc Retrieve information about a specific recipe.
+    * @param {int} Id of the recipe to retrieve
     * @returns {Promise}
     * @memberOf brew_journal.recipies.services.Recipe
     */
