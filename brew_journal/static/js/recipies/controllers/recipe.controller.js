@@ -5,12 +5,12 @@
     .module('brew_journal.recipies.controllers')
     .controller('RecipeController', RecipeController);
 
-  RecipeController.$inject = ['$scope', '$filter', 'Recipe'];
+  RecipeController.$inject = ['$scope', '$filter', '$location', 'Recipe', 'Authentication'];
 
   /**
   * @namespace RecipeController
   */
-  function RecipeController($scope, $filter, Recipe) {
+  function RecipeController($scope, $filter, $location, Recipe, Authentication) {
     var ctrl = this;
 
     ctrl.onRecipeSelect = onRecipeSelect;
@@ -42,7 +42,12 @@
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function activate() {
-      Recipe.listRecipes().then(loadRecipeDropdown);
+      // Ensure there is an active user session
+      if(!Authentication.isAuthenticated()) {
+        $location.url('/view/login');
+      } else {
+        Recipe.listRecipes().then(loadRecipeDropdown);
+      }
     }
 
     /**
