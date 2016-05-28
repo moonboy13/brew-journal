@@ -7,3 +7,5 @@ htmlcov
 *~
 *.swp
 *.swo
+Gruntfile.js
+package.json
