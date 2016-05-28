@@ -19,6 +19,12 @@
 
     ctrl.logout = logout;
 
+    ctrl.authenticated = false; 
+
+    $scope.$on('authentication:change', function(evt, data) {
+      ctrl.authenticated = data;
+    });
+
     /**
     * @name logout
     * @desc Log a user out of the application

@@ -46,7 +46,7 @@ class AccountViewSet(viewsets.ModelViewSet):
 class LoginView(views.APIView):
   """Handle the logging of the in for users"""
   def post(self, request, format=None):
-    data = json.loads(request.body)
+    data = request.data
     username = data.get('username', None)
     password = data.get('password', None)
 

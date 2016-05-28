@@ -12,18 +12,18 @@
   * @desc Define valid application routes
   */
   function config($routeProvider) {
-    $routeProvider.when('/register', {
+    $routeProvider.when('/view/register', {
       controller:   'RegisterController',
       controllerAs: 'ctrl',
       templateUrl:  '/static/templates/authentication/register.html'
-    }).when('/login', {
+    }).when('/view/login', {
       controller:   'LoginController',
       controllerAs: 'ctrl',
       templateUrl:  '/static/templates/authentication/login.html'
-    }).when('/recipe', {
+    }).when('/view/recipe', {
       controller:   'RecipeController',
       controllerAs: 'ctrl',
       templateUrl:  '/static/templates/recipies/recipe.html'
-    }).otherwise('/login');
+    }).otherwise('/view/login');
   }
 })();

@@ -23,8 +23,9 @@
     * @memberOf brew_journal.authentication.controllers.LoginController
     */
     function activate() {
+      var account = Authentication.getAuthenticatedAccount();
       if (Authentication.isAuthenticated()) {
-        $location.url('/recipes');
+        $location.path('/view/recipe');
       }
     }
 
@@ -44,9 +45,13 @@
     */
     function showLoginResult() {
       ctrl.error = !Authentication.isAuthenticated();
-      // Using a variable so that if I decide to make a dynamic error message
-      // later it'll be easier.
-      ctrl.loginErrorMessage = "Username/password not recognized. Please veryify credentials and try again.";
+      if(ctrl.error) {
+        // Using a variable so that if I decide to make a dynamic error message
+        // later it'll be easier.
+        ctrl.loginErrorMessage = "Username/password not recognized. Please veryify credentials and try again.";
+      } else {
+        $location.path('/view/recipe');
+      }
     }
   }
 })();

@@ -10,13 +10,13 @@
     .module('brew_journal.authentication.services')
     .factory('Authentication', Authentication);
 
-  Authentication.$inject = ['$cookies', '$http'];
+  Authentication.$inject = ['$rootScope', '$cookies', '$http', '$location'];
 
   /**
   * @namespace Authentication
   * @returns {Factory}
   */
-  function Authentication($cookies, $http) {
+  function Authentication($rootScope, $cookies, $http, $location) {
     /**
     * @name Authentication
     * @desc The Factor to be returned
@@ -36,11 +36,9 @@
 
     ///////////////////////
 
-    /**
-    * @name registrationResult
-    * @desc Variable to hold the results of a registration attempt to report to a user
-    */
-    var registrationResult = {};
+    function broadcastAuthenticationUpdate() {
+      $rootScope.$broadcast('authentication:change', isAuthenticated());
+    }
 
     //////////////////////
 
@@ -133,7 +131,7 @@
       // redirect loop.
       if(!data.data.isUnitTest)
       {
-        window.location = '/';
+        $location.url('/view/login');
       }
     }
 
@@ -169,7 +167,7 @@
       // redirect loop.
       if(!data.data.isUnitTest)
       {
-        window.location = '/';
+        $location.url('/view/login');
       }
     }
 
@@ -214,6 +212,7 @@
     */
     function setAuthenticatedAccount(account) {
       $cookies.authenticatedAccount = JSON.stringify(account);
+      broadcastAuthenticationUpdate();
     }
 
     /**
@@ -224,6 +223,7 @@
     */
     function unauthenticate() {
       delete $cookies.authenticatedAccount;
+      broadcastAuthenticationUpdate();
     }
   }
 })();
