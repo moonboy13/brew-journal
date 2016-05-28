@@ -22,93 +22,12 @@
     */
     var Recipe = {
       listRecipes:            listRecipes,
-      getListRecipesResponse: getListRecipesResponse,
       retrieveRecipe:         retrieveRecipe,
-      getListRecipesResponse: getListRecipesResponse,
       saveRecipe:             saveRecipe,
-      getSaveRecipeResponse:  getSaveRecipeResponse,
       deleteRecipe:           deleteRecipe
     };
 
     return Recipe;
-
-    ////////////////
-
-    /**
-    * @name listRecipesResponse
-    * @desc Hold the results of the get recipes call
-    */
-    var listRecipesResponse = {};
-
-    /**
-    * @name setListRecipesResponse
-    * @desc Set the response data from the list recipes call
-    * @param {object} The response data
-    */
-    function setListRecipesResponse(data) {
-      listRecipesResponse = data;
-    }
-
-    /**
-    * @name getListRecipesResponse
-    * @desc Return whatever is stored in the variable
-    * @returns {Object}
-    * @memberOf brew_journal.recipies.services.Recipe
-    */
-    function getListRecipesResponse() {
-      return listRecipesResponse;
-    }
-
-    /**
-    * @name saveRecipeResponse
-    * @desc Hold the response from retrieving a specific recipe
-    */
-    var saveRecipeResponse = {};
-
-    /**
-    * @name setSaveRecipeResponse
-    * @desc Set the response data from the save recipe call
-    * @param {object} The response data
-    */
-    function setSaveRecipeResponse(data) {
-      saveRecipeResponse = data;
-    }
-
-    /**
-    * @name getSaveRecipeResponse
-    * @desc Return whatever is stored in the variable
-    * @returns {Object}
-    * @memberOf brew_journal.recipies.services.Recipe
-    */
-    function getSaveRecipeResponse() {
-      return saveRecipeResponse;
-    }
-    /**
-    * @name retrieveRecipesResponse
-    * @desc Hold the response from retrieving a specific recipe
-    */
-    var retrieveRecipesResponse = {};
-
-    /**
-    * @name setListRecipesResponse
-    * @desc Set the response data from the list recipes call
-    * @param {object} The response data
-    */
-    function setRetrieveRecipesResponse(data) {
-      retrieveRecipesResponse = data;
-    }
-
-    /**
-    * @name getRetrieveRecipesResponse
-    * @desc Return whatever is stored in the variable
-    * @returns {Object}
-    * @memberOf brew_journal.recipies.services.Recipe
-    */
-    function getRetrieveRecipesResponse() {
-      return retrieveRecipesResponse;
-    }
-
-    ////////////////
 
     /**
     * @name listRecipes
@@ -117,16 +36,7 @@
     * @memberOf brew_journal.recipies.services.Recipe
     */
     function listRecipes() {
-      return $http.get('/api/v1/recipe/').then(listRecipesResponse, listRecipesResponse);
-    }
-
-    /**
-    * @name listRecipesResponse
-    * @desc Whether its a failure or success, this data will need to be translated over to the UI.
-    * @desc Therefore, each will just set a variable that is reachable by the controller.
-    */
-    function listRecipesResponse(data, status, headers, config) {
-      setListRecipesResponse(data);
+      return $http.get('/api/v1/recipe/');
     }
 
     /**
@@ -153,7 +63,7 @@
      */
     function createRecipe(recipeData) {
       var url = '/api/v1/recipe/';
-      return $http.post(url, recipeData).then(setSaveRecipeResponse, setSaveRecipeResponse);
+      return $http.post(url, recipeData);
     }
 
     /**
@@ -176,14 +86,6 @@
     function retrieveRecipe(id) {
       var url = '/api/v1/recipe/' + id + '/';
       return $http.get(url);
-    }
-
-    /**
-    * @name retrieveRecipeResponse
-    * @desc Set the return data for later retrieval by the controller
-    */
-    function retrieveRecipeResponse(data, status, headers, config) {
-      setRetrieveRecipeResponse(data);
     }
 
     /**

@@ -60,8 +60,7 @@
      * @desc Load the recipe results, indicating if there are none.
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
-    function loadRecipeDropdown() {
-      var userRecipes = Recipe.getListRecipesResponse();
+    function loadRecipeDropdown(userRecipes) {
       // 204 status indicates there was no content
       if(userRecipes.status === 204) {
         ctrl.recipes = [{id:null, name: "No Recipes"}];
@@ -206,8 +205,7 @@
      * @desc Display any error messages to the user, or let them know that it saved successfully.
      * @memberOf brew_journal.recipies.controllers.RecipeControllers
      */
-    function onSaveRecipeResponse() {
-      var response = Recipe.getSaveRecipeResponse();
+    function onSaveRecipeResponse(response) {
       Recipe.listRecipes().then(loadRecipeDropdown);
     }
   }
