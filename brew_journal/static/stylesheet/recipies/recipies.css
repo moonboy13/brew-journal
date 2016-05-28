@@ -2,3 +2,7 @@
   margin-top:  0px;
   padding-top: 0px;
 }
+
+.recipe-panel #recipeSelect {
+  min-width: 120px;
+}
