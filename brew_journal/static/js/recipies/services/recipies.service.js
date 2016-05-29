@@ -79,7 +79,7 @@
      */
     function updateRecipe(id, recipeData) {
       var url = '/api/v1/recipe/' + id + '/';
-      return $http.put(url, recipeData).then(setSaveRecipeResponse, setSaveRecipeResponse);
+      return $http.put(url, recipeData);
     }
 
     /**

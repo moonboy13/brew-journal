@@ -5,12 +5,12 @@
     .module('brew_journal.recipies.controllers')
     .controller('RecipeController', RecipeController);
 
-  RecipeController.$inject = ['$scope', '$filter', '$location', 'Recipe', 'Authentication'];
+  RecipeController.$inject = ['$scope', '$filter', '$location', 'Recipe', 'Authentication', 'messageCenterService'];
 
   /**
   * @namespace RecipeController
   */
-  function RecipeController($scope, $filter, $location, Recipe, Authentication) {
+  function RecipeController($scope, $filter, $location, Recipe, Authentication, messageCenterService) {
     var ctrl = this;
 
     ctrl.onRecipeSelect = onRecipeSelect;
@@ -68,7 +68,7 @@
      */
     function onDeleteRecipeResponse(response) {
       if(response.status = 404) {
-        console.log("recipe already deleted");
+        messageServiceCenter.add('danger', 'Recipe has already been deleted', {timeout: 3000});
       }
       clearForm();
     }
@@ -231,6 +231,7 @@
      * @memberOf brew_journal.recipies.controllers.RecipeControllers
      */
     function onSaveRecipeResponse(response) {
+      messageCenterService.add('success', "Your recipe has been saved");
       Recipe.listRecipes().then(loadRecipeDropdown);
     }
   }

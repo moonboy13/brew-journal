@@ -10,7 +10,8 @@
 			'brew_journal.authentication',
 			'brew_journal.recipies',
 			'brew_journal.layout',
-      'brew_journal.util'
+      'brew_journal.util',
+      'MessageCenterModule'
 		]);
 
 	angular
