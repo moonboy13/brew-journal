@@ -1,0 +1,7 @@
+.messages {
+  position:   fixed;
+  bottom:     0;
+  height:     auto;
+  min-height: 25px;
+  z-index:    9999;
+}
