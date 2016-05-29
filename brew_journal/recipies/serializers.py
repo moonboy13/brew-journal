@@ -55,6 +55,7 @@ class RecipeSerializer(serializers.ModelSerializer):
       serialized_hop.save()
 
     # Do the same for malts
+    instance.recipe_malts.all().delete()
     for malt in new_malts:
       malt['recipe'] = instance.id
       serialized_malt = RecipeMaltsSerializer(data=malt)
