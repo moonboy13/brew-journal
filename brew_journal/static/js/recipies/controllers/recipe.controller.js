@@ -25,6 +25,7 @@
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}];
+    ctrl.selectedRecipe = null;
     ctrl.hops = [];
     ctrl.malts = [];
     ctrl.recipe_id = null;
@@ -67,8 +68,8 @@
      * @memberOf brew_journal.recipies.controllers.RecipeController
      */
     function onDeleteRecipeResponse(response) {
-      if(response.status = 404) {
-        messageServiceCenter.add('danger', 'Recipe has already been deleted', {timeout: 3000});
+      if(response.status == 404) {
+        messageCenterService.add('danger', 'Recipe has already been deleted', {timeout: 3000});
       }
       clearForm();
     }
@@ -121,7 +122,7 @@
       if(response.status === 200) {
         setRecipeData(response.data);
       } else {
-        console.log("Oh noes, there was an error.");
+        messageCenterService.add('warn', "There was an error loading the recipe, please try again.", {timeout: 1000});
       }
     }
 
@@ -202,7 +203,7 @@
       ctrl.recipe_style = null;
       ctrl.recipe_name = null;
       ctrl.recipe_id = null;
-      ctrl.selectedRecipe;
+      ctrl.selectedRecipe = null;
     }
 
     /**
@@ -231,7 +232,7 @@
      * @memberOf brew_journal.recipies.controllers.RecipeControllers
      */
     function onSaveRecipeResponse(response) {
-      messageCenterService.add('success', "Your recipe has been saved");
+      messageCenterService.add('success', "Your recipe has been saved", {timeout: 3000});
       Recipe.listRecipes().then(loadRecipeDropdown);
     }
   }

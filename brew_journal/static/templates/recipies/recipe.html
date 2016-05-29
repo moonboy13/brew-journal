@@ -4,10 +4,10 @@
 
     <div id="recipePanel" class="well recipe-panel">
         <label for="recipeSelect">Saved Recipes: </label>
-        <select name="recipeSelect" id="recipeSelect" ng-model="selectedRecipe"
+        <select name="recipeSelect" id="recipeSelect" ng-model="ctrl.selectedRecipe"
           ng-options="recipe.id as recipe.name for recipe in ctrl.recipes"
-          ng-change="ctrl.onRecipeSelect(selectedRecipe)"/>
-        <button id="deleteRecipe" type="button" class="btn btn-raised btn-danger pull-right" ng-click="ctrl.deleteRecipe(selectedRecipe)" ng-disabled="!selectedRecipe || selectedRecipe === null">Delete Recipe</button>
+          ng-change="ctrl.onRecipeSelect(ctrl.selectedRecipe)"/>
+        <button id="deleteRecipe" type="button" class="btn btn-raised btn-danger pull-right" ng-click="ctrl.deleteRecipe(ctrl.selectedRecipe)" ng-disabled="!ctrl.selectedRecipe || ctrl.selectedRecipe === null">Delete Recipe</button>
         <form class="form-horizontal" role="form" ng-submit="ctrl.save()">
           <div class="form-inline form-group row">
             <div class="col-md-4">
@@ -48,7 +48,7 @@
           </div>
           <div class="row">
             <button type="submit" class="btn btn-success">Save</button>
-            <button class="btn pull-right" ng-click="ctrl.clearForm()">Clear Form</button>
+            <button type="button" class="btn pull-right" ng-click="ctrl.clearForm()">Clear Form</button>
           </div>
         </form>
     </div>
