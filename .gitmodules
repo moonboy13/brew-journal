@@ -1,0 +1,3 @@
+[submodule "brew_journal/static/lib/message-center"]
+	path = brew_journal/static/lib/message-center
+	url = https://github.com/e0ipso/message-center
