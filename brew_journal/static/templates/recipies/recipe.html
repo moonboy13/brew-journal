@@ -13,13 +13,13 @@
             <div class="col-md-4">
               <label for="recipe__recipe_name" class="col-sm-4">Recipe Name</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="recipe__recipe_name" ng-model="ctrl.recipe_name" placeholder="ex. Little John's ale" aria-required="true"/>
+                <input type="text" class="form-control" id="recipe__recipe_name" ng-model="ctrl.recipe_name" placeholder="ex. Little John's ale" required/>
               </div>
             </div>
             <div class="col-md-4">
               <label for="recipe__recipe_style" class="col-md-4">Recipe Style</label>
               <div class="col-md-8">
-                <input type="text" class="form-control" id="recipe__recipe_style" ng-model="ctrl.recipe_style" placeholder="ex. IPA" aria-required="true"/>
+                <input type="text" class="form-control" id="recipe__recipe_style" ng-model="ctrl.recipe_style" placeholder="ex. IPA" required/>
               </div>
             </div>
             <div class="col-md-4">
@@ -43,7 +43,7 @@
           <div class="form-inline form-group row">
             <label for="recipe__notes" class="col-sm-2">Notes</label>
             <div class="col-sm-10">
-              <textarea id="recipe__notes" ng-model="ctrl.recipe_notes" rows="10" cols="50"></textarea>
+              <textarea id="recipe__notes" ng-model="ctrl.recipe_notes" rows="10" cols="50" required></textarea>
             </div>
           </div>
           <div class="row">

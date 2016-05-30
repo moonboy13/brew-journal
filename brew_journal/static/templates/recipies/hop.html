@@ -3,19 +3,19 @@
     <div class="col-md-4">
       <label class="col-sm-4" for="recipe__hop_name">Hop Name</label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="recipe__hop_name" ng-model="hop.hop_name" placeholder="ex. Cascade" aria-required="true"/>
+        <input type="text" class="form-control" id="recipe__hop_name" ng-model="hop.hop_name" placeholder="ex. Cascade" required/>
       </div>
     </div>
     <div class="col-md-4">
       <label class="col-sm-4" for="recipe__alpha_acid_content">Alpha Acid Content</label>
       <div class="col-sm-8">
-        <input numeric-input type="number" class="form-control" id="recipe__alpha_acid_content" ng-model="hop.alpha_acid_content" placeholder="ex. 6.8" aria-required="true"/>
+        <input numeric-input type="number" class="form-control" id="recipe__alpha_acid_content" ng-model="hop.alpha_acid_content" placeholder="ex. 6.8" step="any" required/>
       </div>
     </div>
     <div class="col-md-4">
       <label class="col-sm-4" for="recipe__beta_acid_content">Beta Acid Content</label>
       <div class="col-sm-8">
-        <input numeric-input type="number" class="form-control" id="recipe__beta_acid_content" ng-model="hop.beta_acid_content" placeholder="ex. 5.6"/>
+        <input numeric-input type="number" class="form-control" id="recipe__beta_acid_content" ng-model="hop.beta_acid_content" placeholder="ex. 5.6" step="any"/>
       </div>
     </div>
   </div>
@@ -23,13 +23,13 @@
     <div class="col-md-4">
       <label class="col-sm-4" for="recipe__add_time">Add Time</label>
       <div class="col-sm-8">
-        <input numeric-input type="number" class="form-control" id="recipe__add_time" ng-model="hop.add_time" placeholder="ex. 15" aria-required="true"/>
+        <input numeric-input type="number" class="form-control" id="recipe__add_time" ng-model="hop.add_time" placeholder="ex. 15" step="any" required/>
       </div>
     </div>
     <div class="col-md-4">
       <label class="col-sm-4" for="recipe__add_time_unit">Add Time Unit</label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="recipe__add_time_unit" ng-model="hop.add_time_unit" placeholder="ex. Minutes/Hours/Days" aria-required="true"/>
+        <input type="text" class="form-control" id="recipe__add_time_unit" ng-model="hop.add_time_unit" placeholder="ex. Minutes/Hours/Days" required/>
       </div>
     </div>
     <div class="col-md-4">
