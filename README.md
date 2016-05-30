@@ -11,5 +11,5 @@ the libffi-dev to work correctly
 
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev libjpeg8-dev
 
-# Iteration 0.1
+# Iteration 0.1 - Completed
 Create a page for CRUD on personal recipies.
