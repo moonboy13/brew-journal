@@ -36,11 +36,10 @@
     * @name postRegister
     * @desc Display an informative message to a suer if their registration fails
     */
-    function postRegister() {
-      var data = Authentication.getRegistrationResult();
-      ctrl.error = (data.status !== 200);
-      ctrl.message = data.data.message;
-      ctrl.errors = data.data.errors;
+    function postRegister(response) {
+      ctrl.error   = (response.status !== 200);
+      ctrl.message = response.data.message;
+      ctrl.errors  = response.data.errors;
     }
   }
 })();

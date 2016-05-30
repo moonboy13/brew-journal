@@ -40,6 +40,8 @@
       $rootScope.$broadcast('authentication:change', isAuthenticated());
     }
 
+    var registrationResult = {};
+
     //////////////////////
 
     /**
