@@ -13,6 +13,7 @@
   function RecipeController($scope, $filter, $location, Recipe, Authentication, messageCenterService) {
     var ctrl = this;
 
+    ctrl.activate = activate;
     ctrl.onRecipeSelect = onRecipeSelect;
     ctrl.openBrewDatepicker = openBrewDatepicker;
     ctrl.addHop = addHop;
@@ -22,6 +23,7 @@
     ctrl.clearForm = clearForm;
     ctrl.deleteRecipe = deleteRecipe;
     ctrl.save = save;
+    ctrl.setRecipeData = setRecipeData;
 
     // Setup default loading recipe
     ctrl.recipes = [{id:null, name:'Loading...'}];
