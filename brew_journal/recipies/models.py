@@ -101,3 +101,10 @@ class RecipeHops(models.Model):
 
   dry_hops = models.BooleanField(default=False)
   status   = models.BooleanField(default=True)
+
+class RecipeSteps(models.Model):
+    """Outline the user's steps for brewing their recipe"""
+    step_order = models.IntegerField()
+    step       = models.TextField()
+
+    recipe = models.ForeignKey('Recipe', related_name='recipe_steps')
