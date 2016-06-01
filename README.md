@@ -13,3 +13,6 @@ sudo apt-get install build-essential libssl-dev libffi-dev python-dev libjpeg8-d
 
 # Iteration 0.1 - Completed
 Create a page for CRUD on personal recipies.
+
+# Iteration 0.2
+Create a page for users to outline the steps to brew a recipe.
