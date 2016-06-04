@@ -17,5 +17,19 @@
       "malt_type":"Extra Light",
       "amount_by_weight":6.6
     }
+  ],
+  "recipe_setps":[
+    {
+      "step_order": 1,
+      "step": "Boil many much water"
+    },
+    {
+      "step_order": 2,
+      "step": "Make-a da wort"
+    },
+    {
+      "step_order": 3,
+      "step": "Be happy"
+    }
   ]
 }
