@@ -1,6 +1,13 @@
 from rest_framework import serializers
 
-from recipies.models import Recipe, RecipeMalts, RecipeHops
+from recipies.models import Recipe, RecipeMalts, RecipeHops, RecipeSteps
+
+class RecipeStepsSerializer(serializers.ModelSerializer):
+  """Subserializer for Recipes. Handles the steps."""
+
+  class Meta:
+    model = RecipeSteps
+    exclude = ('id',)
 
 class RecipeMaltsSerializer(serializers.ModelSerializer):
   """Subserializer for Recipes. Handles the malts."""
@@ -21,6 +28,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
   recipe_malts = RecipeMaltsSerializer(many=True)
   recipe_hops  = RecipeHopsSerializer(many=True)
+  recipe_steps = RecipeStepsSerializer(many=True)
 
   class Meta:
     model = Recipe
@@ -45,6 +53,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     new_hops  = validated_data.get('recipe_hops', instance.recipe_hops)
     new_malts = validated_data.get('recipe_malts', instance.recipe_malts)
+    new_steps = validated_data.get('recipe_steps', instance.recipe_steps)
 
     # Delete all of the hops and then resave them
     instance.recipe_hops.all().delete()
@@ -61,6 +70,13 @@ class RecipeSerializer(serializers.ModelSerializer):
       serialized_malt = RecipeMaltsSerializer(data=malt)
       serialized_malt.is_valid(raise_exception=True)
       serialized_malt.save()
+
+    instance.recipe_steps.all().delete()
+    for step in new_steps:
+        step['recipe'] = instance.id
+        serialized_step = RecipeStepsSerializer(data=step)
+        serialized_step.is_valid(raise_exception=True)
+        serialized_step.save()
 
     instance.save()
 
