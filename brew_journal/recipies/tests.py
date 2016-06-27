@@ -6,8 +6,8 @@ from django.test import TestCase, Client
 
 from authentication.models import Account
 
-from recipies.models import Recipe
-from recipies.serializers import RecipeSerializer
+from recipies.models import Recipe, RecipeSteps
+from recipies.serializers import RecipeSerializer, RecipeStepsSerializer
 
 
 # Create your tests here.
@@ -120,6 +120,32 @@ class TestRecipeModel(TestCase):
       Recipe.objects.create_recipe(None, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
     self.assertEqual(err.exception.message, 'Need to be logged in to create a recipe.')
+
+class TestRecipeStepModel(TestCase):
+
+    def setUp(self):
+        self.recipe_data = dict(
+          recipe_name="Test Recipe",
+          recipe_style="Kolsch",
+          recipe_notes="This is my first test recipe submited from a unit test.",
+          last_brew_date=datetime.now()
+        )
+        self.user = Account.objects.create_user('test', 'foo')
+        self.recipe = Recipe.objects.create_recipe(self.user, self.recipe_data)
+
+    def test_RecipeStepsManager_CreateValidStep(self):
+
+        # Collect a reference to the recipe so that its id can be retrieved
+        recipe_obj = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
+
+        step_data = dict(
+            step='This is a step',
+            step_order=1
+        )
+
+        step_obj = RecipeSteps.objects.save_step(step_data, recipe_obj.id)
+
+        self.assertIsInstance(step_obj, RecipeSteps)
 
 class TestRecipeSerializer(TestCase):
   """Test the serializers for the recipe class"""

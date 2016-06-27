@@ -102,9 +102,24 @@ class RecipeHops(models.Model):
   dry_hops = models.BooleanField(default=False)
   status   = models.BooleanField(default=True)
 
+class RecipeStepsManager(models.Manager):
+  def save_step(self, step_data, recipe_id):
+
+    recipe_obj = Recipe.objects.get(id=recipe_id)
+
+    step_obj = recipe_obj.recipe_steps.create(
+        step_order=step_data['step_order'],
+        step=step_data['step'],
+    )
+
+    step_obj.save()
+    return step_obj
+
 class RecipeSteps(models.Model):
     """Outline the user's steps for brewing their recipe"""
     step_order = models.IntegerField()
     step       = models.TextField()
 
     recipe = models.ForeignKey('Recipe', related_name='recipe_steps')
+
+    objects = RecipeStepsManager()
