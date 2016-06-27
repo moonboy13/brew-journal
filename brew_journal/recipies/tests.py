@@ -133,6 +133,11 @@ class TestRecipeStepModel(TestCase):
         self.user = Account.objects.create_user('test', 'foo')
         self.recipe = Recipe.objects.create_recipe(self.user, self.recipe_data)
 
+    def tearDown(self):
+      self.recipe_data = None
+      self.user.delete()
+      self.recipe.delete()
+
     def test_RecipeStepsManager_CreateValidStep(self):
 
         # Collect a reference to the recipe so that its id can be retrieved
