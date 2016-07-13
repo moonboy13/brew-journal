@@ -9,6 +9,33 @@ from authentication.models import Account
 from recipies.models import Recipe, RecipeSteps
 from recipies.serializers import RecipeSerializer, RecipeStepsSerializer
 
+class Utility(TestCase):
+    """Utility class para testing"""
+
+    @staticmethod
+    def checkElement(test_instance, model, data):
+        """Helper Function. Either check two values against on another or call correct helper function"""
+        # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
+        # compare the elements
+        if type(model) is list:
+            Utility.checkArrayModel(test_instance, model, data)
+        elif type(model) is dict:
+            Utility.checkDictModel(test_instance, model, data)
+        else:
+            test_instance.assertEqual(model, data)
+
+    @staticmethod
+    def checkArrayModel(test_instance, model, data):
+        """Helper function. Check an array to see if the model data is present in the data array"""
+
+        for i in range(len(model)):
+            Utility.checkElement(test_instance, model[i], data[i])
+    
+    @staticmethod
+    def checkDictModel(test_instance, model, data):
+        """Helper function. Check a model dictionary against a data dictionary key by key"""
+        for key in model.keys():
+            Utility.checkElement(test_instance, model.get(key), data.__dict__.get(key))
 
 # Create your tests here.
 class TestRecipeModel(TestCase):
@@ -71,36 +98,14 @@ class TestRecipeModel(TestCase):
     self.hops_data=None
     self.user.delete()
 
-  def checkElement(self, model, data):
-    """Helper Function. Either check two values against on another or call correct helper function"""
-    # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
-    # compare the elements
-    if type(model) is list:
-      self.checkArrayModel(model, data)
-    elif type(model) is dict:
-      self.checkDictModel(model, data)
-    else:
-      self.assertEqual(model, data)
-
-  def checkArrayModel(self, model, data):
-    """Helper function. Check an array to see if the model data is present in the data array"""
-
-    for i in range(len(model)):
-      self.checkElement(model[i], data[i])
-
-  def checkDictModel(self, model, data):
-    """Helper function. Check a model dictionary against a data dictionary key by key"""
-    for key in model.keys():
-      self.checkElement(model.get(key), data.__dict__.get(key))
-
   def test_RecipeManager_CreateValidRecipe(self):
     recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
     self.assertIsInstance(recipe, Recipe)
 
-    self.checkElement(self.hops_data, recipe.recipe_hops.order_by("hop_name"))
-    self.checkElement(self.malts_data, recipe.recipe_malts.order_by("malt_brand"))
-    self.checkElement(self.recipe_data, recipe)
+    Utility.checkElement(self, self.hops_data, recipe.recipe_hops.order_by("hop_name"))
+    Utility.checkElement(self, self.malts_data, recipe.recipe_malts.order_by("malt_brand"))
+    Utility.checkElement(self, self.recipe_data, recipe)
 
   def test_RecipeManager_FailNoRecipeData(self):
     with self.assertRaises(ValueError) as err:
@@ -151,6 +156,7 @@ class TestRecipeStepModel(TestCase):
         step_obj = RecipeSteps.objects.save_step(step_data, recipe_obj.id)
 
         self.assertIsInstance(step_obj, RecipeSteps)
+        Utility.checkElement(self, step_data, step_obj)
 
 class TestRecipeSerializer(TestCase):
   """Test the serializers for the recipe class"""
@@ -179,37 +185,15 @@ class TestRecipeSerializer(TestCase):
     malts = data.pop("recipe_malts")
     return Recipe.objects.create_recipe(user, data, malts, hops)
 
-  def checkElement(self, model, data):
-    """Helper Function. Either check two values against on another or call correct helper function"""
-    # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
-    # compare the elements
-    if type(model) is list:
-      self.checkArrayModel(model, data)
-    elif type(model) is dict:
-      self.checkDictModel(model, data)
-    else:
-      self.assertEqual(model, data)
-
-  def checkArrayModel(self, model, data):
-    """Helper function. Check an array to see if the model data is present in the data array"""
-
-    for i in range(len(model)):
-      self.checkElement(model[i], data[i])
-
-  def checkDictModel(self, model, data):
-    """Helper function. Check a model dictionary against a data dictionary key by key"""
-    for key in model.keys():
-      self.checkElement(model.get(key), data.__dict__.get(key))
-
   def test_RecipeSerializer_Create_ValidData(self):
     serialized_data = RecipeSerializer(data=self.data)
 
     self.assertTrue(serialized_data.is_valid())
 
     recipe = serialized_data.save(user=self.account)
-    self.checkElement(self.data.pop('recipe_hops'), recipe.recipe_hops.order_by("hop_name"))
-    self.checkElement(self.data.pop('recipe_malts'), recipe.recipe_malts.order_by("malt_brand"))
-    self.checkElement(self.data, recipe)
+    Utility.checkElement(self, self.data.pop('recipe_hops'), recipe.recipe_hops.order_by("hop_name"))
+    Utility.checkElement(self, self.data.pop('recipe_malts'), recipe.recipe_malts.order_by("malt_brand"))
+    Utility.checkElement(self, self.data, recipe)
 
   def test_RecipeSerializer_Update_ValidData(self):
     premade_recipe = self.createRecipe(self.account, self.data)
@@ -243,9 +227,9 @@ class TestRecipeSerializer(TestCase):
 
     updated_recipe = serializer.save()
 
-    self.checkElement(self.data.pop('recipe_hops'), updated_recipe.recipe_hops.order_by("hop_name"))
-    self.checkElement(self.data.pop('recipe_malts'), updated_recipe.recipe_malts.order_by("malt_brand"))
-    self.checkElement(self.data, updated_recipe)
+    Utility.checkElement(self, self.data.pop('recipe_hops'), updated_recipe.recipe_hops.order_by("hop_name"))
+    Utility.checkElement(self, self.data.pop('recipe_malts'), updated_recipe.recipe_malts.order_by("malt_brand"))
+    Utility.checkElement(self, self.data, updated_recipe)
 
 class TestRecipeStepsSerializer(TestCase):
 
@@ -315,29 +299,6 @@ class TestRecipeViews(TestCase):
     for recipe in Recipe.objects.all():
       recipe.delete()
 
-  def checkElement(self, model, data):
-    """Helper Function. Either check two values against on another or call correct helper function"""
-    # IF the type is a list or dict, call the correct function to check its elements. ELSE directly
-    # compare the elements
-    if type(model) is list:
-      self.checkArrayModel(model, data)
-    elif type(model) is dict:
-      self.checkDictModel(model, data)
-    else:
-      self.assertEqual(model, data)
-
-  def checkArrayModel(self, model, data):
-    """Helper function. Check an array to see if the model data is present in the data array"""
-    # print model
-    # print data
-    for i in range(len(model)):
-      self.checkElement(model[i], data[i])
-
-  def checkDictModel(self, model, data):
-    """Helper function. Check a model dictionary against a data dictionary key by key"""
-    for key in model.keys():
-      self.checkElement(model.get(key), data.__dict__.get(key))
-
   def test_RecipeViews_ListRecipes_HasRecipes(self):
     response = self.client.get('/api/v1/recipe/')
 
@@ -383,7 +344,7 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.status_code, 200)
 
     # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
-    # self.checkElement(recipe_data, response.data)
+    # Utility.checkElement(self, recipe_data, response.data)
 
   def test_RecipeViews_DestroyRecipe_InvalidId(self):
 
@@ -417,7 +378,7 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.reason_phrase.lower(), 'created')
     self.assertEqual(response.data['message'], 'Recipe has been created.')
     # TODO: Deal with the ordered dict that is returned
-    # self.checkElement(new_recipe, response.data['recipe'])
+    # Utility.checkElement(self, new_recipe, response.data['recipe'])
 
   def test_RecipeViews_CreateRecipe_InvalidData(self):
 
@@ -446,7 +407,7 @@ class TestRecipeViews(TestCase):
     self.assertEqual(response.reason_phrase.lower(), 'created')
     self.assertEqual(response.data['message'], 'Recipe has been updated.')
     # TODO: Deal with those damn ordered dicts
-    # self.checkElement(recipe_data, response.data['recipe'])
+    # Utility.checkElement(self, recipe_data, response.data['recipe'])
 
   def test_RecipeViews_UpdateRecipe_InvalidId(self):
     recipe_data = self.data[0]
