@@ -247,6 +247,40 @@ class TestRecipeSerializer(TestCase):
     self.checkElement(self.data.pop('recipe_malts'), updated_recipe.recipe_malts.order_by("malt_brand"))
     self.checkElement(self.data, updated_recipe)
 
+class TestRecipeStepsSerializer(TestCase):
+
+    def setUp(self):
+        self.recipe_data = dict(
+          recipe_name="Test Recipe",
+          recipe_style="Kolsch",
+          recipe_notes="This is my first test recipe submited from a unit test.",
+          last_brew_date=datetime.now()
+        )
+        self.user = Account.objects.create_user('test', 'foo')
+        self.recipe = Recipe.objects.create_recipe(self.user, self.recipe_data)
+
+    def tearDown(self):
+      self.recipe_data = None
+      self.user.delete()
+      self.recipe.delete()
+      
+    def test_RecipeStepsSerializer_ValidData(self):
+        step_data = dict(
+            step_order=3,
+            step='You put the lime in the coke you nut',
+            recipe=self.recipe.id,
+        )
+
+        validated_step = RecipeStepsSerializer(data=step_data)
+        
+        valid=validated_step.is_valid()
+        self.assertTrue(valid)
+
+        step = validated_step.save(recipe_id=self.recipe.id)
+
+        self.assertIsInstance(step, RecipeSteps)
+
+
 class TestRecipeViews(TestCase):
   """Check all of the http urls for the recipes"""
 
