@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
-from recipies.models import Recipe
-from recipies.serializers import RecipeSerializer
+from recipies.models import Recipe, RecipeSteps
+from recipies.serializers import RecipeSerializer, RecipeStepsSerializer
 
 # Create your views here.
 class RecipeViewSet(viewsets.ViewSet):
@@ -99,3 +99,16 @@ class RecipeViewSet(viewsets.ViewSet):
     recipe.delete()
 
     return Response({},status=status.HTTP_204_NO_CONTENT)
+
+class RecipeStepsViewSet(viewsets.ViewSet):
+  serializer_class = RecipeStepsSerializer
+
+  def list(self, request, recipe_pk=None):
+    queryset = RecipeSteps.objects.filter(recipe_id = recipe_pk)
+
+    serializer = RecipeStepsSerializer(queryset, many=True)
+
+    if len(serializer.data) == 0:
+      return Response({}, status=status.HTTP_204_NO_CONTENT)
+    else:
+      return Response(serializer.data)

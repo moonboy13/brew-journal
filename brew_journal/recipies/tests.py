@@ -264,6 +264,80 @@ class TestRecipeStepsSerializer(TestCase):
 
         self.assertIsInstance(step, RecipeSteps)
 
+class TestRecipeStepsViews(TestCase):
+
+    def setUp(self):
+        # Get a referene to the Django testing AJAX client
+        self.client = Client()
+        # Create a user for use in creating a stub recipe
+        self.user = Account.objects.create_user(username='foot',password='bar2',email='fake@test.com',first_name='john',last_name='doe')
+        self.recipe_data = dict(
+            recipe_name="Test Recipe",
+            recipe_style="Kolsch",
+            recipe_notes="This is my first test recipe submited from a unit test.",
+            last_brew_date=datetime.now()
+        )
+        self.malts_data = [
+            dict(
+                malt_brand="ABrand",
+                malt_type="Extra Light",
+                amount_by_weight=3.3,
+            ),
+            dict(
+                malt_brand="BBrand",
+                malt_type="Crystal",
+                amount_by_weight=1.5,
+                malt_extract=False
+            ),
+            dict(
+                malt_brand="CBrand",
+                malt_type="Light",
+                amount_by_weight=3,
+                dry_malt=True,
+            ),
+        ]
+        self.hops_data = [
+            dict(
+                hop_name="Amarillo",
+                alpha_acid_content=12.3,
+                beta_acid_content=7.9,
+                add_time=15,
+                add_time_unit="Minutes",
+            ),
+            dict(
+                hop_name="Cascade",
+                alpha_acid_content=8.8,
+                add_time=60,
+                add_time_unit="Minutes",
+            ),
+            dict(
+                hop_name="Citra",
+                alpha_acid_content=7.9,
+                beta_acid_content=4.6,
+                add_time=7,
+                add_time_unit="Days",
+                dry_hops=True,
+            ),
+        ]
+        # Generate the fake recipe
+        self.recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
+
+    def tearDown(self):
+        self.client = None
+        self.user.delete()
+        self.user = None
+        self.recipe_data = None
+        self.recipe.delete()
+        self.recipe = None
+        self.malts_data = None
+        self.hops_data = None
+
+    def test_RecipeStepsViews_ListNoSteps(self):
+       db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
+
+       response = self.client.get('/api/v1/recipe/' + str(db_entry.id) + '/step/')
+
+       self.assertEqual(response.status_code, 204)
 
 class TestRecipeViews(TestCase):
   """Check all of the http urls for the recipes"""
