@@ -331,6 +331,8 @@ class TestRecipeStepsView(TestCase):
         self.recipe = None
         self.malts_data = None
         self.hops_data = None
+        for step in RecipeSteps.objects.all():
+          step.delete()
 
     def getRecipeId(self):
       db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
