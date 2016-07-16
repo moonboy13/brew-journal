@@ -264,7 +264,7 @@ class TestRecipeStepsSerializer(TestCase):
 
         self.assertIsInstance(step, RecipeSteps)
 
-class TestRecipeStepsViews(TestCase):
+class TestRecipeStepsView(TestCase):
 
     def setUp(self):
         # Get a referene to the Django testing AJAX client
@@ -332,12 +332,43 @@ class TestRecipeStepsViews(TestCase):
         self.malts_data = None
         self.hops_data = None
 
-    def test_RecipeStepsViews_ListNoSteps(self):
+    def test_RecipeStepsView_ListNoSteps(self):
        db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
 
        response = self.client.get('/api/v1/recipe/' + str(db_entry.id) + '/step/')
 
        self.assertEqual(response.status_code, 204)
+
+    def test_RecipeStepsView_ListSteps(self):
+        recipe_db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
+        
+        step_data = [
+            dict(
+                step='This is a step',
+                step_order=1
+            ),
+            dict(
+                step='This is the second step',
+                step_order=2
+            )
+        ]
+        
+        for step in step_data:
+            step_obj = RecipeSteps.objects.save_step(step, recipe_db_entry.id)
+
+        response = self.client.get('/api/v1/recipe/' + str(recipe_db_entry.id) + '/step/')
+
+        self.assertEqual(response.status_code, 200)
+        # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
+        #Utility.checkElement(self, step_data, response.data)
+
+    def test_RecipeStepsView_ListStepsInvalidRecipe(self):
+
+        response = self.client.get('/api/v1/recipe/' + str(9999) + '/step/')
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.reason_phrase.lower(), 'not found')
+        self.assertEqual(response.data['detail'].lower(), 'not found.')
 
 class TestRecipeViews(TestCase):
   """Check all of the http urls for the recipes"""

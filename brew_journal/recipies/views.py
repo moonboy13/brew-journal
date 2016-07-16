@@ -104,6 +104,10 @@ class RecipeStepsViewSet(viewsets.ViewSet):
   serializer_class = RecipeStepsSerializer
 
   def list(self, request, recipe_pk=None):
+    
+    # Make sure the recipe exists before trying to get its steps
+    get_object_or_404(Recipe, pk=recipe_pk)
+
     queryset = RecipeSteps.objects.filter(recipe_id = recipe_pk)
 
     serializer = RecipeStepsSerializer(queryset, many=True)
