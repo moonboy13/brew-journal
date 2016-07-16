@@ -332,16 +332,18 @@ class TestRecipeStepsView(TestCase):
         self.malts_data = None
         self.hops_data = None
 
-    def test_RecipeStepsView_ListNoSteps(self):
-       db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
+    def getRecipeId(self):
+      db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
+      return db_entry.id
 
-       response = self.client.get('/api/v1/recipe/' + str(db_entry.id) + '/step/')
+    def test_RecipeStepsView_ListNoSteps(self):
+       response = self.client.get('/api/v1/recipe/' + str(self.getRecipeId()) + '/step/')
 
        self.assertEqual(response.status_code, 204)
 
     def test_RecipeStepsView_ListSteps(self):
-        recipe_db_entry = Recipe.objects.get(recipe_name=self.recipe_data['recipe_name'])
-        
+        recipe_id = self.getRecipeId() 
+
         step_data = [
             dict(
                 step='This is a step',
@@ -354,9 +356,9 @@ class TestRecipeStepsView(TestCase):
         ]
         
         for step in step_data:
-            step_obj = RecipeSteps.objects.save_step(step, recipe_db_entry.id)
+            step_obj = RecipeSteps.objects.save_step(step, recipe_id)
 
-        response = self.client.get('/api/v1/recipe/' + str(recipe_db_entry.id) + '/step/')
+        response = self.client.get('/api/v1/recipe/' + str(recipe_id) + '/step/')
 
         self.assertEqual(response.status_code, 200)
         # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
