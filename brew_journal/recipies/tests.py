@@ -374,6 +374,14 @@ class TestRecipeStepsView(TestCase):
         self.assertEqual(response.reason_phrase.lower(), 'not found')
         self.assertEqual(response.data['detail'].lower(), 'not found.')
 
+    def test_RecipeStepsView_RetrieveStep(self):
+
+      response = self.client.get('/api/v1/recipe/' + str(self.getRecipeId()) + '/step/7/')
+
+      self.assertEqual(response.status_code, 404)
+      self.assertEqual(response.data['status'].lower(), 'not found')
+      self.assertEqual(response.data['message'].lower(), 'retrieval of a singular recipe step by id not implemented. try removing the step id to get information.')
+
 class TestRecipeViews(TestCase):
   """Check all of the http urls for the recipes"""
 

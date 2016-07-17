@@ -116,3 +116,9 @@ class RecipeStepsViewSet(viewsets.ViewSet):
       return Response({}, status=status.HTTP_204_NO_CONTENT)
     else:
       return Response(serializer.data)
+
+  def retrieve(self, request, pk, recipe_pk=None):
+    return Response({
+      'status'  : 'NOT FOUND',
+      'message' : 'Retrieval of a singular recipe step by id not implemented. Try removing the step id to get information.',
+      }, status=status.HTTP_404_NOT_FOUND)
