@@ -122,3 +122,19 @@ class RecipeStepsViewSet(viewsets.ViewSet):
       'status'  : 'NOT FOUND',
       'message' : 'Retrieval of a singular recipe step by id not implemented. Try removing the step id to get information.',
       }, status=status.HTTP_404_NOT_FOUND)
+
+  def create(self, request, recipe_pk=None):
+
+    # Remove all existing steps. Always doing a full smash and replace for steps.
+    for step in RecipeSteps.objects.filter(recipe_id=recipe_pk):
+        step.delete()
+
+    for new_step in request.data:
+        new_step['recipe'] = recipe_pk
+        serialized_step = self.serializer_class(data=new_step)
+        if serialized_step.is_valid():
+            serialized_step.save(recipe_id=recipe_pk)
+
+    return Response({
+        'message': 'Steps have been created.'
+    },status=status.HTTP_201_CREATED)

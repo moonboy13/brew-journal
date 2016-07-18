@@ -382,6 +382,28 @@ class TestRecipeStepsView(TestCase):
       self.assertEqual(response.data['status'].lower(), 'not found')
       self.assertEqual(response.data['message'].lower(), 'retrieval of a singular recipe step by id not implemented. try removing the step id to get information.')
 
+    def test_RecipeStepsView_CreateMultipleSteps(self):
+      step_data = [
+        dict(
+            step='This is a step',
+            step_order=1
+        ),
+        dict(
+            step='This is the second step',
+            step_order=2
+        )
+      ]
+      json_step_data = json.dumps(step_data)
+
+      response = self.client.post('/api/v1/recipe/' + str(self.getRecipeId()) + '/step/', data=json_step_data, content_type='application/json')
+
+      self.assertEqual(response.status_code, 201)
+      self.assertEqual(response.reason_phrase.lower(), 'created')
+      self.assertEqual(response.data['message'], 'Steps have been created.')
+      print RecipeSteps.objects.filter(recipe_id=self.getRecipeId())
+      # TODO: Leaving this off for now until I can figure out how to compare an orderdDict to regular dict.
+      #Utility.checkElement(self, step_data, response.data['steps'])
+
 class TestRecipeViews(TestCase):
   """Check all of the http urls for the recipes"""
 
