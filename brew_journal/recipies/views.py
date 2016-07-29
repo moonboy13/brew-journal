@@ -139,8 +139,8 @@ class RecipeStepsViewSet(viewsets.ViewSet):
             'message': 'Steps have been created.'
         },status=status.HTTP_201_CREATED)
 
-    def update(self, request):
+    def update(self, request, pk=None, recipe_pk=None):
         return Response({
             'status'  : 'NOT FOUND',
-            'message' : '',
+            'message' : 'Not supported.',
         }, status=status.HTTP_404_NOT_FOUND)
