@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h1>Recipe Steps</h1>
+
+        <div id="stepsPanel" class="well steps-panel">
+            <step ng-repeat="step in ctrl.steps track by $index"></step>
+            <div class="row">
+                <button type="button" class="btn btn-success" ng-click="ctrl.addStep()">Add Step</button>
+            </div>
+            <div class="row"> 
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" class="btn pull-right" ng-click="ctrl.clearForm()">Clear Form</button>
+            </div>
+        </div>
+    </div>
+</div>
