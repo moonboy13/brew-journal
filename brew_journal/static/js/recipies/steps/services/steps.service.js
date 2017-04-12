@@ -21,6 +21,13 @@
          * @desc The Factory to be returned to handle steps
          */
         var Steps = {
+            test: test
         };
+
+        return Steps;
+
+        function test() {
+            return 7;
+        }
     }
 })();

@@ -1,9 +1,19 @@
-describe('RecipeStepsService', function () {
+describe('Steps', function () {
+    var $httpBackend, myFactory;
+
     // TEST SETUP //
     beforeEach(module('brew_journal.recipies.steps.services'));
 
+    beforeEach(inject(function($injector, Steps) {
+        myFactory = Steps;
+
+        $httpBackend = $injector.get('$httpBackend');
+    }));
+
     // TESTS //
-    it('should be defined', function() {});
+    it('should be defined', function() {
+        expect(myFactory).toBeDefined();
+    });
 
     it('should retrieve user recipies', function() {});
 
@@ -13,7 +23,7 @@ describe('RecipeStepsService', function () {
 
 });
 
-describe('RecipeStepsController', function () {
+describe('StepsController', function () {
     // Testing setup
     var $conroller, $rootScope, $location, myController;
 
@@ -25,7 +35,7 @@ describe('RecipeStepsController', function () {
         $location   = $injector.get('$location');
 
         var $scope = {};
-        myController = $controller('RecipeStepsController', {$scope: $scope});
+        myController = $controller('StepsController', {$scope: $scope});
     }));
   
     it('should be defined', function() {});
