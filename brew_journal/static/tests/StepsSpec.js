@@ -45,6 +45,12 @@ describe('Steps', function () {
     });
 
     it('should retrieve the customized steps for a recipe', function() {
+        var data;
+        myFactory.listRecipeSteps(7).then(function(response) {data = response;});
+        $httpBackend.flush();
+
+        expect(data.status).toBe(200);
+        expect(data.data.length).toBe(3);
     });
 
     it('should save a users customized steps to the indicated recipe', function() {});
