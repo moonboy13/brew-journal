@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
+    'recipes',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,6 +65,9 @@ DATABASES = {
         'USER':     '<replace_with_your_user>',
         'PASSWORD': '<replace_with_user_pass>',
         'HOST':     'localhost',
+        'TEST': {
+            'NAME' : 'brew_journal_unit_test',
+        }
     }
 }
 
@@ -104,7 +108,10 @@ TEMPLATE_DIRS = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-    )
+    ),
+    'FORM_METHOD_OVERRIDE': None,
+    'FORM_CONTENT_OVERRIDE': None,
+    'FORM_CONTENTTYPE_OVERRIDE': None,
 }
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
