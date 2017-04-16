@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+usage() {
+echo "Usage: $0 [-dh]"
+echo "d - Build a development environment"
+echo "h - Print this help message and exit"
+}
+
+BUILD_DEV=false
+
+while getopts "dh" o; do
+    case "${o}" in
+        d)
+            BUILD_DEV=true
+            ;;
+        h)
+            usage
+            exit 0
+            ;;
+        *)
+            usage
+            exit 0
+            ;;
+    esac
+done
+
+sudo apt-get install -y python pip
+sudo apt-get install -y postgresql-9.3
+
+if [ $BUILD_DEV  ]; then
+    sudo apt-get install -y python-virtualenv virtualenvwrapper build-essential libssl-dev libffi-dev python-dev libjpeg8-dev postgresql-server-dev-9.3
+ 
+    cat 'source /usr/local/bin/virtualenvwrapper.sh' >> ${HOME}/.bashrc
+
+    source ${HOME}/.bashrc
+
+    mkvirtualenv brew_journal
+
+    workon brew_journal
+fi
+
+cp brew_journal/brew_journal/settings_clean.py brew_journal/brew_journal/settings.py
+
+# Generate a random secret key for the settings file
+echo "Generating a random key for settings file"
+date +%s | sha256sum | base64 | head -c 32; echo
+
+# Final steps:
+# 1) Place secret key into settings file
+# 2) Setup database
+# 3) Replace username and password in settings file
+# 4) Run the django migrations to setup db
+# 5) Insert an admin user into the database
+
+exit 0
