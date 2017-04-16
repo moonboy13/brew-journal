@@ -105,9 +105,16 @@ describe('StepsController', function () {
         myController = $controller('StepsController', {$scope: $scope});
     }));
   
-    it('should be defined', function() {});
+    it('should be defined', function() {
+        expect(myController).toBeDefined();
+    });
 
-    it('should redirect to login if no user is logged in', function() {});
+    it('should redirect to login if no user is logged in', function() {
+        myController.activate();
+
+        $rootScope.$digest();
+        expect($location.path()).toBe('/view/login');
+    });
     
     it('should clear the steps when a user changes recipies', function() {});
     
