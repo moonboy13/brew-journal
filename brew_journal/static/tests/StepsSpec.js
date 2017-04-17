@@ -92,7 +92,7 @@ describe('Steps', function () {
 
 describe('StepsController', function () {
     // Testing setup
-    var $conroller, $rootScope, $location, myController;
+    var $conroller, $rootScope, $location, myController, fakeStepsData;
 
     beforeEach(module('brew_journal'));
     
@@ -100,6 +100,8 @@ describe('StepsController', function () {
         $controller = _$controller_;
         $rootScope  = $injector.get('$rootScope');
         $location   = $injector.get('$location');
+
+        fakeStepsData = [{foo:'bar',step_order:1}, {bar:'foo',step_order:2}];
 
         var $scope = {};
         myController = $controller('StepsController', {$scope: $scope});
@@ -116,14 +118,23 @@ describe('StepsController', function () {
         expect($location.path()).toBe('/view/login');
     });
     
-    it('should clear the steps', function() {
-        myController.steps = [{foo:'bar'}, {bar:'foo'}];
+    it('should clear the all steps', function() {
+        myController.steps = fakeStepsData;
         myController.clearSteps();
 
         expect(myController.steps.length).toEqual(0);
     });
     
-    it('should load a blank step form when there are no steps for a recipe', function() {});
+    it('should remove the specified step only', function() {
+        myController.steps = fakeStepsData;
+
+        myController.removeStep(0);
+
+        expect(myController.steps.length).toEqual(1);
+        expect(Object.keys(myController.steps[0])).toContain('bar');
+        expect(myController.steps[0].bar).toEqual('foo');
+        expect(myController.steps[0].step_order).toEqual(1);
+    });
 
     it('should load steps in their indicated order', function() {});
 
