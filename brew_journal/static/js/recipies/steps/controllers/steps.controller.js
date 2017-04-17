@@ -20,6 +20,7 @@
         ctrl.activate = activate;
         ctrl.clearSteps = clearSteps;
         ctrl.removeStep = removeStep;
+        ctrl.loadStepsData = loadStepsData;
 
         // Activate the page
         activate();
@@ -38,6 +39,21 @@
             Recipe.listRecipes().then(loadRecipeDropdown);
           }
         }
+
+        /**
+         * @name loadStepsData
+         * @desc Load the steps information in the order as indicated by the step_order index
+         * @param {Array} stepsData
+         * Array of all the individual step information
+         * @memberOf brew_journal.recipies.steps.controllers.StepsController
+         */
+         function loadStepsData(stepsData) {
+            stepsData = (!stepsData) ? [] : stepsData;
+            stepsData.sort(function(a,b){
+                return a.step_order - b.step_order;
+            });
+            ctrl.steps = stepsData;
+         }
 
         /**
          * @name clearSteps

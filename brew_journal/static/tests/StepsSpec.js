@@ -101,7 +101,7 @@ describe('StepsController', function () {
         $rootScope  = $injector.get('$rootScope');
         $location   = $injector.get('$location');
 
-        fakeStepsData = [{foo:'bar',step_order:1}, {bar:'foo',step_order:2}];
+        fakeStepsData = [{foo:'bar',step_order:2}, {bar:'foo',step_order:3}, {angular:'js', step_order:1}];
 
         var $scope = {};
         myController = $controller('StepsController', {$scope: $scope});
@@ -120,6 +120,7 @@ describe('StepsController', function () {
     
     it('should clear the all steps', function() {
         myController.steps = fakeStepsData;
+
         myController.clearSteps();
 
         expect(myController.steps.length).toEqual(0);
@@ -127,16 +128,31 @@ describe('StepsController', function () {
     
     it('should remove the specified step only', function() {
         myController.steps = fakeStepsData;
+        var nFakeSteps = fakeStepsData.length;
 
         myController.removeStep(0);
 
-        expect(myController.steps.length).toEqual(1);
+        expect(myController.steps.length).toEqual((nFakeSteps - 1));
         expect(Object.keys(myController.steps[0])).toContain('bar');
         expect(myController.steps[0].bar).toEqual('foo');
         expect(myController.steps[0].step_order).toEqual(1);
     });
 
-    it('should load steps in their indicated order', function() {});
+    it('should load steps in their indicated order', function() {
+        myController.loadStepsData(fakeStepsData);
 
-    it('should update step numbers when one is removed', function() {});
+        expect(myController.steps.length).toEqual(fakeStepsData.length);
+        expect(Object.keys(myController.steps[0])).toContain('angular');
+        expect(Object.keys(myController.steps[1])).toContain('foo');
+    });
+
+    it('should load empty steps if no data given', function () {
+        myController.loadStepsData([]);
+
+        expect(myController.steps.length).toEqual(0);
+
+        myController.loadStepsData(null);
+
+        expect(myController.steps.length).toEqual(0);
+    });
 });
