@@ -15,6 +15,8 @@
 
         // Controller variables
         ctrl.steps = [];
+        ctrl.recipes = [{id:null, name:'Loading...'}];
+        ctrl.selectedRecipe = null;
 
         // Controller function references, this makes the function public.
         ctrl.activate = activate;
@@ -78,5 +80,21 @@
                  ctrl.steps[(i-1)].step_order = i;
              }
          }
+
+         /**
+         * @name loadRecipeDropdown
+         * @desc Load the recipe results, indicating if there are none.
+         * @param {Array} Recipe identification information
+         * @memberOf brew_journal.recipies.controllers.RecipeController
+         */
+        function loadRecipeDropdown(userRecipes) {
+          // 204 status indicates there was no content
+          if(userRecipes.status === 204) {
+            ctrl.recipes = [{id:null, name: "No Recipes"}];
+            ctrl.selectedRecipe = ctrl.recipes[0];
+          } else {
+            ctrl.recipes = userRecipes.data;
+          }
+        }
     }
 })();
