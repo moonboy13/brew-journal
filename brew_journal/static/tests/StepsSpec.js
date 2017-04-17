@@ -116,7 +116,12 @@ describe('StepsController', function () {
         expect($location.path()).toBe('/view/login');
     });
     
-    it('should clear the steps when a user changes recipies', function() {});
+    it('should clear the steps', function() {
+        myController.steps = [{foo:'bar'}, {bar:'foo'}];
+        myController.clearSteps();
+
+        expect(myController.steps.length).toEqual(0);
+    });
     
     it('should load a blank step form when there are no steps for a recipe', function() {});
 

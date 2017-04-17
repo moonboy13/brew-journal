@@ -13,8 +13,12 @@
     function StepsController($scope, $location, Steps, Authentication, Recipe) {
         var ctrl = this;
 
+        // Controller variables
+        ctrl.steps = [];
+
         // Controller function references
         ctrl.activate = activate;
+        ctrl.clearSteps = clearSteps;
 
         // Activate the page
         activate();
@@ -33,5 +37,15 @@
             Recipe.listRecipes().then(loadRecipeDropdown);
           }
         }
+
+        /**
+         * @name clearSteps
+         * @desc Clear all steps from the UI
+         * @param none
+         * @memberOf brew_journal.recipies.steps.controllers.StepsController
+         */
+         function clearSteps() {
+             ctrl.steps = [];
+         }
     }
 })();
