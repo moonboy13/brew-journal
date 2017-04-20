@@ -121,7 +121,7 @@ describe('StepsController', function () {
     it('should clear the all steps', function() {
         myController.steps = fakeStepsData;
 
-        myController.clearSteps();
+        myController.clearForm();
 
         expect(myController.steps.length).toEqual(0);
     });

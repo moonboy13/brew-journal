@@ -20,7 +20,7 @@
 
         // Controller function references, this makes the function public.
         ctrl.activate = activate;
-        ctrl.clearSteps = clearSteps;
+        ctrl.clearForm = clearForm;
         ctrl.removeStep = removeStep;
         ctrl.loadStepsData = loadStepsData;
 
@@ -72,7 +72,7 @@
 
 
         /**
-         * @name clearSteps
+         * @name clearForm
          * @desc Clear all steps from the UI
          * @param none
          * @memberOf brew_journal.recipies.steps.controllers.StepsController
