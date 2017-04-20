@@ -5,12 +5,12 @@
         .module('brew_journal.recipies.steps.controllers')
         .controller('StepsController', StepsController);
 
-    StepsController.$inject = ['$scope', '$location', 'Steps', 'Authentication', 'Recipe'];
+    StepsController.$inject = ['$scope', '$location', 'Steps', 'Authentication', 'Recipe', 'messageCenterService'];
 
     /**
     * @namespace StepsController
     */
-    function StepsController($scope, $location, Steps, Authentication, Recipe) {
+    function StepsController($scope, $location, Steps, Authentication, Recipe, messageCenterService) {
         var ctrl = this;
 
         // Controller variables
@@ -63,7 +63,7 @@
          * @param none
          * @memberOf brew_journal.recipies.steps.controllers.StepsController
          */
-         function clearSteps() {
+         function clearForm() {
              ctrl.steps = [];
          }
 
@@ -85,7 +85,7 @@
          * @name loadRecipeDropdown
          * @desc Load the recipe results, indicating if there are none.
          * @param {Array} Recipe identification information
-         * @memberOf brew_journal.recipies.controllers.RecipeController
+         * @memberOf brew_journal.recipies.steps.controllers.RecipeController
          */
         function loadRecipeDropdown(userRecipes) {
           // 204 status indicates there was no content
@@ -95,6 +95,30 @@
           } else {
             ctrl.recipes = userRecipes.data;
           }
+        }
+
+        /**
+        * @name saveRecipeSteps
+        * @desc Collect the UI data and save them steps.
+        * @param none
+        * @memberOf brew_journal.recipies.steps.controllers.StepsController
+        */
+        function saveRecipeSteps() {
+            Steps.saveRecipeSteps(ctrl.selectedRecipe.id, ctrl.steps).then(handleSaveStepsResponse, handleSaveStepsResponse);
+        }
+
+        /**
+        * @name handleSaveStepsResponse
+        * @desc Handle the returned object from the save action
+        * @param
+        * @memberOf brew_journal.recipies.steps.controllers.StepsController
+        */
+        function handleSaveStepsResponse(responseObj) {
+            if(responseObj.status == 201) {
+                messageCenterService.add('success', "Your recipe steps have been updated.", {timeout: 3000});
+            } else {
+                messageCenterService.add('danger', "There was an error saving the recipe. Please try again.", {timeout: 3000});
+            }
         }
     }
 })();
