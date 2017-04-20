@@ -57,6 +57,20 @@
             ctrl.steps = stepsData;
          }
 
+         /**
+         * @name addStep
+         * @desc Add a single step to the UI
+         * @param none
+         * @memberOf brew_journal.recipies.steps.controllers.StepsController
+         */
+         function addStep() {
+             ctrl.steps.push({
+                step_order: (ctrl.steps.length + 1),
+                step: ''
+             });
+         }
+
+
         /**
          * @name clearSteps
          * @desc Clear all steps from the UI
