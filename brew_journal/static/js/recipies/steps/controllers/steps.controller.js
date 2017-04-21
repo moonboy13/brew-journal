@@ -21,6 +21,7 @@
         // Controller function references, this makes the function public.
         ctrl.activate = activate;
         ctrl.clearForm = clearForm;
+        ctrl.addStep = addStep;
         ctrl.removeStep = removeStep;
         ctrl.loadStepsData = loadStepsData;
 
