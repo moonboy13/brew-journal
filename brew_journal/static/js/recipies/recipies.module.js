@@ -6,7 +6,8 @@
     .module('brew_journal.recipies', [
       'brew_journal.recipies.controllers',
       'brew_journal.recipies.services',
-      'brew_journal.recipies.directives'
+      'brew_journal.recipies.directives',
+      'brew_journal.recipies.steps'
     ]);
 
   // Handle dependancy injection for controllers and services
