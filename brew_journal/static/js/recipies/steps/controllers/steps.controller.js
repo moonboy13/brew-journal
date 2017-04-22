@@ -16,7 +16,7 @@
         // Controller variables
         ctrl.steps = [];
         ctrl.recipes = [{id:null, name:'Loading...'}];
-        ctrl.selectedRecipe = null;
+        ctrl.recipe_id = null;
 
         // Controller function references, this makes the function public.
         ctrl.activate = activate;
@@ -24,6 +24,8 @@
         ctrl.addStep = addStep;
         ctrl.removeStep = removeStep;
         ctrl.loadStepsData = loadStepsData;
+        ctrl.saveRecipeSteps = saveRecipeSteps;
+        ctrl.onRecipeSelect = onRecipeSelect;
 
         // Activate the page
         activate();
@@ -51,7 +53,7 @@
          * @memberOf brew_journal.recipies.steps.controllers.StepsController
          */
          function loadStepsData(stepsData) {
-            stepsData = (!stepsData) ? [] : stepsData;
+            stepsData = (!stepsData.data || !Array.isArray(stepsData.data)) ? [] : stepsData.data;
             stepsData.sort(function(a,b){
                 return a.step_order - b.step_order;
             });
@@ -106,20 +108,34 @@
           // 204 status indicates there was no content
           if(userRecipes.status === 204) {
             ctrl.recipes = [{id:null, name: "No Recipes"}];
-            ctrl.selectedRecipe = ctrl.recipes[0];
+            ctrl.recipe_id = null;
           } else {
             ctrl.recipes = userRecipes.data;
           }
         }
 
         /**
-        * @name saveRecipeSteps
+         * @name onRecipeSelect
+         * @desc As long as the id isn't null, pull recipe data
+         * @param {int} Id of the selected recipe to load
+         * @memberOf brew_journal.recipies.controllers.RecipeController
+         */
+        function onRecipeSelect (selectedRecipeId) {
+            if(selectedRecipeId !== null) {
+                ctrl.recipe_id = selectedRecipeId;
+                Steps.listRecipeSteps(selectedRecipeId).then(loadStepsData);
+            }
+        }
+
+
+        /**
+        * @name save
         * @desc Collect the UI data and save them steps.
         * @param none
         * @memberOf brew_journal.recipies.steps.controllers.StepsController
         */
         function saveRecipeSteps() {
-            Steps.saveRecipeSteps(ctrl.selectedRecipe.id, ctrl.steps).then(handleSaveStepsResponse, handleSaveStepsResponse);
+            Steps.saveRecipeSteps(ctrl.recipe_id, ctrl.steps).then(handleSaveStepsResponse, handleSaveStepsResponse);
         }
 
         /**
