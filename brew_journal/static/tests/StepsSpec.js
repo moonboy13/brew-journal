@@ -101,7 +101,7 @@ describe('StepsController', function () {
         $rootScope  = $injector.get('$rootScope');
         $location   = $injector.get('$location');
 
-        fakeStepsData = [{foo:'bar',step_order:2}, {bar:'foo',step_order:3}, {angular:'js', step_order:1}];
+        fakeStepsData = {data:[{foo:'bar',step_order:2}, {bar:'foo',step_order:3}, {angular:'js', step_order:1}]};
 
         var $scope = {};
         myController = $controller('StepsController', {$scope: $scope});
@@ -119,7 +119,7 @@ describe('StepsController', function () {
     });
     
     it('should clear the all steps', function() {
-        myController.steps = fakeStepsData;
+        myController.steps = fakeStepsData.data;
 
         myController.clearForm();
 
@@ -127,8 +127,8 @@ describe('StepsController', function () {
     });
     
     it('should remove the specified step only', function() {
-        myController.steps = fakeStepsData;
-        var nFakeSteps = fakeStepsData.length;
+        myController.steps = fakeStepsData.data;
+        var nFakeSteps = fakeStepsData.data.length;
 
         myController.removeStep(0);
 
@@ -141,7 +141,7 @@ describe('StepsController', function () {
     it('should load steps in their indicated order', function() {
         myController.loadStepsData(fakeStepsData);
 
-        expect(myController.steps.length).toEqual(fakeStepsData.length);
+        expect(myController.steps.length).toEqual(fakeStepsData.data.length);
         expect(Object.keys(myController.steps[0])).toContain('angular');
         expect(Object.keys(myController.steps[1])).toContain('foo');
     });
