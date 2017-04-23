@@ -27,16 +27,16 @@ class RecipeManager(models.Manager):
                 new_hop = recipe.recipe_hops.create(
                     hop_name=hop['hop_name'],
                     alpha_acid_content=hop['alpha_acid_content'],
-                    add_time=hop['add_time'],
-                    add_time_unit=hop['add_time_unit'],
+                    hop_weight=hop['hop_weight'],
+                    hop_weight_uom=hop['hop_weight_uom'],
                 )
                 if 'beta_acid_content' in hop:
-                    new_hop.beta_acid_content = hop['beta_acid_content']
+                  new_hop.beta_acid_content = hop['beta_acid_content']
 
-            if 'dry_hops' in hop and hop['dry_hops']:
-                new_hop.dry_hops = hop['dry_hops']
+                if 'dry_hops' in hop and hop['dry_hops']:
+                  new_hop.dry_hops = hop['dry_hops']
 
-            new_hop.save()
+                new_hop.save()
 
         if malts_data is not None:
             for malt in malts_data:
@@ -48,10 +48,10 @@ class RecipeManager(models.Manager):
                 if 'malt_extract' in malt:
                     new_malt.malt_extract = malt['malt_extract']
 
-            if 'dry_malt' in malt and malt['dry_malt']:
-                new_malt.dry_malt=malt['dry_malt']
+                if 'dry_malt' in malt and malt['dry_malt']:
+                    new_malt.dry_malt=malt['dry_malt']
 
-            new_malt.save()
+                new_malt.save()
 
         recipe.save()
         return recipe

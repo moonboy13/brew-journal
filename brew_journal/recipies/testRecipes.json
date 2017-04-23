@@ -8,8 +8,8 @@
       {
         "hop_name":"Amarillo",
         "alpha_acid_content":8.8,
-        "add_time":30,
-        "add_time_unit":"minutes"
+        "hop_weight":3.0,
+        "hop_weight_uom":"g"
       }
     ],
     "recipe_malts":[
@@ -29,8 +29,8 @@
       {
         "hop_name":"Tettnag",
         "alpha_acid_content":6.2,
-        "add_time":45,
-        "add_time_unit":"minutes"
+        "hop_weight":4.5,
+        "hop_weight_uom":"oz"
       }
     ],
     "recipe_malts":[
