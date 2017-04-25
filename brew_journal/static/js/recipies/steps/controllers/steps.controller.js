@@ -53,7 +53,7 @@
          * @memberOf brew_journal.recipies.steps.controllers.StepsController
          */
          function loadStepsData(stepsData) {
-            stepsData = (!stepsData.data || !Array.isArray(stepsData.data)) ? [] : stepsData.data;
+            stepsData = ( !stepsData || !('data' in stepsData) || !stepsData.data || !Array.isArray(stepsData.data)) ? [] : stepsData.data;
             stepsData.sort(function(a,b){
                 return a.step_order - b.step_order;
             });

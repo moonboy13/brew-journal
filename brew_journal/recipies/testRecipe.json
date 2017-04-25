@@ -7,8 +7,8 @@
     {
       "hop_name":"Amarillo",
       "alpha_acid_content":8.8,
-      "add_time":30,
-      "add_time_unit":"minutes"
+      "hop_weight":1.6,
+      "hop_weight_uom":"g"
     }
   ],
   "recipe_malts":[

@@ -72,21 +72,21 @@ class TestRecipeModel(TestCase):
                 hop_name="Amarillo",
                 alpha_acid_content=12.3,
                 beta_acid_content=7.9,
-                add_time=15,
-                add_time_unit="Minutes",
+                hop_weight=1.5,
+                hop_weight_uom="g",
             ),
             dict(
                 hop_name="Cascade",
                 alpha_acid_content=8.8,
-                add_time=60,
-                add_time_unit="Minutes",
+                hop_weight=0.5,
+                hop_weight_uom="oz",
             ),
             dict(
                 hop_name="Citra",
                 alpha_acid_content=7.9,
                 beta_acid_content=4.6,
-                add_time=7,
-                add_time_unit="Days",
+                hop_weight=1.0,
+                hop_weight_uom="oz",
                 dry_hops=True,
             ),
         ]
@@ -102,7 +102,6 @@ class TestRecipeModel(TestCase):
         recipe = Recipe.objects.create_recipe(self.user, self.recipe_data, malts_data=self.malts_data, hops_data=self.hops_data)
 
         self.assertIsInstance(recipe, Recipe)
-
         Utility.checkElement(self, self.hops_data, recipe.recipe_hops.order_by("hop_name"))
         Utility.checkElement(self, self.malts_data, recipe.recipe_malts.order_by("malt_brand"))
         Utility.checkElement(self, self.recipe_data, recipe)
@@ -204,8 +203,8 @@ class TestRecipeSerializer(TestCase):
             hop_name="Tettang",
             alpha_acid_content=8.8,
             beta_acid_content=6.4,
-            add_time=3,
-            add_time_unit="Days",
+            hop_weight=3.4,
+            hop_weight_uom="oz",
             dry_hops=True,
         ))
 
@@ -301,21 +300,21 @@ class TestRecipeStepsView(TestCase):
                 hop_name="Amarillo",
                 alpha_acid_content=12.3,
                 beta_acid_content=7.9,
-                add_time=15,
-                add_time_unit="Minutes",
+                hop_weight=1.5,
+                hop_weight_uom="oz",
             ),
             dict(
                 hop_name="Cascade",
                 alpha_acid_content=8.8,
-                add_time=60,
-                add_time_unit="Minutes",
+                hop_weight=6.0,
+                hop_weight_uom="g",
             ),
             dict(
                 hop_name="Citra",
                 alpha_acid_content=7.9,
                 beta_acid_content=4.6,
-                add_time=7,
-                add_time_unit="Days",
+                hop_weight=1.5,
+                hop_weight_uom="oz",
                 dry_hops=True,
             ),
         ]
