@@ -29,7 +29,8 @@
       isAuthenticated:         isAuthenticated,
       setAuthenticatedAccount: setAuthenticatedAccount,
       unauthenticate:          unauthenticate,
-      getRegistrationResult:   getRegistrationResult
+      getRegistrationResult:   getRegistrationResult,
+      checkAuthentication:     checkAuthentication
     };
 
     return Authentication;
@@ -204,6 +205,28 @@
     function isAuthenticated() {
       return !!$cookies.authenticatedAccount;
     }
+
+    /**
+    * @name checkAuthentication
+    * @desc Authentication check specialized for the router. Will throw an exception when the user is not authenticated.
+    * @returns {None}
+    * @memberOf brew_journal.authentication.services.Authentication
+    */
+    function checkAuthentication() {
+      if(!this.isAuthenticated()) {
+        throw new AuthError();
+      } else {
+        return true;
+      }
+    }
+
+    function AuthError(description) {
+      this.message = "Forbidden";
+      this.description = description || "auth no";
+    }
+
+    AuthError.prototype = Object.create(Error.prototype);
+    AuthError.prototype.constructor = AuthError;
 
     /**
     * @name setAuthenticatedAccount

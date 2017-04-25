@@ -37,12 +37,7 @@
          * @memberOf brew_journal.recipies.steps.controllers.StepsController
          */
         function activate() {
-          // Ensure there is an active user session
-          if(!Authentication.isAuthenticated()) {
-            $location.url('/view/login');
-          } else {
-            Recipe.listRecipes().then(loadRecipeDropdown);
-          }
+          Recipe.listRecipes().then(loadRecipeDropdown);
         }
 
         /**

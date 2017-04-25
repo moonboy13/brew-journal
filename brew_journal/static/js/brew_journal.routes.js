@@ -10,15 +10,15 @@
                     to.$$route.resolve = to.$$route.resolve || {};
                     if(!to.$$route.resolve.authorizationResolver) {
                         to.$$route.resolve.authorizationResolver = ["Authentication", function(Authentication) {
-                            return Authentication.isAuthenticated();
+                            return Authentication.checkAuthentication();
                         }];
                     }
                 }
             });
 
             $rootScope.$on("$routeChangeError", function(evt, to, from, error) {
-                if (error instanceof AuthorizationError) {
-                    $location.path("/login");
+                if (error.message && error.message === "Forbidden") {
+                    $location.path("/view/login");
                 }
             });
         }]);
