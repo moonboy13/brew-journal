@@ -111,13 +111,6 @@ describe('StepsController', function () {
         expect(myController).toBeDefined();
     });
 
-    it('should redirect to login if no user is logged in', function() {
-        myController.activate();
-
-        $rootScope.$digest();
-        expect($location.path()).toBe('/view/login');
-    });
-    
     it('should clear the all steps', function() {
         myController.steps = fakeStepsData.data;
 

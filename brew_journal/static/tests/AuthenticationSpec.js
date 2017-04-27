@@ -132,6 +132,14 @@ describe('Authentication', function() {
     // Make sure there is no authenticated user
     expect(myFactory.isAuthenticated()).toBe(false);
   });
+
+  it('should throw an exception when validating login', function() {
+    try {
+      myFactory.checkAuthentication();
+    } catch (e) {
+      expect(e.message).toBe("Unathorized access attempted. Please login.");
+    }
+  });
   ///////////////////////////////////////////////
 
   //////// Registration Tests ///////////////////
