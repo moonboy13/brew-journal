@@ -116,13 +116,6 @@ describe('RecipeController', function() {
     expect(myController).toBeDefined();
   }); 
 
-  it('should reditect to login if no user is logged in', function() { 
-    myController.activate();
-
-    $rootScope.$digest();
-    expect($location.path()).toBe('/view/login');
-  }); 
-
   it('should load a blank hop form when no data is passed', function() { 
     expect(myController.hops.length).toBe(0);
     myController.addHop();
