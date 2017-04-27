@@ -17,9 +17,7 @@
             });
 
             $rootScope.$on("$routeChangeError", function(evt, to, from, error) {
-                if (error.message && error.message === "Forbidden") {
-                    $location.path("/view/login");
-                }
+                $location.path("/view/login");
             });
         }]);
 

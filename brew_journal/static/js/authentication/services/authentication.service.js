@@ -214,19 +214,11 @@
     */
     function checkAuthentication() {
       if(!this.isAuthenticated()) {
-        throw new AuthError();
+        throw new Error("Unathorized access attempted. Please login.");
       } else {
         return true;
       }
     }
-
-    function AuthError(description) {
-      this.message = "Forbidden";
-      this.description = description || "auth no";
-    }
-
-    AuthError.prototype = Object.create(Error.prototype);
-    AuthError.prototype.constructor = AuthError;
 
     /**
     * @name setAuthenticatedAccount
