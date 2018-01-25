@@ -24,13 +24,13 @@ while getopts "dh" o; do
     esac
 done
 
-sudo apt-get install -y python pip
-sudo apt-get install -y postgresql-9.3
+sudo apt-get install -y python-pip
+sudo apt-get install -y postgresql
 
 if [ $BUILD_DEV  ]; then
-    sudo apt-get install -y python-virtualenv virtualenvwrapper build-essential libssl-dev libffi-dev python-dev libjpeg8-dev postgresql-server-dev-9.3
+    sudo apt-get install -y python-virtualenv virtualenvwrapper build-essential libssl-dev libffi-dev python-dev libjpeg8-dev postgresql-server-dev-all
  
-    cat 'source /usr/local/bin/virtualenvwrapper.sh' >> ${HOME}/.bashrc
+    echo 'source /usr/share/virtualenvwrapper/virtualenvwrapper.sh' >> ${HOME}/.bashrc
 
     source ${HOME}/.bashrc
 
