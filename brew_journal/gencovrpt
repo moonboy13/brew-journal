@@ -1,0 +1,4 @@
+#!/bin/bash
+
+coverage run manage.py test -v2
+coverage html -d /home/kyle/coverage_report --omit=*.pyc,*migrations/*,*__.py,*.virtualenvs/*,manage.py,*tests.py
