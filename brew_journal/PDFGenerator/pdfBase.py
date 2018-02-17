@@ -8,14 +8,15 @@ class PDFBase():
     reponsbile for tracking elements on a page and rendering but will not care about the
     content in the page elements."""
 
-    # Class defaults
-    page_height = defaultPageSize[1]
-    page_width  = defaultPageSize[0]
-    styles = getSampleStyleSheet()
-
     def __init__(self, pdf_name, **kwargs):
         """Class Initializer"""
         self.name = pdf_name
+        self.report_elements = list()
+
+        # Class defaults
+        self.page_height = defaultPageSize[1]
+        self.page_width  = defaultPageSize[0]
+        self.styles = getSampleStyleSheet()
 
         #Parse the keyword arguments for any overrides
         if 'page_height' in kwargs:
@@ -25,4 +26,14 @@ class PDFBase():
             self.page_width = kwargs["page_width"]
 
         if 'styles' in kwargs:
-            self.styles = kwargs["style"]
+            self.styles = kwargs["styles"]
+
+
+    def AddReportItem(self, new_item):
+        """Adds and item to the report. If the element already exists in the report it is replaced."""
+
+        if(new_item in self.report_elements):
+            item_index = self.report_elements.index(new_item)
+            self.report_elements.insert(item_index, new_item)
+        else:
+            self.report_elements.append(new_item)
