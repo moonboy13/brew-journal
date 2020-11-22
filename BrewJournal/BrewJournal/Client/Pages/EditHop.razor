@@ -1,0 +1,50 @@
+﻿@page "/edithop"
+@page "/edithop/{Id:int}"
+@using Models;
+
+@if(Id > 0)
+{
+	<h1>Edit Hop</h1>
+}
+else
+{
+	<h1>Add Hop</h1>
+}
+
+<EditForm Model="@Hop">
+	<label for="name">Name</label>
+	<InputText id="name" @bind-Value="Hop.Name" required/>
+	<label for="alphaacid">Alpha Acid Content</label>
+	<InputNumber id="alphaacid" @bind-Value="Hop.AlphaAcidContent" required />
+	<label for="betaacid">Beta Acid Content</label>
+	<InputNumber id="betaacid" @bind-Value="Hop.BetaAcidContent" required />
+	<label for="active">Active</label>
+	<InputCheckbox id="active" @bind-Value="Hop.Active" />
+	<button>Save</button>
+</EditForm>
+
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private Hop Hop { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		//-- This can be moved into the else block once the async data load is implemented
+		await Task.CompletedTask;
+
+		if(Id > 0)
+		{
+			//-- Load from data store
+		}
+		else
+		{
+			Hop = new Hop();
+		}
+
+		//-- Compiler implicitly knows to return an empty task
+		return;
+	}
+}

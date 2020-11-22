@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewJournal.Server", "BrewJournal\Server\BrewJournal.Server.csproj", "{ED5FEA94-9C57-4E08-8FF2-2ED4FE479A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewJournal.Server", "BrewJournal\Server\BrewJournal.Server.csproj", "{ED5FEA94-9C57-4E08-8FF2-2ED4FE479A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewJournal.Client", "BrewJournal\Client\BrewJournal.Client.csproj", "{690AFE3A-B5AB-4C2F-8250-7DE497D294CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewJournal.Client", "BrewJournal\Client\BrewJournal.Client.csproj", "{690AFE3A-B5AB-4C2F-8250-7DE497D294CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewJournal.Shared", "BrewJournal\Shared\BrewJournal.Shared.csproj", "{561A52A0-8822-4BE4-A57B-42FCE04276B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewJournal.Shared", "BrewJournal\Shared\BrewJournal.Shared.csproj", "{561A52A0-8822-4BE4-A57B-42FCE04276B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{A07BA992-E5C7-44D0-8A05-8CEE86565CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{A07BA992-E5C7-44D0-8A05-8CEE86565CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnector", "DatabaseConnector\DatabaseConnector.csproj", "{3F01F561-B1AE-46B2-9406-87B75A776A7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A07BA992-E5C7-44D0-8A05-8CEE86565CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A07BA992-E5C7-44D0-8A05-8CEE86565CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A07BA992-E5C7-44D0-8A05-8CEE86565CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
