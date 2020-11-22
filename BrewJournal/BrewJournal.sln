@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnector", "DatabaseConnector\DatabaseConnector.csproj", "{3F01F561-B1AE-46B2-9406-87B75A776A7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientUnitTests", "ClientUnitTests\ClientUnitTests.csproj", "{2D2EDBEE-DA7D-44D3-8390-7E4F25F87D97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F01F561-B1AE-46B2-9406-87B75A776A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2EDBEE-DA7D-44D3-8390-7E4F25F87D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2EDBEE-DA7D-44D3-8390-7E4F25F87D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2EDBEE-DA7D-44D3-8390-7E4F25F87D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2EDBEE-DA7D-44D3-8390-7E4F25F87D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
