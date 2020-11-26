@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-	public class Recipe
+	public class Recipe : ModelBase
 	{
 		public string Name { get; set; }
 		public string Style { get; set; }

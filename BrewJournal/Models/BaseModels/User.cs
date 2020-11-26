@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-	public class User
+	public class User : ModelBase
 	{
 		public string Username { get; set; }
 		public string Email { get; set; }

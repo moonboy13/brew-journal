@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-	public class Malt
+	public class Malt : ModelBase
 	{
 		public string Brand { get; set; }
 		public string Type { get; set; }
