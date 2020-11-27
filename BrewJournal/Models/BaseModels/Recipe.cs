@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Models
 {
-	public class Recipe : ModelBase
+	public class Recipe
 	{
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Style { get; set; }
 		public string Notes { get; set; }
@@ -17,6 +18,8 @@ namespace Models
 		public List<DryHop> DryHops { get; set; }
 		public List<RecipeMalt> Malts { get; set; }
 		public User Creator { get; set; }
+		public int CreatorId { get; set; }
 		public User Owner { get; set; }
+		public int OwnerId { get; set; }
 	}
 }
