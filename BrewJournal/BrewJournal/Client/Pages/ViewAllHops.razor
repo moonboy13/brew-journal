@@ -1,0 +1,41 @@
+﻿@page "/viewhops"
+@using Models;
+@inject HttpClient Http
+
+<h1>All Hops</h1>
+
+@if(hops is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Alpha Acid Content</th>
+				<th>Beta Acid Content</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var hop in hops)
+			{
+				<tr>
+					<td>@hop.Name.Trim()</td>
+					<td>@hop.AlphaAcidContent %</td>
+					<td>@hop.BetaAcidContent %</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private Hop[] hops;
+
+	protected async override Task OnInitializedAsync()
+	{
+		hops = await Http.GetFromJsonAsync<Hop[]>("Hops");
+	}
+}

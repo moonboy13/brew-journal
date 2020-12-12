@@ -24,6 +24,15 @@ namespace DatabaseConnector
 		public virtual DbSet<RecipeMalt> RecipeMalt { get; set; }
 		public virtual DbSet<User> User { get; set; }
 
+		/// <summary>
+		/// This wrapper is here for integration of the Moq framework with testing.
+		/// </summary>
+		/// <returns></returns>
+		public virtual Task<int> SaveAsync()
+		{
+			return SaveChangesAsync();
+		}
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			#region Hop
