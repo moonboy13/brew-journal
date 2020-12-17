@@ -1,19 +1,13 @@
 ﻿@page "/edithop"
 @page "/edithop/{Id:int}"
+@inject HttpClient Http
 @using Models;
 
-@if(Id > 0)
-{
-	<h1>Edit Hop</h1>
-}
-else
-{
-	<h1>Add Hop</h1>
-}
+<h1>Add or Modify Hop</h1>
 
 <EditForm Model="@Hop">
 	<label for="name">Name</label>
-	<InputText id="name" @bind-Value="Hop.Name" required/>
+	<InputText id="name" @bind-Value="Hop.Name" required />
 	<label for="alphaacid">Alpha Acid Content</label>
 	<InputNumber id="alphaacid" @bind-Value="Hop.AlphaAcidContent" required />
 	<label for="betaacid">Beta Acid Content</label>
@@ -23,6 +17,38 @@ else
 	<button>Save</button>
 </EditForm>
 
+<hr />
+
+@if (Hops is null)
+{
+	<p><em>Loading...</em></p>
+}
+else if (!Hops.Any())
+{
+	<p>No hops entered into databases match these filters.</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Alpha Acid Content</th>
+				<th>Beta Acid Content</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var hop in Hops)
+			{
+				<tr>
+					<td>@hop.Name.Trim()</td>
+					<td>@hop.AlphaAcidContent %</td>
+					<td>@hop.BetaAcidContent %</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
 
 @code {
 	[Parameter]
@@ -30,12 +56,14 @@ else
 
 	private Hop Hop { get; set; }
 
+	private List<Hop> Hops { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
-		//-- This can be moved into the else block once the async data load is implemented
-		await Task.CompletedTask;
+		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
 
-		if(Id > 0)
+
+		if (Id > 0)
 		{
 			//-- Load from data store
 		}
