@@ -54,22 +54,18 @@ else
 	[Parameter]
 	public int Id { get; set; }
 
-	private Hop Hop { get; set; }
+	private Hop Hop { get; set; } = new Hop();
 
 	private List<Hop> Hops { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
+		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop").ConfigureAwait(true);
 
 
 		if (Id > 0)
 		{
 			//-- Load from data store
-		}
-		else
-		{
-			Hop = new Hop();
 		}
 
 		//-- Compiler implicitly knows to return an empty task
