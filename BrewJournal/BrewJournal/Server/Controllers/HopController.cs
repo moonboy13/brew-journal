@@ -29,7 +29,7 @@ namespace BrewJournal.Server.Controllers
 		public async Task<IEnumerable<Hop>> Index()
 		{
 			Stopwatch timer = GetAndStartTimer();
-			
+
 			await Task.CompletedTask;
 
 			var query = 
@@ -45,7 +45,6 @@ namespace BrewJournal.Server.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("Name,AlphaAcidContent,BetaAcidContent")] Hop hop)
 		{
 			//-- Only allocate space for and start a timer if we are running a trace log level

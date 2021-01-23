@@ -39,7 +39,8 @@ namespace BrewJournal.Server.Controllers.Tests
 			{
 				Name = "foo",
 				AlphaAcidContent = 5.5,
-				BetaAcidContent = 1.0
+				BetaAcidContent = 1.0,
+				Id = 0
 			};
 
 			var result = await hopController.Create(hop);

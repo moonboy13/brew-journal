@@ -5,16 +5,16 @@
 
 <h1>Add or Modify Hop</h1>
 
-<EditForm Model="@Hop">
-	<label for="name">Name</label>
+<EditForm Model="@Hop" OnSubmit="@FormSubmitted">
+	<label class="col-form-label" for="name">Name</label>
 	<InputText id="name" @bind-Value="Hop.Name" required />
-	<label for="alphaacid">Alpha Acid Content</label>
+	<label class="col-form-label" for="alphaacid">Alpha Acid Content</label>
 	<InputNumber id="alphaacid" @bind-Value="Hop.AlphaAcidContent" required />
-	<label for="betaacid">Beta Acid Content</label>
+	<label class="col-form-label" for="betaacid">Beta Acid Content</label>
 	<InputNumber id="betaacid" @bind-Value="Hop.BetaAcidContent" required />
-	<label for="active">Active</label>
+	<label class="col-form-label" for="active">Active</label>
 	<InputCheckbox id="active" @bind-Value="Hop.Active" />
-	<button>Save</button>
+	<input type="submit" class="btn btn-primary" value="Save" />
 </EditForm>
 
 <hr />
@@ -60,7 +60,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop").ConfigureAwait(true);
+		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
 
 
 		if (Id > 0)
@@ -70,5 +70,15 @@ else
 
 		//-- Compiler implicitly knows to return an empty task
 		return;
+	}
+
+	async Task FormSubmitted(EditContext editContext)
+	{
+		//-- Check that the form is valid before submitting
+		if (editContext.Validate())
+		{
+			var saveReturn = await Http.PostAsJsonAsync("/Hop", Hop);
+			Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
+		}
 	}
 }
