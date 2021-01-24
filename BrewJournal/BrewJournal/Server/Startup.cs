@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using DatabaseConnector.Sqlite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace BrewJournal.Server
 
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+			services.AddBlazoredToast();
 
 		    services.AddDbContext<SqliteDBContext>();
 		}

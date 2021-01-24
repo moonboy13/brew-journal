@@ -1,6 +1,7 @@
 ﻿@page "/edithop"
 @page "/edithop/{Id:int}"
 @inject HttpClient Http
+@inject IToastService ToastService
 @using Models;
 
 <h1>Add or Modify Hop</h1>
@@ -78,7 +79,14 @@ else
 		if (editContext.Validate())
 		{
 			var saveReturn = await Http.PostAsJsonAsync("/Hop", Hop);
-			Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
+			if (!saveReturn.IsSuccessStatusCode)
+			{
+				ToastService.ShowError($"Failed to save new hop. Server responded with status code {(int)saveReturn.StatusCode}.{Environment.NewLine}Reason: {saveReturn.ReasonPhrase}");
+			}
+			else
+			{
+				Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
+			}
 		}
 	}
 }
