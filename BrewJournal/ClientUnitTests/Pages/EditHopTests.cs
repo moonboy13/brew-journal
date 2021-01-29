@@ -5,6 +5,9 @@ using ClientUnitTests.Properties;
 using RichardSzalay.MockHttp;
 using Models;
 using System.Collections.Generic;
+using Blazored.Toast.Services;
+using Moq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientUnitTests
 {
@@ -18,6 +21,8 @@ namespace ClientUnitTests
 		{
 			_ctx = new Bunit.TestContext();
 			_mockHttp = _ctx.Services.AddMockHttpClient();
+			var mockToast = new Mock<IToastService>();
+			_ctx.Services.AddSingleton(mockToast.Object);
 		}
 
 		[TearDown]
