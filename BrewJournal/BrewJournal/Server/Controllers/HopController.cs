@@ -45,7 +45,6 @@ namespace BrewJournal.Server.Controllers
 		}
 
 		[HttpPost]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Create([Bind("Name,AlphaAcidContent,BetaAcidContent")] Hop hop)
 		{
 			//-- Only allocate space for and start a timer if we are running a trace log level
