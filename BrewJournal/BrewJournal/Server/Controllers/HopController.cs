@@ -8,6 +8,8 @@ using DatabaseConnector.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Text.Json;
+using DevProps = BrewJournal.Server.Properties.DeveloperResources;
+using UserProps = BrewJournal.Server.Properties.UserResources;
 
 namespace BrewJournal.Server.Controllers
 {
@@ -39,13 +41,13 @@ namespace BrewJournal.Server.Controllers
 
 			var hopList = query.ToList();
 
-			_logger.LogInformation("Retrieved all hops");
-			_logger.LogTrace($"Elapsed time to retrieve all hops {timer?.Elapsed.Seconds ?? 0}");
+			_logger.LogInformation(string.Format(DevProps.RetreivedAll, nameof(Hop)));
+			_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.RetrieveAll.ToLower(), nameof(Hop), timer?.Elapsed.Seconds ?? 0));
 			return hopList;
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create([Bind("Name,AlphaAcidContent,BetaAcidContent")] Hop hop)
+		public async Task<IActionResult> Create([Bind(nameof(Hop.Name),nameof(Hop.AlphaAcidContent),nameof(Hop.BetaAcidContent))] Hop hop)
 		{
 			//-- Only allocate space for and start a timer if we are running a trace log level
 			Stopwatch timer = GetAndStartTimer();
@@ -57,21 +59,23 @@ namespace BrewJournal.Server.Controllers
 				var written = await _context.SaveAsync();
 				if (written > 0)
 				{
-					_logger.LogInformation("Hop Created", JsonSerializer.Serialize(hop));
-					_logger.LogTrace($"Time to create hop {timer?.Elapsed.Seconds ?? 0}");
+					_logger.LogInformation(string.Format(DevProps.RecordCreated, nameof(Hop)), JsonSerializer.Serialize(hop));
+					_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.Create.ToLower(),
+						nameof(Hop), timer?.Elapsed.Seconds ?? 0));
 					return Ok(hop);
 				}
 				else
 				{
-					_logger.LogError("Database write failed when creating hop.", JsonSerializer.Serialize(hop));
-					_logger.LogTrace($"Time for create hop failure {timer?.Elapsed.Seconds ?? 0}");
-					return Problem("Unknown error occured when saving data");
+					_logger.LogError(string.Format(DevProps.DBCreateWriteFail, nameof(Hop)), JsonSerializer.Serialize(hop));
+					_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.FailToCreate.ToLower(),
+						nameof(Hop), timer?.Elapsed.Seconds ?? 0));
+					return Problem(UserProps.UnkownError);
 				}
 			}
 			else
 			{
-				_logger.LogInformation("Hop failed to validate.", JsonSerializer.Serialize(hop));
-				_logger.LogTrace($"Time for validation failure {timer?.Elapsed.Seconds ?? 0}");
+				_logger.LogInformation(string.Format(DevProps.FailedToValidate, nameof(Hop)), JsonSerializer.Serialize(hop));
+				_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.FailedToValidate, nameof(Hop), timer?.Elapsed.Seconds ?? 0));
 				return ValidationProblem(ModelState);
 			}
 		}

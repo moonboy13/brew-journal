@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Blazored.Toast.Services;
 using Moq;
 using Microsoft.Extensions.DependencyInjection;
+using UserProp = BrewJournal.Client.Properties.UserResources;
 
 namespace ClientUnitTests
 {
@@ -43,7 +44,7 @@ namespace ClientUnitTests
 			//-- Assert that the component initialized as expected
 			Assert.AreEqual(0, page.Instance.Id, Resources.EditHopDefaultIDCheckFailed);
 			var noHopsFoundMessage = page.Find("p");
-			noHopsFoundMessage.MarkupMatches("<p>No hops entered into databases match these filters.</p>", Resources.EditHopDefaultHeaderCheckFailed);
+			noHopsFoundMessage.MarkupMatches($"<p>{string.Format(UserProp.NoRecordMatchesFilter, nameof(Hop))}</p>", Resources.EditHopDefaultHeaderCheckFailed);
 		}
 	}
 }

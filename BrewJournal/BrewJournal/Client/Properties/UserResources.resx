@@ -117,13 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AddOrModify" xml:space="preserve">
+    <value>Add or Modify {0}</value>
+  </data>
+  <data name="AlphaAcidContent" xml:space="preserve">
+    <value>Alpha Acid Content</value>
+  </data>
+  <data name="BetaAcidContent" xml:space="preserve">
+    <value>Beta Acid Content</value>
+  </data>
   <data name="HopSaveFailed" xml:space="preserve">
     <value>Failed to save new hop.</value>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoRecordMatchesFilter" xml:space="preserve">
+    <value>No {0}s entered into the database match these filters.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="ServerResponseCode" xml:space="preserve">
-    <value>Server responded with status code {StatusCode}.</value>
+    <value>Server responded with status code {0}.</value>
   </data>
   <data name="ServerResponseReasonPhrase" xml:space="preserve">
-    <value>Reason: {ReasonPhrase}.</value>
+    <value>Reason: {0}.</value>
   </data>
 </root>

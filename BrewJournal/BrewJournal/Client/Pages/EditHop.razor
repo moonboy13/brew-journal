@@ -3,39 +3,40 @@
 @inject HttpClient Http
 @inject IToastService ToastService
 @using Models;
+@using UserProp = BrewJournal.Client.Properties.UserResources; 
 
-<h1>Add or Modify Hop</h1>
+<h1>@string.Format(UserProp.AddOrModify, nameof(Hop))</h1>
 
 <EditForm Model="@Hop" OnSubmit="@FormSubmitted">
-	<label class="col-form-label" for="name">Name</label>
+	<label class="col-form-label" for="name">@UserProp.Name</label>
 	<InputText id="name" @bind-Value="Hop.Name" required />
-	<label class="col-form-label" for="alphaacid">Alpha Acid Content</label>
+	<label class="col-form-label" for="alphaacid">@UserProp.AlphaAcidContent</label>
 	<InputNumber id="alphaacid" @bind-Value="Hop.AlphaAcidContent" required />
-	<label class="col-form-label" for="betaacid">Beta Acid Content</label>
+	<label class="col-form-label" for="betaacid">@UserProp.BetaAcidContent</label>
 	<InputNumber id="betaacid" @bind-Value="Hop.BetaAcidContent" required />
-	<label class="col-form-label" for="active">Active</label>
+	<label class="col-form-label" for="active">@UserProp.Active</label>
 	<InputCheckbox id="active" @bind-Value="Hop.Active" />
-	<input type="submit" class="btn btn-primary" value="Save" />
+	<input type="submit" class="btn btn-primary" value=@UserProp.Save />
 </EditForm>
 
 <hr />
 
 @if (Hops is null)
 {
-	<p><em>Loading...</em></p>
+	<p><em>@UserProp.Loading</em></p>
 }
 else if (!Hops.Any())
 {
-	<p>No hops entered into databases match these filters.</p>
+	<p>@string.Format(UserProp.NoRecordMatchesFilter, nameof(Hop))</p>
 }
 else
 {
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>Alpha Acid Content</th>
-				<th>Beta Acid Content</th>
+				<th>@UserProp.Name</th>
+				<th>@UserProp.AlphaAcidContent</th>
+				<th>@UserProp.BetaAcidContent</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,7 +82,9 @@ else
 			var saveReturn = await Http.PostAsJsonAsync("/Hop", Hop);
 			if (!saveReturn.IsSuccessStatusCode)
 			{
-				ToastService.ShowError($"Failed to save new hop. Server responded with status code {(int)saveReturn.StatusCode}.{Environment.NewLine}Reason: {saveReturn.ReasonPhrase}");
+				//-- Format that string, format it good.
+				ToastService.ShowError(string.Format("{0} {1}{2}{3}", UserProp.HopSaveFailed, string.Format(UserProp.ServerResponseCode, saveReturn.StatusCode),
+				Environment.NewLine, string.Format(UserProp.ServerResponseReasonPhrase, saveReturn.ReasonPhrase)));
 			}
 			else
 			{
