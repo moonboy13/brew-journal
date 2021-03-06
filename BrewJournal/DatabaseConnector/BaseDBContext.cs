@@ -25,7 +25,8 @@ namespace DatabaseConnector
 		public virtual DbSet<User> User { get; set; }
 
 		/// <summary>
-		/// This wrapper is here for integration of the Moq framework with testing.
+		/// This wraps the entity framework function SaveChangesAsyc and allows for
+		/// Moq to mock out the DB save function.
 		/// </summary>
 		/// <returns></returns>
 		public virtual Task<int> SaveAsync()
