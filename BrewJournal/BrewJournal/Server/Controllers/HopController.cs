@@ -80,6 +80,18 @@ namespace BrewJournal.Server.Controllers
 			}
 		}
 
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			Hop hopToDelete = new()
+			{
+				Id = id
+			};
+			_context.Entry(hopToDelete).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+			await _context.SaveChangesAsync();
+			return Ok();
+		}
+
 		private Stopwatch GetAndStartTimer()
 		{
 			Stopwatch timer = null;

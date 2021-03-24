@@ -2,12 +2,16 @@
 @page "/edithop/{Id:int}"
 @inject HttpClient Http
 @inject IToastService ToastService
+@inject IJSRuntime JSRuntime
 @using Models;
+@using System.Text.Json; 
 @using UserProp = BrewJournal.Client.Properties.UserResources; 
 
 <h1>@string.Format(UserProp.AddOrModify, nameof(Hop))</h1>
 
 <EditForm Model="@Hop" OnSubmit="@FormSubmitted">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
 	<label class="col-form-label" for="name">@UserProp.Name</label>
 	<InputText id="name" @bind-Value="Hop.Name" required />
 	<label class="col-form-label" for="alphaacid">@UserProp.AlphaAcidContent</label>
@@ -37,6 +41,7 @@ else
 				<th>@UserProp.Name</th>
 				<th>@UserProp.AlphaAcidContent</th>
 				<th>@UserProp.BetaAcidContent</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,6 +51,7 @@ else
 					<td>@hop.Name.Trim()</td>
 					<td>@hop.AlphaAcidContent %</td>
 					<td>@hop.BetaAcidContent %</td>
+					<td align="right" @onclick="(args) => DeleteClicked(hop, args)"><span class="oi oi-x" alt="Delete Hop"></span></td>
 				</tr>
 			}
 		</tbody>
@@ -90,6 +96,15 @@ else
 			{
 				Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
 			}
+		}
+	}
+
+	async Task DeleteClicked(Hop hop, MouseEventArgs args)
+	{
+		if(await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {hop.Name}?"))
+		{
+			await Http.DeleteAsync($"/Hop/{hop.Id}");
+			Hops.Remove(hop);
 		}
 	}
 }
