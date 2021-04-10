@@ -34,7 +34,7 @@ namespace ClientUnitTests
 
 
 		[Test]
-		public void PageShouldLoadDefaultHopWhenNoIdIsProvided()
+		public void HopPage_NoHopIdProvided_LoadDefaultHop()
 		{
 			_mockHttp.When("/Hop").RespondSuccessJson(new List<Hop>());
 

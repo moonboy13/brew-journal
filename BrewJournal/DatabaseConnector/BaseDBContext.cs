@@ -34,6 +34,13 @@ namespace DatabaseConnector
 			return SaveChangesAsync();
 		}
 
+		public virtual Task<int> DeleteAsync<T>(T obj)
+			where T : class
+		{
+			Entry(obj).State = EntityState.Deleted;
+			return SaveAsync();
+		}
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			#region Hop

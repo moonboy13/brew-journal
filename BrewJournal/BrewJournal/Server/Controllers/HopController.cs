@@ -87,8 +87,7 @@ namespace BrewJournal.Server.Controllers
 			{
 				Id = id
 			};
-			_context.Entry(hopToDelete).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-			await _context.SaveChangesAsync();
+			_ = await _context.DeleteAsync(hopToDelete);
 			return Ok();
 		}
 

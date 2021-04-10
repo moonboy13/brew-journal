@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BrewJournal.Server.Controllers.Tests
 {
@@ -92,20 +94,26 @@ namespace BrewJournal.Server.Controllers.Tests
 		}
 
 		[Test()]
+		public async Task Delete_ValidId_DeleteSuccessful()
+		{
+			Mock<DbSet<Hop>> mockSet = GenerateMockHopQuerySet();
+			_mockContext.Setup(m => m.DeleteAsync(It.IsAny<Hop>())).ReturnsAsync(1);
+			//-- Delete the first element from the query set. An exception throw is appropriate
+			//-- here if there are no elements in the list;
+			Hop hopToDelete = mockSet.Object.First();
+
+			var hopController = new HopController(_mockContext.Object, _logger.Object);
+
+			IActionResult result = await hopController.Delete(hopToDelete.Id);
+
+			Assert.That(result, Is.TypeOf(typeof(OkResult)));
+			_mockContext.Verify(m => m.DeleteAsync(It.IsAny<Hop>()), Times.Once());
+		}
+
+		[Test()]
 		public async Task Index_GetHopsInNameOrder()
 		{
-			var hopList = new List<Hop>()
-			{
-				{ new Hop() { Name = "Alpha", AlphaAcidContent = 1.1, BetaAcidContent = 1.2 } },
-				{ new Hop() { Name = "Gamma", AlphaAcidContent = 3.1, BetaAcidContent = 3.2 } },
-				{ new Hop() { Name = "Beta", AlphaAcidContent = 2.1, BetaAcidContent = 2.2 } }
-			};
-
-			//-- Setup the dbSet to be queried
-			var mockSet = new Mock<DbSet<Hop>>();
-			ConfigureAsQueryable(hopList.AsQueryable(), mockSet);
-
-			_mockContext.Setup(context => context.Hop).Returns(mockSet.Object);
+			_ = GenerateMockHopQuerySet();
 
 			var hopController = new HopController(_mockContext.Object, _logger.Object);
 
@@ -115,7 +123,25 @@ namespace BrewJournal.Server.Controllers.Tests
 			Assert.That(results, Is.Ordered.By("Name"));
 		}
 
-		private static void ConfigureAsQueryable<TEntity>(IQueryable<TEntity> hopList, Mock<DbSet<TEntity>> mockSet) where TEntity : class
+		private Mock<DbSet<Hop>> GenerateMockHopQuerySet()
+		{
+			var hopList =  new List<Hop>()
+			{
+				{ new Hop() { Id = 1, Name = "Alpha", AlphaAcidContent = 1.1, BetaAcidContent = 1.2 } },
+				{ new Hop() { Id = 2, Name = "Gamma", AlphaAcidContent = 3.1, BetaAcidContent = 3.2 } },
+				{ new Hop() { Id = 3, Name = "Beta", AlphaAcidContent = 2.1, BetaAcidContent = 2.2 } }
+			};
+
+			//-- Setup the dbSet to be queried
+			var mockSet = new Mock<DbSet<Hop>>();
+			ConfigureAsQueryable(hopList.AsQueryable(), mockSet);
+
+			_mockContext.Setup(context => context.Hop).Returns(mockSet.Object);
+
+			return mockSet;
+		}
+
+		private void ConfigureAsQueryable<TEntity>(IQueryable<TEntity> hopList, Mock<DbSet<TEntity>> mockSet) where TEntity : class
 		{
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.Provider).Returns(hopList.Provider);
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.Expression).Returns(hopList.Expression);
@@ -123,7 +149,7 @@ namespace BrewJournal.Server.Controllers.Tests
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.GetEnumerator()).Returns(hopList.GetEnumerator());
 		}
 
-		private static void RunValidationAsserts(Hop hop, string expectedMessage, string field)
+		private void RunValidationAsserts(Hop hop, string expectedMessage, string field)
 		{
 			List<ValidationResult> validations = new();
 			Assert.That(Validator.TryValidateObject(hop, new ValidationContext(hop), validations, true), Is.False);
