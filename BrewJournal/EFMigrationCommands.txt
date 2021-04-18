@@ -1,0 +1,5 @@
+This command is used to generate a migration. Be sure the Default project in the Package Manager Console is set to the DatabaseConnectory projext:
+add-migration -c <DesiredContext> <Name> -> Currently only SqliteDBContext is valid.
+
+Update the Database:
+update-database -c <DesiredContext>

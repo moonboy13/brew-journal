@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Models
@@ -17,7 +18,9 @@ namespace Models
 		public bool Active { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Update { get; set; }
+		[InverseProperty(nameof(Recipe.Owner))]
 		public ICollection<Recipe> Recipes { get; set; }
+		[InverseProperty(nameof(Recipe.Creator))]
 		public ICollection<Recipe> CreatedRecipes { get; set; }
 	}
 }
