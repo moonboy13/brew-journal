@@ -7,6 +7,7 @@ namespace Models
 {
 	public class Hop
 	{
+		[Key]
 		public int Id { get; set; }
 		[Required(ErrorMessageResourceName = nameof(Properties.Resources.RequiredErrorMsg), ErrorMessageResourceType = typeof(Properties.Resources))]
 		public string Name { get; set; }

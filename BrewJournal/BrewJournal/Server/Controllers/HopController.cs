@@ -34,7 +34,7 @@ namespace BrewJournal.Server.Controllers
 
 			await Task.CompletedTask;
 
-			var query = 
+			var query =
 				from hop in _context.Hop
 				orderby hop.Name
 				select hop;

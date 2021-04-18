@@ -43,57 +43,11 @@ namespace DatabaseConnector
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			#region Hop
-			modelBuilder.Entity<Hop>().HasKey(Hop => Hop.Id);
-			#endregion
-			#region Malt
-			modelBuilder.Entity<Malt>().HasKey(Malt => Malt.Id);
-			#endregion
-			#region Recipe
-			modelBuilder.Entity<Recipe>()
-				.HasKey(Recipe => Recipe.Id);
-			modelBuilder.Entity<Recipe>()
-				.HasOne(Recipe => Recipe.Owner)
-				.WithMany(User => User.Recipes)
-				.HasForeignKey(Recipe => Recipe.OwnerId);
-			modelBuilder.Entity<Recipe>()
-				.HasOne(Recipe => Recipe.Creator)
-				.WithMany(User => User.CreatedRecipes)
-				.HasForeignKey(Recipe => Recipe.CreatorId);
-			#endregion
-			#region RecipeMalt
-			modelBuilder.Entity<RecipeMalt>()
-				.HasKey(RecipeMalt => RecipeMalt.Id);
-			modelBuilder.Entity<RecipeMalt>()
-				.HasOne(RecipeMalt => RecipeMalt.Malt)
-				.WithMany()
-				.HasForeignKey(RecipeMalt => RecipeMalt.MaltId);
-			modelBuilder.Entity<RecipeMalt>()
-				.HasOne(RecipeMalt => RecipeMalt.Recipe)
-				.WithMany(Recipe => Recipe.Malts);
-			#endregion
 			#region User
-			modelBuilder.Entity<User>().HasKey(User => User.Id);
-			#endregion
-			#region BoilHop
-			modelBuilder.Entity<BoilHop>()
-				.HasKey(BoilHop => BoilHop.Id);
-			modelBuilder.Entity<BoilHop>()
-				.HasOne(BoilHop => BoilHop.Hop)
-				.WithMany();
-			modelBuilder.Entity<BoilHop>()
-				.HasOne(BoilHop => BoilHop.Recipe)
-				.WithMany(Recipe => Recipe.BoilHops);
-			#endregion
-			#region DryHop
-			modelBuilder.Entity<DryHop>()
-				.HasKey(DryHop => DryHop.Id);
-			modelBuilder.Entity<DryHop>()
-				.HasOne(DryHop => DryHop.Hop)
-				.WithMany();
-			modelBuilder.Entity<DryHop>()
-				.HasOne(DryHop => DryHop.Recipe)
-				.WithMany(Recipe => Recipe.DryHops);
+			modelBuilder
+				.Entity<User>()
+				.HasIndex(User => User.Username)
+				.IsUnique();
 			#endregion
 		}
 	}
