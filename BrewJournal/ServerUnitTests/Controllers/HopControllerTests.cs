@@ -49,7 +49,7 @@ namespace BrewJournal.Server.Controllers.Tests
 
 			var result = await hopController.Create(hop);
 
-			mockHopDBet.Verify(m => m.Add(It.IsAny<Hop>()), Times.Once());
+			_mockContext.Verify(m => m.Add(It.IsAny<Hop>()), Times.Once());
 			_mockContext.Verify(m => m.SaveAsync(), Times.Once());
 		}
 
