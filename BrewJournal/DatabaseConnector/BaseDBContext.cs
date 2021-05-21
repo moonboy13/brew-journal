@@ -24,6 +24,11 @@ namespace DatabaseConnector
 		public virtual DbSet<RecipeMalt> RecipeMalt { get; set; }
 		public virtual DbSet<User> User { get; set; }
 
+		public BaseDBContext(DbContextOptions<BaseDBContext> options) : base(options) { }
+
+		public BaseDBContext() : base()
+		{ }
+
 		/// <summary>
 		/// This wraps the entity framework function SaveChangesAsyc and allows for
 		/// Moq to mock out the DB save function.

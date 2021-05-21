@@ -3,7 +3,6 @@ using BrewJournal.Server.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DatabaseConnector.Sqlite;
 using Models;
 using Moq;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using DatabaseConnector;
 
 namespace BrewJournal.Server.Controllers.Tests
 {
@@ -20,13 +20,13 @@ namespace BrewJournal.Server.Controllers.Tests
 	public class HopControllerTests
 	{
 		Mock<ILogger<HopController>> _logger;
-		Mock<SqliteDBContext> _mockContext;
+		Mock<BaseDBContext> _mockContext;
 
 		[SetUp]
 		public void Setup()
 		{
 			_logger = new Mock<ILogger<HopController>>();
-			_mockContext = new Mock<SqliteDBContext>();
+			_mockContext = new Mock<BaseDBContext>();
 		}
 
 		[Test()]

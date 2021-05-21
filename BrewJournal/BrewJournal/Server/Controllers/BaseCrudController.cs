@@ -10,7 +10,6 @@ using System.Text.Json;
 using DevProps = BrewJournal.Server.Properties.DeveloperResources;
 using UserProps = BrewJournal.Server.Properties.UserResources;
 using System.Threading.Tasks;
-using DatabaseConnector.Sqlite;
 
 namespace BrewJournal.Server.Controllers
 {
@@ -21,10 +20,10 @@ namespace BrewJournal.Server.Controllers
 	/// <typeparam name="TController"></typeparam>
 	public class BaseCrudController<TController> : ControllerBase
 	{
-		protected readonly SqliteDBContext _context;
+		protected readonly BaseDBContext _context;
 		protected readonly ILogger<TController> _logger;
 
-		public BaseCrudController(SqliteDBContext context, ILogger<TController> logger)
+		public BaseCrudController(BaseDBContext context, ILogger<TController> logger)
 		{
 			_context = context;
 			_logger = logger;

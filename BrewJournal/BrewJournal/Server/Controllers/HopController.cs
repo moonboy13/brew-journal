@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Models;
-using DatabaseConnector.Sqlite;
 using Microsoft.Extensions.Logging;
+using DatabaseConnector;
 
 namespace BrewJournal.Server.Controllers
 {
@@ -12,7 +12,7 @@ namespace BrewJournal.Server.Controllers
 	[Route("[controller]")]
 	public class HopController : BaseCrudController<HopController>
 	{
-		public HopController(SqliteDBContext context, ILogger<HopController> logger)
+		public HopController(BaseDBContext context, ILogger<HopController> logger)
 			: base(context, logger)
 		{
 		}
