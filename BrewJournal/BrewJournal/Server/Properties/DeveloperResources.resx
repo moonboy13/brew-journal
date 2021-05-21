@@ -123,8 +123,17 @@
   <data name="DBCreateWriteFail" xml:space="preserve">
     <value>Database write failed when creating {0}.</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeletingRecord" xml:space="preserve">
+    <value>Deleting record.</value>
+  </data>
   <data name="ElapsedTime" xml:space="preserve">
     <value>Elapsed time to {0} {1} {2}.</value>
+  </data>
+  <data name="FailedToFindRecord" xml:space="preserve">
+    <value>Failed to find {0} record with ID {1}.</value>
   </data>
   <data name="FailedToValidate" xml:space="preserve">
     <value>{0} failed to validate.</value>

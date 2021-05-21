@@ -79,11 +79,38 @@ namespace BrewJournal.Server.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting record..
+        /// </summary>
+        internal static string DeletingRecord {
+            get {
+                return ResourceManager.GetString("DeletingRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elapsed time to {0} {1} {2}..
         /// </summary>
         internal static string ElapsedTime {
             get {
                 return ResourceManager.GetString("ElapsedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to find {0} record with ID {1}..
+        /// </summary>
+        internal static string FailedToFindRecord {
+            get {
+                return ResourceManager.GetString("FailedToFindRecord", resourceCulture);
             }
         }
         

@@ -97,10 +97,12 @@ namespace BrewJournal.Server.Controllers.Tests
 		public async Task Delete_ValidId_DeleteSuccessful()
 		{
 			Mock<DbSet<Hop>> mockSet = GenerateMockHopQuerySet();
-			_mockContext.Setup(m => m.DeleteAsync(It.IsAny<Hop>())).ReturnsAsync(1);
 			//-- Delete the first element from the query set. An exception throw is appropriate
 			//-- here if there are no elements in the list;
 			Hop hopToDelete = mockSet.Object.First();
+
+			_mockContext.Setup(m => m.DeleteAsync(It.IsAny<Hop>())).ReturnsAsync(1);
+			_mockContext.Setup(m => m.FindAsync<Hop>(It.Is<int>((id) => id == hopToDelete.Id))).ReturnsAsync(hopToDelete);
 
 			var hopController = new HopController(_mockContext.Object, _logger.Object);
 
@@ -108,6 +110,22 @@ namespace BrewJournal.Server.Controllers.Tests
 
 			Assert.That(result, Is.TypeOf(typeof(OkResult)));
 			_mockContext.Verify(m => m.DeleteAsync(It.IsAny<Hop>()), Times.Once());
+		}
+
+		[Test()]
+		public async Task Delete_InvalidId_404Return()
+		{
+			Hop isNull = null;
+			_mockContext.Setup(m => m.FindAsync<Hop>(It.IsAny<int>())).ReturnsAsync(isNull);
+			//-- Setting this function up so I can confirm it is not called
+			_mockContext.Setup(m => m.DeleteAsync(It.IsAny<Hop>())).ReturnsAsync(1);
+
+			var hopController = new HopController(_mockContext.Object, _logger.Object);
+
+			IActionResult result = await hopController.Delete(7);
+
+			Assert.That(result, Is.TypeOf(typeof(NotFoundObjectResult)));
+			_mockContext.Verify(m => m.DeleteAsync(It.IsAny<Hop>()), Times.Never());
 		}
 
 		[Test()]

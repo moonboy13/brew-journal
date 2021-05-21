@@ -43,8 +43,8 @@ namespace BrewJournal.Server.Controllers
 
 			var hopList = query.ToList();
 
-			_logger.LogInformation(string.Format(DevProps.RetreivedAll, nameof(DBEntity)));
-			_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.RetrieveAll.ToLower(), nameof(DBEntity), timer?.Elapsed.Seconds ?? 0));
+			_logger.LogInformation(DevProps.RetreivedAll, nameof(DBEntity));
+			_logger.LogTrace(DevProps.ElapsedTime, DevProps.RetrieveAll.ToLower(), nameof(DBEntity), timer?.Elapsed.Seconds ?? 0);
 			return hopList;
 		}
 
@@ -67,16 +67,16 @@ namespace BrewJournal.Server.Controllers
 				var written = await _context.SaveAsync();
 				if (written > 0)
 				{
-					_logger.LogInformation(string.Format(DevProps.RecordCreated, nameof(DBEntity)), JsonSerializer.Serialize(newEntity));
-					_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.Create.ToLower(),
-						nameof(DBEntity), timer?.Elapsed.Seconds ?? 0));
+					_logger.LogInformation(DevProps.RecordCreated, nameof(DBEntity), JsonSerializer.Serialize(newEntity));
+					_logger.LogTrace(DevProps.ElapsedTime, DevProps.Create.ToLower(),
+						nameof(DBEntity), timer?.Elapsed.Seconds ?? 0);
 					return Ok(newEntity);
 				}
 				else
 				{
-					_logger.LogError(string.Format(DevProps.DBCreateWriteFail, nameof(DBEntity)), JsonSerializer.Serialize(newEntity));
-					_logger.LogTrace(string.Format(DevProps.ElapsedTime, DevProps.FailToCreate.ToLower(),
-						nameof(DBEntity), timer?.Elapsed.Seconds ?? 0));
+					_logger.LogError(DevProps.DBCreateWriteFail, nameof(DBEntity), JsonSerializer.Serialize(newEntity));
+					_logger.LogTrace(DevProps.ElapsedTime, DevProps.FailToCreate.ToLower(),
+						nameof(DBEntity), timer?.Elapsed.Seconds ?? 0);
 					return Problem(UserProps.UnkownError);
 				}
 			}
@@ -91,9 +91,23 @@ namespace BrewJournal.Server.Controllers
 		protected async Task<IActionResult> DeleteRecord<DBEntity>(int id)
 			where DBEntity : class
 		{
-			DBEntity record = await _context.FindAsync<DBEntity>(id);
-			_ = await _context.DeleteAsync(record);
+			var timer = GetAndStartTimer();
 
+			DBEntity record = await _context.FindAsync<DBEntity>(id);
+			
+			//-- Throw a 404 error if we cannot find the record.
+			if(record is null)
+			{
+				_logger.LogError(DevProps.FailedToFindRecord, nameof(DBEntity), id);
+				return NotFound(id);
+			}
+
+			_logger.LogInformation(DevProps.DeletingRecord, JsonSerializer.Serialize(record));
+			
+			_ = await _context.DeleteAsync(record);
+			
+			_logger.LogTrace(DevProps.ElapsedTime, DevProps.Delete.ToLowerInvariant(), nameof(DBEntity), timer?.Elapsed.TotalSeconds ?? 0);
+			
 			return Ok();
 		}
 
