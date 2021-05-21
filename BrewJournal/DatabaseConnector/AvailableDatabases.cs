@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DatabaseConnector
+﻿namespace DatabaseConnector
 {
 	/// <summary>
 	/// Available adapters for configuration. Will expand as more are added

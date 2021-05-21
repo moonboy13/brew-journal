@@ -2,40 +2,40 @@
 
 namespace DatabaseConnector.Migrations
 {
-    public partial class UseModelAttributes : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Hop",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "TEXT",
-                oldNullable: true);
+	public partial class UseModelAttributes : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.AlterColumn<string>(
+				name: "Name",
+				table: "Hop",
+				type: "TEXT",
+				nullable: false,
+				defaultValue: "",
+				oldClrType: typeof(string),
+				oldType: "TEXT",
+				oldNullable: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_User_Username",
-                table: "User",
-                column: "Username",
-                unique: true);
-        }
+			migrationBuilder.CreateIndex(
+				name: "IX_User_Username",
+				table: "User",
+				column: "Username",
+				unique: true);
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropIndex(
-                name: "IX_User_Username",
-                table: "User");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropIndex(
+				name: "IX_User_Username",
+				table: "User");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Hop",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "TEXT");
-        }
-    }
+			migrationBuilder.AlterColumn<string>(
+				name: "Name",
+				table: "Hop",
+				type: "TEXT",
+				nullable: true,
+				oldClrType: typeof(string),
+				oldType: "TEXT");
+		}
+	}
 }

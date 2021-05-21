@@ -1,13 +1,13 @@
-using NUnit.Framework;
-using Bunit;
-using BrewJournal.Client.Pages;
-using ClientUnitTests.Properties;
-using RichardSzalay.MockHttp;
-using Models;
-using System.Collections.Generic;
 using Blazored.Toast.Services;
-using Moq;
+using BrewJournal.Client.Pages;
+using Bunit;
+using ClientUnitTests.Properties;
 using Microsoft.Extensions.DependencyInjection;
+using Models;
+using Moq;
+using NUnit.Framework;
+using RichardSzalay.MockHttp;
+using System.Collections.Generic;
 using UserProp = BrewJournal.Client.Properties.UserResources;
 
 namespace ClientUnitTests

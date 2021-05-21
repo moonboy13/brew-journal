@@ -1,15 +1,13 @@
 ﻿using DatabaseConnector;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Models;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using DevProps = BrewJournal.Server.Properties.DeveloperResources;
 using UserProps = BrewJournal.Server.Properties.UserResources;
-using System.Threading.Tasks;
 
 namespace BrewJournal.Server.Controllers
 {
@@ -93,20 +91,20 @@ namespace BrewJournal.Server.Controllers
 			var timer = GetAndStartTimer();
 
 			DBEntity record = await _context.FindAsync<DBEntity>(id);
-			
+
 			//-- Throw a 404 error if we cannot find the record.
-			if(record is null)
+			if (record is null)
 			{
 				_logger.LogError(DevProps.FailedToFindRecord, nameof(DBEntity), id);
 				return NotFound(id);
 			}
 
 			_logger.LogInformation(DevProps.DeletingRecord, JsonSerializer.Serialize(record));
-			
+
 			_ = await _context.DeleteAsync(record);
-			
+
 			_logger.LogTrace(DevProps.ElapsedTime, DevProps.Delete.ToLowerInvariant(), nameof(DBEntity), timer?.Elapsed.TotalSeconds ?? 0);
-			
+
 			return Ok();
 		}
 

@@ -1,18 +1,14 @@
-﻿using NUnit.Framework;
-using BrewJournal.Server.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Models;
-using Moq;
+﻿using DatabaseConnector;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using System.Linq;
+using Models;
+using Moq;
+using NUnit.Framework;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using DatabaseConnector;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BrewJournal.Server.Controllers.Tests
 {
@@ -143,7 +139,7 @@ namespace BrewJournal.Server.Controllers.Tests
 
 		private Mock<DbSet<Hop>> GenerateMockHopQuerySet()
 		{
-			var hopList =  new List<Hop>()
+			var hopList = new List<Hop>()
 			{
 				{ new Hop() { Id = 1, Name = "Alpha", AlphaAcidContent = 1.1, BetaAcidContent = 1.2 } },
 				{ new Hop() { Id = 2, Name = "Gamma", AlphaAcidContent = 3.1, BetaAcidContent = 3.2 } },
@@ -159,7 +155,7 @@ namespace BrewJournal.Server.Controllers.Tests
 			return mockSet;
 		}
 
-		private void ConfigureAsQueryable<TEntity>(IQueryable<TEntity> hopList, Mock<DbSet<TEntity>> mockSet) where TEntity : class
+		private static void ConfigureAsQueryable<TEntity>(IQueryable<TEntity> hopList, Mock<DbSet<TEntity>> mockSet) where TEntity : class
 		{
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.Provider).Returns(hopList.Provider);
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.Expression).Returns(hopList.Expression);
@@ -167,7 +163,7 @@ namespace BrewJournal.Server.Controllers.Tests
 			mockSet.As<IQueryable<TEntity>>().Setup(mock => mock.GetEnumerator()).Returns(hopList.GetEnumerator());
 		}
 
-		private void RunValidationAsserts(Hop hop, string expectedMessage, string field)
+		private static void RunValidationAsserts(Hop hop, string expectedMessage, string field)
 		{
 			List<ValidationResult> validations = new();
 			Assert.That(Validator.TryValidateObject(hop, new ValidationContext(hop), validations, true), Is.False);

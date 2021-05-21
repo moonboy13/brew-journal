@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DatabaseConnector;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models;
-using Microsoft.Extensions.Logging;
-using DatabaseConnector;
 
 namespace BrewJournal.Server.Controllers
 {
@@ -31,7 +31,7 @@ namespace BrewJournal.Server.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create([Bind(nameof(Hop.Name),nameof(Hop.AlphaAcidContent),nameof(Hop.BetaAcidContent))] Hop hop)
+		public async Task<IActionResult> Create([Bind(nameof(Hop.Name), nameof(Hop.AlphaAcidContent), nameof(Hop.BetaAcidContent))] Hop hop)
 		{
 			return await CreateRecord(hop);
 		}
