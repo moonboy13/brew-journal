@@ -137,6 +137,22 @@ namespace BrewJournal.Server.Controllers.Tests
 			Assert.That(results, Is.Ordered.By("Name"));
 		}
 
+		//[Test()]
+		//public async Task Modify_ValidId_UpdateSuccesful()
+		//{
+		//	Mock<DbSet<Hop>> mockSet = GenerateMockHopQuerySet();
+		//	Hop hopToModify = mockSet.Object.First();
+
+		//	_mockContext.Setup(m => m.FindAsync<Hop>(It.Is<int>((id) => id == hopToModify.Id))).ReturnsAsync(hopToModify);
+		//	_mockContext.Setup(context => context.SaveAsync()).ReturnsAsync(1);
+
+		//	var hopController = new HopController(_mockContext.Object, _logger.Object);
+
+		//	IActionResult result = await hopController.Modify(hopToModify.Id, hopToModify);
+
+		//	Assert.That(result, Is.TypeOf(typeof(OkResult)));
+		//}
+
 		private Mock<DbSet<Hop>> GenerateMockHopQuerySet()
 		{
 			var hopList = new List<Hop>()

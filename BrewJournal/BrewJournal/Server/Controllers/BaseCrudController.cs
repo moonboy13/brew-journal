@@ -1,6 +1,8 @@
 ﻿using DatabaseConnector;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,7 +40,8 @@ namespace BrewJournal.Server.Controllers
 		{
 			Stopwatch timer = GetAndStartTimer();
 
-			var hopList = query.ToList();
+			var hopList = query
+				.ToList();
 
 			_logger.LogInformation(DevProps.RetreivedAll, nameof(DBEntity));
 			_logger.LogTrace(DevProps.ElapsedTime, DevProps.RetrieveAll.ToLower(), nameof(DBEntity), timer?.Elapsed.Seconds ?? 0);
@@ -85,6 +88,13 @@ namespace BrewJournal.Server.Controllers
 			}
 		}
 
+		/// <summary>
+		/// This will remove a record from the database. Attempting to remove a record that
+		/// does not exist will throw an error.
+		/// </summary>
+		/// <typeparam name="DBEntity"></typeparam>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		protected async Task<IActionResult> DeleteRecord<DBEntity>(int id)
 			where DBEntity : class
 		{
@@ -108,7 +118,43 @@ namespace BrewJournal.Server.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Modify the record using the updated model entry. This will check if the record exists
+		/// and throw an error if it does not before modifying the record.
+		/// </summary>
+		/// <typeparam name="DBEntity"></typeparam>
+		/// <param name="id"></param>
+		/// <param name="newObject"></param>
+		/// <returns></returns>
+		protected async Task<IActionResult> ModifyRecord<DBEntity>(int id, DBEntity newObject)
+			where DBEntity : class
+		{
+			try
+			{
+				var timer = GetAndStartTimer();
 
+				DBEntity record = await _context. FindAsync<DBEntity>(id);
+
+				//-- Throw a 404 error if we cannot find the record.
+				if (record is null)
+				{
+					_logger.LogError(DevProps.FailedToFindRecord, nameof(DBEntity), id);
+					return NotFound(id);
+				}
+
+				//-- Stop tracking this record so we can add our modified one.
+				_context.Entry(record).State = EntityState.Detached;
+
+				_context.Update(newObject);
+				_ = await _context.SaveAsync();
+				return Ok();
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError(ex, string.Empty);
+				throw;
+			}
+		}
 
 		private Stopwatch GetAndStartTimer()
 		{

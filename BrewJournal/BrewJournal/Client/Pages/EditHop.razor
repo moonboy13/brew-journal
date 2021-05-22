@@ -47,7 +47,7 @@ else
 		<tbody>
 			@foreach (var hop in Hops)
 			{
-				<tr>
+				<tr @onclick="() => RowClicked(hop)">
 					<td>@hop.Name.Trim()</td>
 					<td>@hop.AlphaAcidContent %</td>
 					<td>@hop.BetaAcidContent %</td>
@@ -85,7 +85,12 @@ else
 		//-- Check that the form is valid before submitting
 		if (editContext.Validate())
 		{
-			var saveReturn = await Http.PostAsJsonAsync("/Hop", Hop);
+			HttpResponseMessage saveReturn;
+			if (Hop.Id <= 0)
+				saveReturn = await Http.PostAsJsonAsync("/Hop", Hop);
+			else
+				saveReturn = await Http.PostAsJsonAsync($"/Hop/{Hop.Id}", Hop);	
+
 			if (!saveReturn.IsSuccessStatusCode)
 			{
 				//-- Format that string, format it good.
@@ -106,5 +111,11 @@ else
 			await Http.DeleteAsync($"/Hop/{hop.Id}");
 			Hops.Remove(hop);
 		}
+	}
+
+	async Task RowClicked(Hop hop)
+	{
+		this.Hop = hop;
+		await Task.CompletedTask;
 	}
 }

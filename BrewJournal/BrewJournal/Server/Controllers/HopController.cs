@@ -1,5 +1,6 @@
 ﻿using DatabaseConnector;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models;
 using System.Collections.Generic;
@@ -22,8 +23,11 @@ namespace BrewJournal.Server.Controllers
 		{
 			await Task.CompletedTask;
 
+			//-- Since this is just a read and return I do not want
+			//-- to track these entities. The AsNoTracking improves
+			//-- performance
 			var query =
-				from hop in _context.Hop
+				from hop in _context.Hop.AsNoTracking()
 				orderby hop.Name
 				select hop;
 
@@ -35,6 +39,13 @@ namespace BrewJournal.Server.Controllers
 		{
 			return await CreateRecord(hop);
 		}
+
+		[HttpPost("{id}")]
+		public async Task<IActionResult> Modify(int id, Hop hop)
+		{
+			return await ModifyRecord(id, hop);
+		}
+
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
