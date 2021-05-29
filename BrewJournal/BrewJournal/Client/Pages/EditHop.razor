@@ -69,15 +69,6 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
-
-
-		if (Id > 0)
-		{
-			//-- Load from data store
-		}
-
-		//-- Compiler implicitly knows to return an empty task
-		return;
 	}
 
 	async Task FormSubmitted(EditContext editContext)

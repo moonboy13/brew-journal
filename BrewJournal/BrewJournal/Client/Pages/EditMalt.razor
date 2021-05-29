@@ -6,7 +6,7 @@
 @using System.Text.Json; 
 @using UserProp = BrewJournal.Client.Properties.UserResources; 
 
-<h3>string.format(UserProp.AddOrModify, nameof(Malt))</h3>
+<h1>@string.Format(UserProp.AddOrModify, nameof(Malt))</h1>
 
 <EditForm Model="@Malt" OnSubmit="@FormSubmitted">
 	<DataAnnotationsValidator />
@@ -23,6 +23,8 @@
 	<InputCheckbox id="active" @bind-Value="Malt.Active" />
 	<input type="submit" class="btn btn-primary" value=@UserProp.Save />
 </EditForm>
+
+<hr />
 
 @if(Malts is null)
 {
