@@ -1,0 +1,109 @@
+﻿@page "/editmalt"
+@inject HttpClient Http
+@inject IToastService ToastService
+@inject IJSRuntime JSRuntime
+@using Models;
+@using System.Text.Json; 
+@using UserProp = BrewJournal.Client.Properties.UserResources; 
+
+<h3>string.format(UserProp.AddOrModify, nameof(Malt))</h3>
+
+<EditForm Model="@Malt" OnSubmit="@FormSubmitted">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	<label class="col-form-label" for="brand">@UserProp.Brand</label>
+	<InputText id="brand" @bind-Value="Malt.Brand" required />
+	<label class="col-form-label" for="type">@UserProp.Type</label>
+	<InputText id="type" @bind-Value="Malt.Type" required/>
+	<label class="col-form-label" for="extract">@UserProp.Extract</label>
+	<InputCheckbox id="extract" @bind-Value="Malt.Extract" />
+	<label class="col-form-label" for="dry">@UserProp.Dry</label>
+	<InputCheckbox id="extract" @bind-Value="Malt.Dry" />
+	<label class="col-form-label" for="active">@UserProp.Active</label>
+	<InputCheckbox id="active" @bind-Value="Malt.Active" />
+	<input type="submit" class="btn btn-primary" value=@UserProp.Save />
+</EditForm>
+
+@if(Malts is null)
+{
+	<p><em>@UserProp.Loading</em></p>
+}
+else if(!Malts.Any())
+{
+	<p>@string.Format(UserProp.NoRecordMatchesFilter, nameof(Malt))</p>
+}
+else
+{
+		<table class="table">
+		<thead>
+			<tr>
+				<th>@UserProp.Brand</th>
+				<th>@UserProp.Type</th>
+				<th>@UserProp.Extract</th>
+				<th>@UserProp.Dry</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var malt in Malts)
+			{
+				<tr @onclick="() => RowClicked(malt)">
+					<td>@malt.Brand.Trim()</td>
+					<td>@malt.Type.Trim()</td>
+					<td>@malt.Extract</td>
+					<td>@malt.Dry</td>
+					<td align="right" @onclick="(args) => DeleteClicked(malt, args)"><span class="oi oi-x" alt="Delete Malt"></span></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private Malt Malt { get; set; } = new Malt();
+
+	private List<Malt> Malts { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Malts = await Http.GetFromJsonAsync<List<Malt>>("Malt");
+	}
+
+	async Task FormSubmitted(EditContext editContext)
+	{
+		if(editContext.Validate())
+		{
+			HttpResponseMessage saveReturn;
+			if(Malt.Id <= 0)
+				saveReturn = await Http.PostAsJsonAsync("/Malt", Malt);
+			else
+				saveReturn = await Http.PostAsJsonAsync($"/Malt/{Malt.Id}", Malt);
+
+			if(!saveReturn.IsSuccessStatusCode)
+			{
+				ToastService.ShowError(string.Format("{0} {1}{2}{3}", UserProp.MaltSaveFailed, string.Format(UserProp.ServerResponseCode, saveReturn.StatusCode),
+				Environment.NewLine, string.Format(UserProp.ServerResponseReasonPhrase, saveReturn.ReasonPhrase)));
+			}
+			else
+			{
+				Malt = new();
+				Malts = await Http.GetFromJsonAsync<List<Malt>>("Malt");
+			}
+		}
+	}
+
+	async Task DeleteClicked(Malt malt, MouseEventArgs args)
+	{
+		if(await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {malt.Brand} - {malt.Type}"))
+		{
+			await Http.DeleteAsync($"/Malt/{malt.Id}");
+			Malts.Remove(malt);
+		}
+	}
+
+	async Task RowClicked(Malt malt)
+	{
+		this.Malt = malt;
+		await Task.CompletedTask;
+	}
+}

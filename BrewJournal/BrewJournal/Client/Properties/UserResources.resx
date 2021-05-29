@@ -129,11 +129,23 @@
   <data name="BetaAcidContent" xml:space="preserve">
     <value>Beta Acid Content</value>
   </data>
+  <data name="Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Dry" xml:space="preserve">
+    <value>Dry</value>
+  </data>
+  <data name="Extract" xml:space="preserve">
+    <value>Extract</value>
+  </data>
   <data name="HopSaveFailed" xml:space="preserve">
     <value>Failed to save new hop.</value>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
+  </data>
+  <data name="MaltSaveFailed" xml:space="preserve">
+    <value>Failed to save new malt.</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -149,5 +161,8 @@
   </data>
   <data name="ServerResponseReasonPhrase" xml:space="preserve">
     <value>Reason: {0}.</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

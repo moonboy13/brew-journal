@@ -99,6 +99,7 @@ else
 			}
 			else
 			{
+				Hop = new();
 				Hops = await Http.GetFromJsonAsync<List<Hop>>("Hop");
 			}
 		}

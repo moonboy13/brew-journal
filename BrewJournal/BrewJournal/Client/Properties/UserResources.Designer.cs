@@ -97,6 +97,33 @@ namespace BrewJournal.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Brand.
+        /// </summary>
+        public static string Brand {
+            get {
+                return ResourceManager.GetString("Brand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry.
+        /// </summary>
+        public static string Dry {
+            get {
+                return ResourceManager.GetString("Dry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract.
+        /// </summary>
+        public static string Extract {
+            get {
+                return ResourceManager.GetString("Extract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to save new hop..
         /// </summary>
         public static string HopSaveFailed {
@@ -111,6 +138,15 @@ namespace BrewJournal.Client.Properties {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to save new malt..
+        /// </summary>
+        public static string MaltSaveFailed {
+            get {
+                return ResourceManager.GetString("MaltSaveFailed", resourceCulture);
             }
         }
         
@@ -156,6 +192,15 @@ namespace BrewJournal.Client.Properties {
         public static string ServerResponseReasonPhrase {
             get {
                 return ResourceManager.GetString("ServerResponseReasonPhrase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }
